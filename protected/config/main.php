@@ -7,6 +7,8 @@ Yii::setPathOfAlias('bootstrap', dirname(__FILE__).'/../extensions/bootstrap');
 return array(
 	'basePath'=>dirname(__FILE__).DIRECTORY_SEPARATOR.'..',
 	'name'=>'Виртуальный офис',
+	'sourceLanguage' => 'root',
+	'language' => 'ru',
 
 	// preloading 'log' component
 	'preload'=>array('log'),
@@ -75,17 +77,20 @@ return array(
 			),
 		),
 
-//		'user'=>array(
-//			// enable cookie-based authentication
-//			'allowAutoLogin'=>true,
-//		),
+		'user'=>array(
+			'class' => 'TWTWebUser',
+			'loginUrl' => array('site/login'),
+			'guestName' => 'Гость',
+			'allowAutoLogin' => true
+		),
 
 		'urlManager'=>array(
 			'urlFormat'=>'path',
 			'showScriptName' => false,
 			'rules'=>array(
+				'<company_id:\d+>/<module:\w+>' => 'site/<module>',
+
 				'admin/helper/<action:\w+>' => 'admin/helper/<action>',
-				'admin/<module:\w+>/<controller:\w+>' => '<module>/admin_<controller>',
 				'admin/<module:\w+>/<controller:\w+>/<action:\w+>' => '<module>/admin_<controller>/<action>',
 				'admin/<controller:\w+>/<action:\w+>' => 'admin_<controller>/<action>',
 			),

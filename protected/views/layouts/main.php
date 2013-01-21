@@ -16,23 +16,29 @@ Yii::app()->clientScript->registerCssFile(CHtml::asset(Yii::app()->basePath.'/..
 
 <body>
 <div class="container">
-	<div class="navbar">
-		<div class="navbar-inner">
-			<a class="brand" href="<?=Yii::app()->homeUrl?>"><?=Yii::app()->name?></a>
-		</div>
-	</div>
+	<?php $this->widget('bootstrap.widgets.TbNavbar', array(
+		'brand'=>Yii::app()->name,
+		'brandUrl'=>Yii::app()->homeUrl,
+		'collapse'=>true,
+		'fixed' => false,
+		'items' => array(
+			array(
+				'class'=>'bootstrap.widgets.TbMenu',
+				'htmlOptions'=>array('class'=>'pull-right'),
+				'items'=>array(!Yii::app()->user->isGuest ?
+					array('label'=>Yii::app()->user->data->fullName, 'items'=>array(
+//						'---',
+						array('label'=>'Выход', 'url'=>array('/site/logout'))
+					)) : array(),
+				),
+			)
+		)
+	));	?>
+
 </div>
 <div class="container">
 	<div class="row">
-		<div class="span3 left-menu">
-			<?php
-			$this->widget('bootstrap.widgets.TbMenu', array(
-				'type'      => 'tabs', // '', 'tabs', 'pills' (or 'list')
-				'stacked'   => true, // whether this is a stacked menu
-				'items'     => $this->menu
-			)); ?>
-		</div>
-		<div class="span9">
+		<div class="span12">
 				<?php
 				$this->widget('bootstrap.widgets.TbBreadcrumbs', array(
 					'links' => $this->breadcrumbs

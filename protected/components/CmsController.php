@@ -14,7 +14,7 @@ class CmsController extends Controller
 	 * @var array context menu items. This property will be assigned to {@link CMenu::items}.
 	 */
 	public $menu=array(
-		array('label'=>'Компании', 'url'=>array('/admin_company/index')),
+		array('label'=>'Компании', 'url'=>array('/admin_companies/index')),
 		array('label'=>'Пользователи', 'url'=>array('/admin_users/index'))
 	);
 	/**
