@@ -10,6 +10,7 @@ Yii::app()->bootstrap->registerCoreScripts();
 <head>
 	<meta charset="<?=Yii::app()->charset?>"/>
 	<meta name="language" content="<?=Yii::app()->language?>" />
+	<?=CHtml::linkTag('shortcut icon', 'image/vnd.microsoft.icon', CHtml::asset(Yii::app()->basePath.'/../favicon.ico'))?>
 	<title>[admin] — <?=CHtml::encode($this->pageTitle)?></title>
 </head>
 

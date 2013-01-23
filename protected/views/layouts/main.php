@@ -10,6 +10,7 @@ Yii::app()->clientScript->registerCssFile(CHtml::asset(Yii::app()->basePath.'/..
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 	<meta name="language" content="<?=Yii::app()->language?>" />
+	<?=CHtml::linkTag('shortcut icon', 'image/vnd.microsoft.icon', CHtml::asset(Yii::app()->basePath.'/../favicon.ico'))?>
 
 	<title><?php echo CHtml::encode($this->pageTitle); ?></title>
 </head>
