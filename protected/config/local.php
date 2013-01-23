@@ -5,6 +5,7 @@ return CMap::mergeArray(
 	array('components'=>
 		array(
 			'db'=>array(
+				'connectionString' => 'mysql:host=server;dbname=twt-virt-office',
 				'username' => 'root',
 				'password' => 'ferthuk',
 			)
