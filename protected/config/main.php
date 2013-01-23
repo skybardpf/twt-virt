@@ -21,8 +21,9 @@ return array(
 	),
 
 	'modules'=>array(
-		'admin',
-		// uncomment the following to enable the Gii tool
+		'admin' => array(
+			'startPage' => '/admin_companies/index'
+		),
 		'gii'=>array(
 			'class'=>'system.gii.GiiModule',
 			'password'=>'Enter Your Password Here',

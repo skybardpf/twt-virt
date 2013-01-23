@@ -104,7 +104,11 @@ class Admin_userController extends CmsController
 						$duration = 0;
 					}
 					if (Yii::app()->admin->login($identity, $duration)) {
-						$returnUrl = !Yii::app()->admin->returnUrl ? '/admin/' : Yii::app()->admin->returnUrl;
+						if ($this->module->startPage) {
+							$returnUrl = $this->module->startPage;
+						} else {
+							$returnUrl = !Yii::app()->admin->returnUrl ? '/admin/' : Yii::app()->admin->returnUrl;
+						}
 						$this->redirect($returnUrl);
 					}
 				} else {
