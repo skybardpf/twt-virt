@@ -10,7 +10,7 @@ Yii::app()->bootstrap->registerCoreScripts();
 <head>
 	<meta charset="<?=Yii::app()->charset?>"/>
 	<meta name="language" content="<?=Yii::app()->language?>" />
-	<title><?=CHtml::encode($this->pageTitle)?></title>
+	<title>[admin] — <?=CHtml::encode($this->pageTitle)?></title>
 </head>
 
 <body>

@@ -13,6 +13,7 @@
  * The followings are the available model relations:
  * @property User[] $users
  * @property User2company[] $user2company
+ * @property User $admin_user
  */
 class Company extends CActiveRecord
 {
@@ -69,8 +70,30 @@ class Company extends CActiveRecord
 		return array(
 			'user2company' => array(self::HAS_MANY, 'User2company', 'company_id'),
 			'users' => array(self::HAS_MANY, 'User', array('user_id' => 'id'), 'through' => 'user2company'),
+			'admin_user' => array(self::BELONGS_TO, 'User', 'admin_user_id'),
 		);
 	}
+
+	protected function afterSave()
+	{
+		if ($this->admin_user) {
+			$has_link = false;
+			foreach ($this->admin_user->companies as $c) {
+				if (!$has_link && $c->id == $this->id) {
+					$has_link = true;
+				}
+			}
+			if (!$has_link) {
+				$u2c = new User2company();
+				$u2c->company_id = $this->id;
+				$u2c->user_id = $this->admin_user_id;
+				$u2c->save();
+			}
+
+		}
+		parent::afterSave();
+	}
+
 
 	/**
 	 * @return array customized attribute labels (name=>label)

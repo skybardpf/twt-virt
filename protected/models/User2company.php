@@ -41,11 +41,10 @@ class User2company extends CActiveRecord
 		// will receive user inputs.
 		return array(
 			array('user_id, company_id', 'required'),
-			array('admin', 'numerical', 'integerOnly'=>true),
 			array('user_id, company_id', 'length', 'max'=>10),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
-			array('user_id, company_id, admin', 'safe', 'on'=>'search'),
+			array('user_id, company_id', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -70,7 +69,6 @@ class User2company extends CActiveRecord
 		return array(
 			'user_id' => 'User',
 			'company_id' => 'Company',
-			'admin' => 'Admin',
 		);
 	}
 
@@ -87,7 +85,6 @@ class User2company extends CActiveRecord
 
 		$criteria->compare('user_id',$this->user_id,true);
 		$criteria->compare('company_id',$this->company_id,true);
-		$criteria->compare('admin',$this->admin);
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,

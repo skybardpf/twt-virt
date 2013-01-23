@@ -166,9 +166,12 @@ class User extends CActiveRecord
 		));
 	}
 
+	/**
+	 * @return Company[]
+	 */
 	public function getCompaniesList()
 	{
-		return CHtml::listData(Company::model()->findAll(), 'id', 'name');
+		return Company::model()->findAll();
 	}
 
 	/**
