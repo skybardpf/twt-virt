@@ -90,7 +90,7 @@ return array(
 			'showScriptName' => false,
 			'rules'=>array(
 				'<company_id:\d+>/<module:\w+>' => 'site/<module>',
-
+				'/admin/' => '/admin_companies/index',
 				'admin/helper/<action:\w+>' => 'admin/helper/<action>',
 				'admin/<module:\w+>/<controller:\w+>/<action:\w+>' => '<module>/admin_<controller>/<action>',
 				'admin/<controller:\w+>/<action:\w+>' => 'admin_<controller>/<action>',
