@@ -51,8 +51,8 @@ return array(
 		'db'=>array(
 			'connectionString' => 'mysql:host=localhost;dbname=twt-virt-office',
 			'emulatePrepare' => true,
-			'username' => 'root',
-			'password' => '',
+			'username' => 'acdbuser',
+			'password' => 'ZCHGiwj7',
 			'charset' => 'utf8',
 			'schemaCachingDuration' => YII_DEBUG ? 5 : 3600,
 			'enableParamLogging' => YII_DEBUG,
