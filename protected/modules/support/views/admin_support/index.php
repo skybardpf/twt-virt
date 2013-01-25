@@ -6,6 +6,7 @@
  */
 
 Yii::app()->clientScript->registerScriptFile(CHtml::asset(Yii::app()->basePath.'/modules/support/assets/js/project_index.js'));
+Yii::app()->clientScript->registerCssFile(CHtml::asset(Yii::app()->basePath.'/modules/support/assets/css/support.css'));
 $this->breadcrumbs=array('Техническая поддержка');
 ?>
 <h1>Техническая поддержка</h1>
