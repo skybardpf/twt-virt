@@ -21,6 +21,9 @@ class Controller extends CController
 	 */
 	public $breadcrumbs=array();
 
+	/** @var Company */
+	public $company = NULL;
+
 	public function filters()
 	{
 		return array(
@@ -36,4 +39,14 @@ class Controller extends CController
 			array('deny', 'actions'=>array(), 'users' => array('?')),
 		);
 	}
+
+	protected function beforeAction($action)
+	{
+		if ($id = Yii::app()->request->getParam('company_id')) {
+			$this->company = Company::model()->findByPk($id);
+		}
+		return parent::beforeAction($action);
+	}
+
+
 }
