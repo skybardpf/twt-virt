@@ -89,6 +89,8 @@ return array(
 			'urlFormat'=>'path',
 			'showScriptName' => false,
 			'rules'=>array(
+				'<company_id:\d+>' => 'companies/view',
+				'<company_id:\d+>/<action:\w+>_company' => 'companies/<action>',
 				'<company_id:\d+>/<module:\w+>' => 'site/<module>',
 				'/admin/' => '/admin_companies/index',
 				'admin/helper/<action:\w+>' => 'admin/helper/<action>',

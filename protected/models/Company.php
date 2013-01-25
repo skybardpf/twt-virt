@@ -44,7 +44,7 @@ class Company extends CActiveRecord
 		// will receive user inputs.
 		return array(
 			array('name, inn, kpp', 'required'),
-			array('admin_user_id', 'safe'),
+			array('admin_user_id', 'safe', 'on' => 'update, insert'),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
 			array('id, name, inn, kpp', 'safe', 'on'=>'search'),
