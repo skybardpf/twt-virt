@@ -26,10 +26,11 @@ return array(
 		),
 		'gii'=>array(
 			'class'=>'system.gii.GiiModule',
-			'password'=>'Enter Your Password Here',
+			'password'=>'1',
 			// If removed, Gii defaults to localhost only. Edit carefully to taste.
 			'ipFilters'=>array('127.0.0.1','::1','192.168.0.*'),
 		),
+		'support'
 	),
 
 	// application components
@@ -96,6 +97,8 @@ return array(
 				'admin/helper/<action:\w+>' => 'admin/helper/<action>',
 				'admin/<module:\w+>/<controller:\w+>/<action:\w+>' => '<module>/admin_<controller>/<action>',
 				'admin/<controller:\w+>/<action:\w+>' => 'admin_<controller>/<action>',
+				'support/create' => 'support/default/create',
+				'support/view/id/<id:\d+>' => 'support/default/view/id/<id>',
 			),
 		),
 	),

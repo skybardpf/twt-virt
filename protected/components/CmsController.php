@@ -15,7 +15,8 @@ class CmsController extends Controller
 	 */
 	public $menu=array(
 		array('label'=>'Компании', 'url'=>array('/admin_companies/index')),
-		array('label'=>'Пользователи', 'url'=>array('/admin_users/index'))
+		array('label'=>'Пользователи', 'url'=>array('/admin_users/index')),
+		array('label'=>'Поддержка', 'url'=>array('/support/admin_support/index')),
 	);
 	/**
 	 * @var array the breadcrumbs of the current page. The value of this property will
