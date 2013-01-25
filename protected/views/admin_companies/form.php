@@ -25,7 +25,7 @@
 		<?=$form->textFieldRow($model,'inn', array('class' => 'input-xxlarge')); ?>
 		<?=$form->textFieldRow($model,'kpp', array('class' => 'input-xxlarge')); ?>
 		<?=$form->dropDownListRow($model, 'admin_user_id', array(null => 'не выбран') + CHtml::listData(User::model()->findAll(), 'id', 'fullName'),array('class' => 'input-xxlarge'))?>
-
+		<?=$form->checkBoxRow($model, 'deleted')?>
 	</fieldset>
 	<div class="form-actions">
 		<?=$buttons?>

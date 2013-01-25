@@ -23,6 +23,8 @@ $this->widget('ext.bootstrap.widgets.TbGridView', array(
 		'name',
 		'inn',
 		'kpp',
+		array('name' => 'deleted', 'value' => '$data->deleted ? "Да" : "Нет"'),
+		array('name' => 'deleted_date', 'value' => 'Yii::app()->dateFormatter->formatDateTime($data->deleted_date)'),
 		array(
 			'class'=>'bootstrap.widgets.TbButtonColumn',
 			'template' => '{update} {delete}',

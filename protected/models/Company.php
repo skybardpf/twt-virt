@@ -9,6 +9,8 @@
  * @property string $inn
  * @property string $kpp
  * @property integer $admin_user_id
+ * @property integer $deleted
+ * @property string $deleted_date
  *
  * The followings are the available model relations:
  * @property User[] $users
@@ -17,6 +19,8 @@
  */
 class Company extends CActiveRecord
 {
+	public $deleted = 0;
+
 	/**
 	 * Returns the static model of the specified AR class.
 	 * @param string $className active record class name.
@@ -44,7 +48,7 @@ class Company extends CActiveRecord
 		// will receive user inputs.
 		return array(
 			array('name, inn, kpp', 'required'),
-			array('admin_user_id', 'safe', 'on' => 'update, insert'),
+			array('admin_user_id, deleted', 'safe', 'on' => 'update, insert'),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
 			array('id, name, inn, kpp', 'safe', 'on'=>'search'),
@@ -55,6 +59,10 @@ class Company extends CActiveRecord
 	{
 		if (!$this->admin_user_id) {
 			$this->admin_user_id = null;
+		}
+
+		if ($this->deleted == 0) {
+			$this->deleted_date = null;
 		}
 		return parent::beforeSave();
 	}
@@ -94,6 +102,14 @@ class Company extends CActiveRecord
 		parent::afterSave();
 	}
 
+	protected function beforeDelete()
+	{
+		foreach ($this->user2company as $u2c) {
+			$u2c->delete();
+		}
+		return parent::beforeDelete();
+	}
+
 
 	/**
 	 * @return array customized attribute labels (name=>label)
@@ -106,7 +122,23 @@ class Company extends CActiveRecord
 			'inn' => 'ИНН',
 			'kpp' => 'КПП',
 			'admin_user_id' => 'Администратор',
+			'deleted' => 'Помечено на удаление',
+			'deleted_date' => 'Дата отметки',
 		);
+	}
+
+	public function markDeleted()
+	{
+		$this->deleted = 1;
+		$this->deleted_date = date('Y-m-d H:i:s');
+		return $this->save(false);
+	}
+
+	public function unMarkDeleted()
+	{
+		$this->deleted = 0;
+		$this->deleted_date = null;
+		return $this->save(false);
 	}
 
 	/**

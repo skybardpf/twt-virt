@@ -1,3 +1,6 @@
 tr.request_row {
     cursor: pointer;
 }
+.companies .deleted {
+	text-decoration: line-through;
+}

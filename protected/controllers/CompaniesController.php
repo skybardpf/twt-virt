@@ -36,4 +36,31 @@ class CompaniesController extends Controller
 
 		$this->render('view', array('company' => $company));
 	}
+
+	public function actionDelete($company_id)
+	{
+		/** @var $company Company */
+		$company = Company::model()->findByPk($company_id);
+		if (empty($company)) throw new CHttpException(404);
+		if ($company->admin_user_id != Yii::app()->user->id) {
+			throw new CHttpException(403, 'Вы не являетесь администратором компании');
+		}
+
+		if (isset($_POST['result'])) {
+			switch ($_POST['result']) {
+				case 'yes':
+					if ($company->markDeleted()) {
+						$this->redirect(Yii::app()->homeUrl);
+					} else {
+						throw new CException('Не удалось удалить команию');
+					}
+					break;
+				default:
+					$this->redirect($this->createUrl('view', array('company_id' => $company_id)));
+					break;
+			}
+		}
+
+		$this->render('delete', array('company' => $company));
+	}
 }
