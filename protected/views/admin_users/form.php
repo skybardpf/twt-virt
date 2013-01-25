@@ -4,11 +4,6 @@
  * @var $model User
  * @var $form TbActiveForm
  */
-$languages_code = array('' => 'выберите код языка');
-foreach (Yii::app()->locale->getLocaleIDs() as $code) {
-	$languages_code[$code] = Yii::app()->locale->getLanguage($code) . " ($code)";
-}
-
 ?>
 
 <div class="form">

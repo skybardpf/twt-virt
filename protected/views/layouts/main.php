@@ -26,11 +26,15 @@ Yii::app()->clientScript->registerCssFile(CHtml::asset(Yii::app()->basePath.'/..
 			array(
 				'class'=>'bootstrap.widgets.TbMenu',
 				'htmlOptions'=>array('class'=>'pull-right'),
-				'items'=>array(!Yii::app()->user->isGuest ?
-					array('label'=>Yii::app()->user->data->fullName, 'items'=>array(
-//						'---',
-						array('label'=>'Выход', 'url'=>array('/site/logout'))
-					)) : array(),
+				'items'=>(!Yii::app()->user->isGuest ?
+					array(
+						Yii::app()->user->data->isAdmin ? array('label' => 'Пользователи', 'url' => '/users/index') : array(),
+						array('label' => Yii::app()->user->data->fullName, 'items'=>array(
+							array('label'=>'Профиль', 'url'=>array('/')),
+							'---',
+							array('label'=>'Выход', 'url'=>array('/site/logout'))
+						))
+					) : array()
 				),
 			)
 		)

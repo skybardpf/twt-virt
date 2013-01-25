@@ -12,6 +12,7 @@
  * @property string $surname
  * @property string $phone
  * @property integer $active
+ * @property integer $create_user_id
  *
  * @property string $fullName
  *
@@ -27,7 +28,11 @@ class User extends CActiveRecord
 	public $rememberMe = false;
 	private $_identity = null;
 
+	public $isAdmin = false;
+
 	public $companies_ids = array();
+
+
 
 	public function getFullName()
 	{
@@ -60,14 +65,14 @@ class User extends CActiveRecord
 		// will receive user inputs.
 		return array(
 			array('email, password', 'required', 'on' => 'login'),
-			array('email, name, surname, companies_ids', 'required', 'on' => 'insert,update'),
-			array('email', 'unique', 'on' => 'insert,update'),
-			array('email', 'email'),
-			array('active', 'numerical', 'integerOnly'=>true),
-			array('password', 'length', 'max'=>32),
+			array('email, name, surname, companies_ids', 'required', 'on' => 'insert,update,owner_update'),
+			array('companies_ids', 'safe', 'on' => 'owner_update,only_company'),
+			array('email', 'unique', 'on' => 'insert,update,owner_update'),
+			array('email', 'email', 'on' => 'insert,update,owner_update'),
+			array('active', 'numerical', 'integerOnly'=>true, 'on' => 'insert,update,owner_update'),
 			array('password, repassword', 'required', 'on' => 'insert, ch_pass'),
 			array('repassword', 'compare', 'compareAttribute' => 'password', 'on' => 'insert, ch_pass'),
-			array('phone', 'safe'),
+			array('phone', 'safe', 'on' => 'insert,update,owner_update'),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
 			array('id, email, password, name, surname, phone, active', 'safe', 'on'=>'search'),
@@ -109,7 +114,12 @@ class User extends CActiveRecord
 
 	protected function afterFind()
 	{
-		$this->companies_ids = array_keys(CHtml::listData($this->companies, 'id', 'name'));
+		foreach ($this->companies as $c) {
+			$this->companies_ids[] = $c->id;
+			if ($c->admin_user_id == $this->id) {
+				$this->isAdmin = true;
+			}
+		}
 		parent::afterFind();
 	}
 
@@ -125,7 +135,17 @@ class User extends CActiveRecord
 
 	protected function afterSave()
 	{
-		User2company::model()->deleteAllByAttributes(array('user_id' => $this->id));
+		if (in_array($this->scenario, array('insert', 'update'))) {
+			User2company::model()->deleteAllByAttributes(array('user_id' => $this->id));
+		} elseif (in_array($this->scenario, array('owner_update', 'only_company'))) {
+			foreach ($this->user2company as $u2c) {
+				//TODO костыль :(
+				if ($u2c->company->admin_user_id == Yii::app()->user->id) {
+					$u2c->delete();
+				}
+			}
+
+		}
 
 		foreach ($this->companies_ids as $c_id) {
 			$uc = new User2company();
@@ -167,11 +187,19 @@ class User extends CActiveRecord
 	}
 
 	/**
+	 *
+	 * @param integer $user_id
 	 * @return Company[]
 	 */
-	public function getCompaniesList()
+	public function getCompaniesList($user_id = null)
 	{
-		return Company::model()->findAll();
+		$model = Company::model();
+		$criteria = new CDbCriteria();
+		if ($user_id) {
+			$criteria->addCondition('admin_user_id = :admin_user_id');
+			$criteria->params[':admin_user_id'] = $user_id;
+		}
+		return $model->findAll($criteria);
 	}
 
 	/**
