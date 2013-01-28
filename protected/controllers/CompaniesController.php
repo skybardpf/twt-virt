@@ -5,7 +5,7 @@ class CompaniesController extends Controller
 	public function actionUpdate($company_id)
 	{
 		/** @var $model Company */
-		$model = Company::model()->findByPk($company_id);
+		$model = $this->company;
 		if (empty($model)) throw new CHttpException(404);
 		if ($model->admin_user_id != Yii::app()->user->id) {
 			throw new CHttpException(403, 'Вы не являетесь администратором компании');
@@ -28,7 +28,7 @@ class CompaniesController extends Controller
 
 	public function actionView($company_id)
 	{
-		$company = Company::model()->findByPk($company_id);
+		$company = $this->company;
 		if (empty($company)) throw new CHttpException(404);
 		if (!in_array($company->id, Yii::app()->user->data->companies_ids)) {
 			throw new CHttpException(403, 'У вас нет доступа к данной компании');
@@ -40,7 +40,7 @@ class CompaniesController extends Controller
 	public function actionDelete($company_id)
 	{
 		/** @var $company Company */
-		$company = Company::model()->findByPk($company_id);
+		$company = $this->company;
 		if (empty($company)) throw new CHttpException(404);
 		if ($company->admin_user_id != Yii::app()->user->id) {
 			throw new CHttpException(403, 'Вы не являетесь администратором компании');

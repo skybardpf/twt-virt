@@ -17,9 +17,14 @@ Yii::app()->clientScript->registerCssFile(CHtml::asset(Yii::app()->basePath.'/..
 
 <body>
 <div class="container">
-	<?php $this->widget('bootstrap.widgets.TbNavbar', array(
-		'brand'=>Yii::app()->name,
-		'brandUrl'=>Yii::app()->homeUrl,
+	<?php
+	$brandName = CHtml::link(Yii::app()->name, Yii::app()->homeUrl, array('class' => 'a-brand'));
+	if ($this->company) {
+		$brandName .= ' → ' . (	mb_strlen($this->company->name) > 30 ? mb_substr($this->company->name, 0, 30) . '…': $this->company->name);
+	}
+	$this->widget('bootstrap.widgets.TbNavbar', array(
+		'brand'=> $brandName,
+		'brandUrl'=> false,
 		'collapse'=>true,
 		'fixed' => false,
 		'items' => array(

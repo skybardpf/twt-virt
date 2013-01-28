@@ -1,3 +1,13 @@
 .companies .deleted {
 	text-decoration: line-through;
 }
+
+a.a-brand {
+	color: #777777;
+}
+
+a.a-brand:hover {
+	color: #777777;
+	text-decoration: none;
+}
+
