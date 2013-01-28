@@ -71,4 +71,54 @@ class UsersController extends Controller
 
 		$this->render('update', array('model' => $model));
 	}
+
+	public function actionProfile()
+	{
+		$this->render('profile', array('user' => Yii::app()->user->data));
+	}
+
+	public function actionProfile_edit()
+	{
+		$model = Yii::app()->user->data;
+		$model->setScenario('profile');
+
+		if(isset($_POST['ajax']) && $_POST['ajax']==='model-form-form') {
+			echo CActiveForm::validate($model);
+			Yii::app()->end();
+		}
+
+		if (isset($_POST[get_class($model)])) {
+			$model->attributes=$_POST[get_class($model)];
+			if ($model->save()) {
+				$this->redirect($this->createUrl('profile'));
+			}
+		}
+
+		$this->render('profile_edit', array('model' => $model));
+	}
+
+	public function actionChange_pass()
+	{
+		$model = clone Yii::app()->user->data;
+		$model->password = null;
+		$model->setScenario('change_pass');
+
+		if(isset($_POST['ajax']) && $_POST['ajax']==='model-form-form') {
+			echo CActiveForm::validate($model);
+			Yii::app()->end();
+		}
+
+		if (isset($_POST[get_class($model)])) {
+			$model->attributes=$_POST[get_class($model)];
+			if (User::createHash($model->old_password, Yii::app()->user->data->salt)== Yii::app()->user->data->password) {
+				if ($model->save()) {
+					$this->redirect($this->createUrl('profile'));
+				}
+			} else {
+				$model->addError('old_password', 'Старый пароль введен не верно');
+			}
+		}
+
+		$this->render('change_pass', array('model' => $model));
+	}
 }

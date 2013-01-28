@@ -36,7 +36,7 @@ Yii::app()->clientScript->registerCssFile(CHtml::asset(Yii::app()->basePath.'/..
 						Yii::app()->user->data->isAdmin ? array('label' => 'Пользователи', 'url' => '/users/index') : array(),
 						array('label' => Yii::app()->user->data->fullName, 'items'=>array(
 							array('label' => 'Поддержка', 'url' => array('/support/')),
-							array('label'=>'Профиль', 'url'=>array('/')),
+							array('label'=>'Профиль', 'url'=>array('/users/profile')),
 							'---',
 							array('label'=>'Выход', 'url'=>array('/site/logout'))
 						))
