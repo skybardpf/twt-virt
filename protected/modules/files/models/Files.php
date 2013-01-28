@@ -53,6 +53,7 @@ class Files extends CActiveRecord
 	public $size = 0;
 	public $is_dir = 0;
 	public $deleted = 0;
+	public $parent_elem = null;
 	/**
 	 * Returns the static model of the specified AR class.
 	 * @param string $className active record class name.
@@ -118,7 +119,7 @@ class Files extends CActiveRecord
 			'id' => 'ID',
 			'company_id' => 'Company',
 			'user_id' => 'User',
-			'name' => 'Name',
+			'name' => 'Имя',
 			'cdate' => 'Cdate',
 			'file' => 'File',
 			'size' => 'Size',
@@ -191,7 +192,8 @@ class Files extends CActiveRecord
 	}
 
 	public function is_subdir_unique($attribute,$params) {
-		$parent_dir = $this->parent()->find();
+		$parent_dir = !$this->isNewRecord ? $this->parent()->find() : $this->parent_elem;
+
 		$criteria = new CDbCriteria();
 		if (!$this->isNewRecord) {
 			$criteria->addCondition('t.id != :elem_id');
@@ -200,6 +202,7 @@ class Files extends CActiveRecord
 		$criteria->addCondition('name = :new_name');
 		$criteria->params[':new_name'] = $this->name;
 		$elements = $parent_dir->children()->find($criteria);
-		if ($elements) $this->addError($attribute, ' должен быть уникальным в своей папке.');
+		$labels = $this->attributeLabels();
+		if ($elements) $this->addError($attribute, $labels[$attribute].' должно быть уникальным в своей папке.');
 	}
 }

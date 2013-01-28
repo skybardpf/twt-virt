@@ -143,6 +143,7 @@ class DefaultController extends Controller
 		if (isset($_POST['Files'])) {
 			$elem = ($_POST['Files']['is_dir']) ? $new_dir : $new_file;
 			$elem->attributes = $_POST['Files'];
+			$elem->parent_elem = $dir;
 			if ($elem->appendTo($dir)) {
 				$this->redirect($this->createUrl($user_files ? 'user' : 'index', array('company_id' => $this->company->id, 'dir_id' => $dir->id)));
 			}

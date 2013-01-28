@@ -21,6 +21,7 @@
 					'type'=>'inline',
 					'enableAjaxValidation'=>true,
 				))?>
+				<?php echo $form->errorSummary($new_dir); ?>
 				<fieldset>
 					<?=$form->textFieldRow($new_dir, 'name')?>
 					<?=$form->hiddenField($new_dir, 'is_dir')?>
@@ -46,6 +47,7 @@
 					'enableAjaxValidation'=>false,
 					'htmlOptions' => array('enctype' => 'multipart/form-data')
 				))?>
+				<?php echo $form->errorSummary($new_file); ?>
 				<fieldset>
 					<?=$form->fileFieldRow($new_file, 'file')?>
 					<?=$form->hiddenField($new_file, 'is_dir')?>
