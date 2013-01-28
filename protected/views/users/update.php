@@ -29,16 +29,16 @@ $this->pageTitle = ($model->isNewRecord ? 'Добавление пользова
 	</div>
 	<fieldset>
 
-		<?=$form->textFieldRow($model, 'email', array('class' => 'input-xxlarge', 'disabled' => $model->scenario != 'owner_update')); ?>
-		<?=$form->textFieldRow($model, 'name', array('class' => 'input-xxlarge', 'disabled' => $model->scenario != 'owner_update')); ?>
-		<?=$form->textFieldRow($model, 'surname', array('class' => 'input-xxlarge', 'disabled' => $model->scenario != 'owner_update')); ?>
-		<?=$form->textFieldRow($model, 'phone', array('class' => 'input-xxlarge', 'disabled' => $model->scenario != 'owner_update')); ?>
+		<?=$form->textFieldRow($model, 'email', array('class' => 'input-xxlarge', 'disabled' => !in_array($model->scenario, array('owner_update', 'owner_create')))); ?>
+		<?=$form->textFieldRow($model, 'name', array('class' => 'input-xxlarge', 'disabled' => !in_array($model->scenario, array('owner_update', 'owner_create')))); ?>
+		<?=$form->textFieldRow($model, 'surname', array('class' => 'input-xxlarge', 'disabled' => !in_array($model->scenario, array('owner_update', 'owner_create')))); ?>
+		<?=$form->textFieldRow($model, 'phone', array('class' => 'input-xxlarge', 'disabled' => !in_array($model->scenario, array('owner_update', 'owner_create')))); ?>
 
 		<?php if ($model->isNewRecord) : ?>
-			<?=$form->passwordFieldRow($model, 'password', array('class' => 'input-xxlarge', 'disabled' => $model->scenario != 'owner_update'))?>
-			<?=$form->passwordFieldRow($model, 'repassword', array('class' => 'input-xxlarge', 'disabled' => $model->scenario != 'owner_update'))?>
+			<?=$form->passwordFieldRow($model, 'password', array('class' => 'input-xxlarge', 'disabled' => !in_array($model->scenario, array('owner_update', 'owner_create'))))?>
+			<?=$form->passwordFieldRow($model, 'repassword', array('class' => 'input-xxlarge', 'disabled' => !in_array($model->scenario, array('owner_update', 'owner_create'))))?>
 		<?php endif ?>
-		<?=$form->checkBoxRow($model, 'active', array('disabled' => $model->scenario != 'owner_update'))?>
+		<?=$form->checkBoxRow($model, 'active', array('disabled' => !in_array($model->scenario, array('owner_update', 'owner_create'))))?>
 
 		<div class="control-group">
 			<?=$form->labelEx($model, 'companies_ids', array('class' => 'control-label'))?>

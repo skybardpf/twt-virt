@@ -65,14 +65,14 @@ class User extends CActiveRecord
 		// will receive user inputs.
 		return array(
 			array('email, password', 'required', 'on' => 'login'),
-			array('email, name, surname, companies_ids', 'required', 'on' => 'insert,update,owner_update'),
-			array('companies_ids', 'safe', 'on' => 'owner_update,only_company'),
-			array('email', 'unique', 'on' => 'insert,update,owner_update'),
-			array('email', 'email', 'on' => 'insert,update,owner_update'),
-			array('active', 'numerical', 'integerOnly'=>true, 'on' => 'insert,update,owner_update'),
-			array('password, repassword', 'required', 'on' => 'insert, ch_pass'),
-			array('repassword', 'compare', 'compareAttribute' => 'password', 'on' => 'insert, ch_pass'),
-			array('phone', 'safe', 'on' => 'insert,update,owner_update'),
+			array('email, name, surname, companies_ids', 'required', 'on' => 'insert,update,owner_update,owner_create'),
+			array('companies_ids', 'safe', 'on' => 'owner_update,only_company,owner_create'),
+			array('email', 'unique', 'on' => 'insert,update,owner_update,owner_create'),
+			array('email', 'email', 'on' => 'insert,update,owner_update,owner_create'),
+			array('active', 'numerical', 'integerOnly'=>true, 'on' => 'insert,update,owner_update,owner_create'),
+			array('password, repassword', 'required', 'on' => 'insert, ch_pass,owner_create'),
+			array('repassword', 'compare', 'compareAttribute' => 'password', 'on' => 'insert, ch_pass, owner_create'),
+			array('phone', 'safe', 'on' => 'insert,update,owner_update,owner_create'),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
 			array('id, email, password, name, surname, phone, active', 'safe', 'on'=>'search'),
@@ -138,7 +138,7 @@ class User extends CActiveRecord
 		$companies_ids = array();
 		if (in_array($this->scenario, array('insert', 'update'))) {
 			User2company::model()->deleteAllByAttributes(array('user_id' => $this->id));
-		} elseif (in_array($this->scenario, array('owner_update', 'only_company'))) {
+		} elseif (in_array($this->scenario, array('owner_update', 'only_company', 'owner_create'))) {
 			foreach ($this->user2company as $u2c) {
 				$companies_ids[] = $u2c->company_id;
 				//TODO костыль :(

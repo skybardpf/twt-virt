@@ -54,7 +54,7 @@ class UsersController extends Controller
 		}
 
 		$model = new User();
-		$model->setScenario('owner_update');
+		$model->setScenario('owner_create');
 		$model->create_user_id = Yii::app()->user->id;
 
 		if(isset($_POST['ajax']) && $_POST['ajax']==='model-form-form') {
