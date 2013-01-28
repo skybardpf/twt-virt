@@ -9,7 +9,7 @@ class DefaultController extends Controller
 
 		// Файлы директории
 		$criteria = new CDbCriteria();
-		$criteria->order = 'is_dir DESC';
+		$criteria->order = 'is_dir DESC, name ASC';
 		$files = $dir->children()->findAll($criteria);
 
 		// Путь до директории
@@ -58,7 +58,7 @@ class DefaultController extends Controller
 
 		// Файлы директории
 		$criteria = new CDbCriteria();
-		$criteria->order = 'is_dir DESC';
+		$criteria->order = 'is_dir DESC, name ASC';
 		$files = $dir->children()->findAll($criteria);
 
 		// Путь до директории

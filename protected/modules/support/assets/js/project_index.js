@@ -2,9 +2,15 @@ $(document).ready(function(){
     $('tr.request_row').click(function(){
         window.location = this.dataset.url;
     });
+
+    var support_closing_flag = false;
     $('.admin_support_closed').change(function(){
+        if (support_closing_flag) return false;
+        support_closing_flag = true;
         var checkbox = this;
+        Loading.show();
         $.get(this.dataset.link, function(data){
+                Loading.hide();
                 if (data.error == '0') {
                     var parent = checkbox.parentNode.parentNode;
                     if (data.opened) {
@@ -18,11 +24,13 @@ $(document).ready(function(){
                     }
                 }
                 else alert('Произошла ошибка: '+data.message);
+                support_closing_flag = false;
             }, 'json'
         );
         return false;
     });
     $('.admin_support_closed').click(function(){
+        if (support_closing_flag) return false;
         $(this).change();
         return false;
     });

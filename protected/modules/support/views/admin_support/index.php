@@ -4,7 +4,7 @@
  * @var $requests SRequest[]
  * @var $r SRequest
  */
-
+$this->widget('ext.widgets.loading.LoadingWidget');
 Yii::app()->clientScript->registerScriptFile(CHtml::asset(Yii::app()->basePath.'/modules/support/assets/js/project_index.js'));
 Yii::app()->clientScript->registerCssFile(CHtml::asset(Yii::app()->basePath.'/modules/support/assets/css/support.css'));
 $this->breadcrumbs=array('Техническая поддержка');
@@ -34,7 +34,8 @@ $this->breadcrumbs=array('Техническая поддержка');
 				'id' => 'support_task_'.$r->id,
 				'data-link' => $this->createUrl('/support/admin_support/close_switch/', array('id' => $r->id))
 			)
-		);?></td>
+		);?>
+		</td>
 	</tr>
 	<?php endforeach?>
 </table>
