@@ -15,7 +15,7 @@ $this->pageTitle = 'Компания '.$company->name;
 	'type'=>'pills', // '', 'tabs', 'pills' (or 'list')
 	'stacked'=>false, // whether this is a stacked menu
 	'items'=>array(
-		array('label'=>'Файлы', 'url'=>$this->createUrl('/site/files', array('company_id' => $company->id))),
+		array('label'=>'Файлы', 'url'=>$this->createUrl('/files/default/index', array('company_id' => $company->id))),
 		array('label'=>'Почта', 'url'=>'#', 'linkOptions' => array('class' => 'muted')),
 		array('label'=>'Телефония', 'url'=>'#', 'linkOptions' => array('class' => 'muted')),
 		array('label'=>'Сайт', 'url'=>'#', 'linkOptions' => array('class' => 'muted')),
