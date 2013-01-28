@@ -26,7 +26,14 @@
  * @property string $registration_country
  * @property string $swift
  * @property string $iban
-
+ *
+ * @property string $position_name1
+ * @property string $position_owner1
+ * @property string $position_name2
+ * @property string $position_owner2
+ * @property string $position_name3
+ * @property string $position_owner3
+ *
  * @property integer $admin_user_id
  * @property integer $deleted
  * @property string $deleted_date
@@ -69,7 +76,7 @@ class Company extends CActiveRecord
 		return array(
 			array('name', 'required'),
 			array('admin_user_id, deleted', 'safe', 'on' => 'update, insert'),
-			array('legal_address, actual_address, phone, email, resident, inn, kpp, okopf, ogrn, account_number, bank, bik, correspondent_account, vat, registration_number, registration_date, registration_country, swift, iban', 'safe'),
+			array('legal_address, actual_address, phone, email, resident, inn, kpp, okopf, ogrn, account_number, bank, bik, correspondent_account, vat, registration_number, registration_date, registration_country, swift, iban, position_name1, position_owner1, position_name2, position_owner2, position_name3, position_owner3', 'safe'),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
 			array('id, name, inn, kpp', 'safe', 'on'=>'search'),
@@ -159,6 +166,12 @@ class Company extends CActiveRecord
 			'registration_country' => 'Страна регистрации',
 			'swift' => 'SWIFT код',
 			'iban' => 'IBAN',
+			'position_name1' => 'Должность',
+			'position_owner1' => 'ФИО',
+			'position_name2' => 'Должность',
+			'position_owner2' => 'ФИО',
+			'position_name3' => 'Должность',
+			'position_owner3' => 'ФИО',
 			'admin_user_id' => 'Администратор',
 			'deleted' => 'Помечено на удаление',
 			'deleted_date' => 'Дата отметки',

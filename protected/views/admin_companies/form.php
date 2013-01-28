@@ -56,6 +56,16 @@ Yii::app()->clientScript->registerScriptFile(CHtml::asset(Yii::app()->basePath.'
 			<?=$form->textFieldRow($model,'bank', array('class' => 'input-xxlarge', 'disabled' => $model->resident)); ?>
 			<?=$form->textFieldRow($model,'swift', array('class' => 'input-xxlarge', 'disabled' => $model->resident)); ?>
 			<?=$form->textFieldRow($model,'iban', array('class' => 'input-xxlarge', 'disabled' => $model->resident)); ?>
+
+			<legend>Данные о руководстве</legend>
+			<?=$form->textFieldRow($model,'position_name1', array('class' => 'input-xxlarge', 'disabled' => $model->resident)); ?>
+			<?=$form->textFieldRow($model,'position_owner1', array('class' => 'input-xxlarge', 'disabled' => $model->resident)); ?>
+			<hr>
+			<?=$form->textFieldRow($model,'position_name2', array('class' => 'input-xxlarge', 'disabled' => $model->resident)); ?>
+			<?=$form->textFieldRow($model,'position_owner2', array('class' => 'input-xxlarge', 'disabled' => $model->resident)); ?>
+			<hr>
+			<?=$form->textFieldRow($model,'position_name3', array('class' => 'input-xxlarge', 'disabled' => $model->resident)); ?>
+			<?=$form->textFieldRow($model,'position_owner3', array('class' => 'input-xxlarge', 'disabled' => $model->resident)); ?>
 		</fieldset>
 	</fieldset>
 	<div class="form-actions">
