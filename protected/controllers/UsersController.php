@@ -7,7 +7,7 @@ class UsersController extends Controller
 			throw new CHttpException(403);
 		}
 		$users = User::model()->findAll(array(
-			'condition'=>'companies.admin_user_id = :admin_user_id',
+			'condition'=>'companies.admin_user_id = :admin_user_id  AND t.id != :admin_user_id',
 			'order' => 't.email',
 			'params'=>array(':admin_user_id' => Yii::app()->user->id),
 		));
@@ -20,7 +20,7 @@ class UsersController extends Controller
 	{
 		/** @var $model User */
 		$model = User::model()->find(array(
-			'condition'=>'t.id = :user_id AND companies.admin_user_id = :admin_user_id',
+			'condition'=>'t.id = :user_id AND companies.admin_user_id = :admin_user_id AND t.id != :admin_user_id',
 			'params'=>array(':user_id' => $id, ':admin_user_id' => Yii::app()->user->id),
 		));
 		if ($model->create_user_id == Yii::app()->user->id) {
