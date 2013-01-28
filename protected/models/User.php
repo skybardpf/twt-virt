@@ -135,23 +135,28 @@ class User extends CActiveRecord
 
 	protected function afterSave()
 	{
+		$companies_ids = array();
 		if (in_array($this->scenario, array('insert', 'update'))) {
 			User2company::model()->deleteAllByAttributes(array('user_id' => $this->id));
 		} elseif (in_array($this->scenario, array('owner_update', 'only_company'))) {
 			foreach ($this->user2company as $u2c) {
+				$companies_ids[] = $u2c->company_id;
 				//TODO костыль :(
 				if ($u2c->company->admin_user_id == Yii::app()->user->id) {
 					$u2c->delete();
 				}
 			}
-
 		}
 
 		foreach ($this->companies_ids as $c_id) {
 			$uc = new User2company();
 			$uc->user_id = $this->id;
 			$uc->company_id = $c_id;
-			$uc->save();
+			if ($this->isNewRecord || in_array($this->scenario, array('insert', 'update'))) {
+				$uc->save();
+			} elseif ($this->create_user_id == Yii::app()->user->id or in_array($c_id, $companies_ids)) { //TODO еще один
+				$uc->save();
+			}
 		}
 		parent::afterSave();
 	}

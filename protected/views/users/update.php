@@ -60,7 +60,7 @@ $this->pageTitle = ($model->isNewRecord ? 'Добавление пользова
 							array(
 								'value' => $company->id,
 								'id' => $baseID.'_'.++$id,
-								'disabled' => $admin
+								'disabled' => $admin ? $admin : (!$model->create_user_id && !in_array($company->id, $model->companies_ids))
 							)
 						);
 						?>

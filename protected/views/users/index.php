@@ -3,8 +3,13 @@
  * @var $this UsersController
  * @var $users User[]
  */
-?>
 
+$this->breadcrumbs=array(
+	'Пользователи',
+);
+$this->pageTitle = 'Пользователи';
+?>
+<h1><?=CHtml::encode($this->pageTitle)?></h1>
 <?php
 $this->widget('ext.bootstrap.widgets.TbGridView', array(
 	'dataProvider' => new CArrayDataProvider($users),

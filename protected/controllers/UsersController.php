@@ -8,6 +8,7 @@ class UsersController extends Controller
 		}
 		$users = User::model()->findAll(array(
 			'condition'=>'companies.admin_user_id = :admin_user_id',
+			'order' => 't.email',
 			'params'=>array(':admin_user_id' => Yii::app()->user->id),
 		));
 
@@ -35,6 +36,9 @@ class UsersController extends Controller
 
 		if (isset($_POST[get_class($model)])) {
 			$model->attributes=$_POST[get_class($model)];
+			if (empty($_POST[get_class($model)]['companies_ids'])) {
+				$model->companies_ids = array();
+			}
 			if ($model->save()) {
 				$this->redirect($this->createUrl('index', array('id' => $model->id)));
 			}
