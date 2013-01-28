@@ -69,10 +69,10 @@ class SMessage extends CActiveRecord
 	{
 		return array(
 			'id'         => 'ID',
-			'request_id' => 'Request',
-			'to_admin'   => 'To Admin',
-			'cdate'      => 'Cdate',
-			'message'    => 'Message'
+			'request_id' => 'Запрос',
+			'to_admin'   => 'Администратору',
+			'cdate'      => 'Дата создания',
+			'message'    => 'Сообщение'
 		);
 	}
 

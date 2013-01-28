@@ -27,7 +27,7 @@ $this->breadcrumbs = array(
 /** @var $form TbActiveForm*/
 $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
 'id'=>'support-form-form',
-'type'=>'horizontal',
+'type'=>'vertical',
 'enableAjaxValidation'=>false,
 ))?>
 <fieldset>

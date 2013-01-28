@@ -11,18 +11,18 @@ class Admin_supportController extends CmsController
 		$this->render('index', array('requests' => $requests));
 	}
 
-	public function actionClose($id) {
+	public function actionClose_switch($id) {
 		/** @var $model SRequest */
 		$model = SRequest::model()->findByPk($id);
 		if ($model) {
-			$model->opened = 0;
+			$model->opened = $model->opened ? 0 : 1;
 			if ($model->save()) {
-				echo 0;
+				echo json_encode(array('error' => 0, 'opened' => $model->opened));
 			} else {
-				echo 'Не удалось обновить статус запроса.';
+				echo json_encode(array('error' => 1, 'message'=> 'Не удалось обновить статус запроса.'));
 			}
 		} else {
-			echo 'Такого запроса нет.';
+			echo json_encode(array('error' => 1, 'message'=> 'Такого запроса нет.'));
 		}
 		Yii::app()->end();
 	}

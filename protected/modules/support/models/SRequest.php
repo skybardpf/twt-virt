@@ -75,9 +75,10 @@ class SRequest extends CActiveRecord
 	{
 		return array(
 			'id' => 'ID',
-			'uid' => 'User',
-			'opened' => 'Opened',
-			'cdate' => 'Created',
+			'uid' => 'Пользователь',
+			'opened' => 'Открыт',
+			'cdate' => 'Дата создания',
+			'title' => 'Тема'
 		);
 	}
 

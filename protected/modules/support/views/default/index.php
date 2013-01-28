@@ -10,7 +10,7 @@ Yii::app()->clientScript->registerCssFile(CHtml::asset(Yii::app()->basePath.'/mo
 $this->breadcrumbs=array('Техническая поддержка');
 ?>
 <h1>Техническая поддержка</h1>
-<a class="btn btn-success" href="<?=$this->createUrl('/support/create/')?>">Создать запрос</a>
+<a class="btn btn-success" href="<?=$this->createUrl('/support/create/')?>">Создать запрос</a><br/><br/>
 <table class="table table-striped table-hover">
 	<tr>
 		<th>#</th>

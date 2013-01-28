@@ -17,21 +17,24 @@ $this->breadcrumbs=array('Техническая поддержка');
 		<th>Дата сообщения</th>
 		<th>Отправитель сообщения</th>
 		<th>Текст сообщения</th>
-		<th>Статус</th>
-		<th></th>
+		<th>Закрыт</th>
 	</tr>
 	<?php foreach ($requests as $r) :?>
-	<tr class="request_row<?=($r->opened?'':' success')?><?=(($r->opened && $r->l_message->to_admin)?' warning':'')?>" data-url="<?=$this->createUrl('/support/admin_support/view/', array('id' => $r->id));?>">
+	<tr class="request_row<?=($r->opened?'':' success')?><?=(($r->opened && $r->l_message->to_admin)?' warning':'')?>" data-prev_class="<?=($r->l_message->to_admin?' warning':'')?>" data-url="<?=$this->createUrl('/support/admin_support/view/', array('id' => $r->id));?>">
 		<td><?=$r->id?></td>
 		<td><?=$r->title?></td>
 		<td><?=$r->l_message->cdate?></td>
 		<td><?=($r->l_message->to_admin?$r->user->FullName:'Администратор')?></td>
 		<td><?=$r->l_message->message?></td>
-		<td><?php
-			if ($r->opened) {
-				echo 'Открыт&nbsp;<a href="'.$this->createUrl('/support/admin_support/close/', array('id' => $r->id)).'" class="icon-ok admin_support_close" title="Закрыть"></a>';
-			} else echo 'Закрыт';?>
-		</td>
+		<td><?= CHtml::checkBox(
+			'closed',
+			!$r->opened,
+			array(
+				'class'=>'admin_support_closed',
+				'id' => 'support_task_'.$r->id,
+				'data-link' => $this->createUrl('/support/admin_support/close_switch/', array('id' => $r->id))
+			)
+		);?></td>
 	</tr>
 	<?php endforeach?>
 </table>
