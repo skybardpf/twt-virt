@@ -11,7 +11,7 @@ $this->breadcrumbs=array(
 $this->pageTitle = 'Удаление компании «' . $company->name .'»';
 ?>
 
-Вы действительно хотите удалить компанию «<?=CHtml::encode($company->name)?>»?
+Вы действительно хотите пометить на удаление компанию «<?=CHtml::encode($company->name)?>»?
 
 <?php $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
 	'id'=>'news-delete-form',
