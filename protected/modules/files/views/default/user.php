@@ -6,6 +6,8 @@
  * @var $dir Files
  * @var $ancestors Files[]
  */
+Yii::app()->clientScript->registerScriptFile(CHtml::asset(Yii::app()->basePath.'/modules/files/assets/js/files.js'));
+$this->widget('ext.widgets.loading.LoadingWidget');
 $this->breadcrumbs = array(
 	'Компания '.$this->company->name => $this->createUrl('/companies/view',array('company_id' => $this->company->id)),
 	'Файлы'
@@ -30,6 +32,7 @@ $this->renderPartial('create', array('new_file' => $new_file, 'new_dir' => $new_
 		<th>Имя</th>
 		<th>Дата</th>
 		<th>Размер</th>
+		<th>Действия</th>
 	</tr>
 	<?php foreach ($files as $file) :?>
 	<tr>
@@ -41,6 +44,7 @@ $this->renderPartial('create', array('new_file' => $new_file, 'new_dir' => $new_
 		</td>
 		<td><?=$file->cdate?></td>
 		<td><?=$file->size_human?></td>
+		<td><a class="file_rename" href="<?=$this->createUrl('rename', array('file_id' => $file->id))?>"><i class="icon-pencil"></i></a></td>
 	</tr>
 	<?php endforeach;?>
 </table>

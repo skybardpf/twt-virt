@@ -80,10 +80,15 @@ class Files extends CActiveRecord
 		// will receive user inputs.
 		return array(
 			array('company_id', 'required'),
-			array('deleted, is_dir', 'numerical', 'integerOnly'=>true),
+			array('deleted, is_dir', 'numerical', 'integerOnly' => true),
 			array('company_id, user_id', 'length', 'max'=>10),
 			array('size', 'length', 'max'=>20),
-			array('file', 'required', 'on' => 'file'),
+
+			array('name', 'required', 'except' => 'new_file'),
+			array('file', 'required', 'on' => 'new_file'),
+
+			array('name', 'is_subdir_unique', 'on' => 'new_file, new_dir, rename'),
+
 			array('name', 'safe'),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
@@ -183,5 +188,18 @@ class Files extends CActiveRecord
 		}
 		if (!isset($labels[$i])) return 'Очень много.';
 		else return number_format($tmp, 2).' '.$labels[$i];
+	}
+
+	public function is_subdir_unique($attribute,$params) {
+		$parent_dir = $this->parent()->find();
+		$criteria = new CDbCriteria();
+		if (!$this->isNewRecord) {
+			$criteria->addCondition('t.id != :elem_id');
+			$criteria->params[':elem_id'] = $this->id;
+		}
+		$criteria->addCondition('name = :new_name');
+		$criteria->params[':new_name'] = $this->name;
+		$elements = $parent_dir->children()->find($criteria);
+		if ($elements) $this->addError($attribute, ' должен быть уникальным в своей папке.');
 	}
 }
