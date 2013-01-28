@@ -7,7 +7,10 @@ class FileBehavior extends CActiveRecordBehavior
 	/**
 	 * @var string название атрибута, хранящего в себе имя файла и файл
 	 */
-	public $attributeName = 'file';
+	public $filePathAttributeName = 'file';
+	public $fileNameAttributeName = 'name';
+	public $fileSizeAttributeName = 'size';
+
 	/**
 	 * @var string алиас директории, куда будем сохранять файлы
 	 */
@@ -55,7 +58,7 @@ class FileBehavior extends CActiveRecordBehavior
 
 		if (in_array($owner->getScenario(), $this->scenarios)) {
 			// добавляем валидатор файла, не забываем в параметрах валидатора указать значение safe как false
-			$fileValidator = CValidator::createValidator('file', $owner, $this->attributeName, array(
+			$fileValidator = CValidator::createValidator('file', $owner, $this->filePathAttributeName, array(
 				'types' => $this->fileTypes,
 				'maxSize' => $this->maxSize,
 				'allowEmpty' => true,
@@ -72,17 +75,22 @@ class FileBehavior extends CActiveRecordBehavior
 	 */
 	public function beforeSave($event)
 	{
-		if ($file = CUploadedFile::getInstance($this->getOwner(), $this->attributeName)) {
+		if ($file = CUploadedFile::getInstance($this->getOwner(), $this->filePathAttributeName)) {
 			// старый файл удалим, потому что загружаем новый
 			$this->deleteFile();
 			//создадим директорию, если ее нет
 			$this->createDir($this->getSavePath());
 			//получаем имя файла
 			$fileName = $this->resolveFileName($this->getSavePath(), $file->getName());
+			// Создаем вложенные папки для файла
+			$dir = $this->getSavePath().$this->resolveDir($fileName);
+			$this->createDir($dir);
 			//сохраняем файл
-			$this->saveFile($file, $this->getSavePath() . $fileName);
+			$this->saveFile($file, $dir.$fileName);
 			//выставляем аттрибут у модели
-			$this->getOwner()->setAttribute($this->attributeName, $this->getWebPath() . $fileName);
+			$this->getOwner()->setAttribute($this->filePathAttributeName, $dir.$fileName);
+			$this->getOwner()->setAttribute($this->fileNameAttributeName, $file->getName());
+			$this->getOwner()->setAttribute($this->fileSizeAttributeName, $file->getSize());
 		}
 		return true;
 	}
@@ -101,8 +109,8 @@ class FileBehavior extends CActiveRecordBehavior
 	 */
 	protected function deleteFile()
 	{
-		$file = $this->getOwner()->getAttribute($this->attributeName);
-		if (is_file($file)) unlink($file);
+		$file = $this->getOwner()->getAttribute($this->filePathAttributeName);
+		if (is_file($this->getSavePath().$file)) unlink($this->getSavePath().$file);
 	}
 
 	/**
@@ -121,19 +129,36 @@ class FileBehavior extends CActiveRecordBehavior
 
 	/**
 	 * Рекурсивный метод, разрешающий дубликаты файлов.
-	 * В случае совпадения, добавляет _copy_time()_rand()
-	 * @todo Переписать, так чтобы не было бесконечного количества _copy_time()_rand()_copy_time()_rand()_copy_time()_rand()
+	 *
 	 * @param string $dir
 	 * @param string $fileName
 	 * @return string
 	 */
 	protected function resolveFileName($dir, $fileName)
 	{
-		if (file_exists($dir . $fileName)) {
-			$file = pathinfo($fileName);
-			$fileName = $this->resolveFileName($dir, $file['filename'] . '_copy_' . time() . '_' . rand() . '.' . $file['extension']);
+		$file = pathinfo($fileName);
+		$fileName = md5($fileName . '_copy_' . time() . '_' . rand() ). '.' . $file['extension'];
+		if (file_exists($dir . $this->resolveDir($fileName).$fileName)) {
+			$fileName = $this->resolveFileName($dir, $fileName);
 		}
 		return $fileName;
+	}
+
+	/**
+	 * Получение вложенных папок для файла по 2 символа на папку, количеством $lvl
+	 * Например для файла c4ca4238a0b923820dcc509a6f75849b с $lvl = 2 вернет "c4/ca"
+	 *
+	 * @param $fileName
+	 * @param int $lvl
+	 *
+	 * @return string
+	 */
+	protected function resolveDir($fileName, $lvl = 2) {
+		$str = array();
+		for ($i = 0; $i < $lvl; $i++) {
+			$str[] = substr($fileName, $i*2, 2);
+		}
+		return implode('/', $str).'/';
 	}
 
 	/**

@@ -30,7 +30,7 @@ return array(
 			// If removed, Gii defaults to localhost only. Edit carefully to taste.
 			'ipFilters'=>array('127.0.0.1','::1','192.168.0.*'),
 		),
-		'support'
+		'support', 'files'
 	),
 
 	// application components
@@ -92,13 +92,13 @@ return array(
 			'rules'=>array(
 				'<company_id:\d+>' => 'companies/view',
 				'<company_id:\d+>/<action:\w+>_company' => 'companies/<action>',
-				'<company_id:\d+>/<module:\w+>' => 'site/<module>',
+				'<company_id:\d+>/<module:\w+>/<controller:\w+>/<action:\w+>' => '<module>/<controller>/<action>',
 				'/admin/' => '/admin_companies/index',
 				'admin/helper/<action:\w+>' => 'admin/helper/<action>',
 				'admin/<module:\w+>/<controller:\w+>/<action:\w+>' => '<module>/admin_<controller>/<action>',
 				'admin/<controller:\w+>/<action:\w+>' => 'admin_<controller>/<action>',
 				'support/create' => 'support/default/create',
-				'support/view/id/<id:\d+>' => 'support/default/view/id/<id>',
+				'support/view/id/<id:\d+>' => 'support/default/view',
 			),
 		),
 	),
