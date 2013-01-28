@@ -6,8 +6,27 @@
  * The followings are the available columns in table 'company':
  * @property string $id
  * @property string $name
+
+ * @property string $legal_address
+ * @property string $actual_address
+ * @property string $phone
+ * @property string $email
+ * @property string $resident
  * @property string $inn
  * @property string $kpp
+ * @property string $okopf
+ * @property string $ogrn
+ * @property string $account_number
+ * @property string $bank
+ * @property string $bik
+ * @property string $correspondent_account
+ * @property string $vat
+ * @property string $registration_number
+ * @property string $registration_date
+ * @property string $registration_country
+ * @property string $swift
+ * @property string $iban
+
  * @property integer $admin_user_id
  * @property integer $deleted
  * @property string $deleted_date
@@ -20,6 +39,7 @@
 class Company extends CActiveRecord
 {
 	public $deleted = 0;
+	public $resident = 1;
 
 	/**
 	 * Returns the static model of the specified AR class.
@@ -47,8 +67,9 @@ class Company extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('name, inn, kpp', 'required'),
+			array('name', 'required'),
 			array('admin_user_id, deleted', 'safe', 'on' => 'update, insert'),
+			array('legal_address, actual_address, phone, email, resident, inn, kpp, okopf, ogrn, account_number, bank, bik, correspondent_account, vat, registration_number, registration_date, registration_country, swift, iban', 'safe'),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
 			array('id, name, inn, kpp', 'safe', 'on'=>'search'),
@@ -119,8 +140,25 @@ class Company extends CActiveRecord
 		return array(
 			'id' => 'ID',
 			'name' => 'Название',
+			'legal_address' => 'Юридический адрес',
+			'actual_address' => 'Фактический адрес',
+			'phone' => 'Телефон',
+			'email' => 'E-mail',
+			'resident' => 'Резидент РФ',
 			'inn' => 'ИНН',
 			'kpp' => 'КПП',
+			'okopf' => 'ОКОПФ',
+			'ogrn' => 'ОГРН',
+			'account_number' => 'Номер счета',
+			'bank' => 'Банк',
+			'bik' => 'БИК',
+			'correspondent_account' => 'КоррСчет',
+			'vat' => 'VAT номер',
+			'registration_number' => 'Регистрационный номер',
+			'registration_date' => 'Дата регистрации',
+			'registration_country' => 'Страна регистрации',
+			'swift' => 'SWIFT код',
+			'iban' => 'IBAN',
 			'admin_user_id' => 'Администратор',
 			'deleted' => 'Помечено на удаление',
 			'deleted_date' => 'Дата отметки',

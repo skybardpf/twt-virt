@@ -115,7 +115,7 @@ class UsersController extends Controller
 					$this->redirect($this->createUrl('profile'));
 				}
 			} else {
-				$model->addError('old_password', 'Старый пароль введен не верно');
+				$model->addError('old_password', 'Старый пароль введен неверно');
 			}
 		}
 
