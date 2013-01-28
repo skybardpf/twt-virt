@@ -5,7 +5,7 @@
  * @var $message SMessage
  */
 $this->breadcrumbs = array(
-	'Техническая поддержка' => $this->createUrl('/support/'),
+	'Техническая поддержка' => $this->createUrl('/support/admin_support/index'),
 	$request->title
 );?>
 <h1><?=$request->title?></h1>
@@ -18,7 +18,7 @@ $this->breadcrumbs = array(
 	<?php foreach ($request->messages as $m) :?>
 	<tr>
 		<td><?=$m->cdate?></td>
-		<td><?=($m->to_admin?'Вы':'Администратор')?></td>
+		<td><?=($m->to_admin ? $request->user->fullName : 'Администратор')?></td>
 		<td><?=$m->message?></td>
 	</tr>
 	<?php endforeach?>

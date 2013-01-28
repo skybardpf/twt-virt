@@ -21,7 +21,7 @@ $this->breadcrumbs=array('Техническая поддержка');
 		<th>Статус</th>
 	</tr>
 	<?php foreach ($requests as $r) :?>
-	<tr class="request_row<?=($r->opened?'':' success')?><?=(($r->opened && !$r->l_message->to_admin)?' warning':'')?>" data-url="<?=$this->createUrl('/support/view/', array('id' => $r->id));?>">
+	<tr class="request_row<?=($r->opened?'':' success')?><?=(($r->opened && !$r->l_message->to_admin)?' warning':'')?>" data-url="<?=$this->createUrl('/support/default/view/', array('id' => $r->id));?>">
 		<td><?=$r->id?></td>
 		<td><?=$r->title?></td>
 		<td><?=$r->l_message->cdate?></td>

@@ -93,12 +93,18 @@ return array(
 				'<company_id:\d+>' => 'companies/view',
 				'<company_id:\d+>/<action:\w+>_company' => 'companies/<action>',
 				'<company_id:\d+>/<module:\w+>/<controller:\w+>/<action:\w+>' => '<module>/<controller>/<action>',
+
 				'/admin/' => '/admin_companies/index',
 				'admin/helper/<action:\w+>' => 'admin/helper/<action>',
+
+				'/admin/support/' => 'support/admin_support/index',
+				'/admin/support/id/<id:\d+>' => 'support/admin_support/view',
+				'support/create' => 'support/default/create',
+				'support/id/<id:\d+>' => 'support/default/view',
+
 				'admin/<module:\w+>/<controller:\w+>/<action:\w+>' => '<module>/admin_<controller>/<action>',
 				'admin/<controller:\w+>/<action:\w+>' => 'admin_<controller>/<action>',
-				'support/create' => 'support/default/create',
-				'support/view/id/<id:\d+>' => 'support/default/view',
+
 			),
 		),
 	),
