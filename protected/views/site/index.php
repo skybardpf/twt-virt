@@ -20,7 +20,7 @@ $this->pageTitle=Yii::app()->name;
 		<tr class="<?=$c->deleted ? 'muted' : ''?>">
 			<td>
 				<a
-					href="<?=$this->createUrl('/companies/view', array('company_id' => $c->id))?>"
+					href="<?=$this->createUrl('/files/default/index', array('company_id' => $c->id)) /* /companies/view */?>"
 					<?php if ($c->deleted) : ?>
 					    class="deleted"
 					    rel="tooltip"

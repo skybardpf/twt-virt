@@ -23,8 +23,8 @@ class UserIdentity extends CUserIdentity
 		/** @var $record User */
 		$record = User::model()->find(array(
 			'select'=>'id, active, password, salt',
-			'condition'=>'email=:email',
-			'params'=>array('email' => $this->username),
+			'condition'=>'t.email=:email',
+			'params'=>array(':email' => $this->username),
 		));
 
 		if ($record === null) {
