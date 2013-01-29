@@ -22,3 +22,7 @@ a.a-brand:hover {
     border-right: 1px solid #ddd;
     border-radius: 0 0 5px 5px;
 }
+
+.navbar {
+	margin-top: 18px;
+}
