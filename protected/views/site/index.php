@@ -8,12 +8,13 @@ $this->pageTitle=Yii::app()->name;
 ?>
 
 <h1>Компании</h1>
-Выберите компанию
 <table class="table table-striped table-hover grid-view companies">
 	<tr>
 		<th>Название</th>
-		<th>ИНН</th>
-		<th>КПП</th>
+		<th>Почта</th>
+		<th>Телефония</th>
+		<th>Сайты</th>
+		<th>Файлы</th>
 		<th class="button-column"></th>
 	</tr>
 	<?php foreach ($companies as $c) : ?>
@@ -28,8 +29,10 @@ $this->pageTitle=Yii::app()->name;
 					<?php endif ?>
 				><?=$c->name?></a>
 			</td>
-			<td><?=$c->inn?></td>
-			<td><?=$c->kpp?></td>
+			<td>53 письма / 3 непрочитанных</td>
+			<td>10 звонков / 1 неотвеченный</td>
+			<td>0 / 2</td>
+			<td>Занято 2,3 Гб / 6 Гб</td>
 			<td class="button-column">
 				<?php if ($c->admin_user_id == Yii::app()->user->id) : ?>
 					<?php if ($c->deleted) :
