@@ -86,6 +86,7 @@ class Files extends CActiveRecord
 			array('size', 'length', 'max'=>20),
 
 			array('name', 'required', 'except' => 'new_file'),
+			array('name', 'length', 'except' => 'new_file', 'max' => 120),
 			array('name', 'is_subdir_unique', 'on' => 'new_file, new_dir, rename'),
 
 			array('name', 'safe'),

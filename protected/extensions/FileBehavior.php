@@ -65,6 +65,10 @@ class FileBehavior extends CActiveRecordBehavior
 				'safe' => false,
 			));
 			$owner->validatorList->add($fileValidator);
+			$lengthValidator = CValidator::createValidator('length', $owner, $this->fileNameAttributeName, array(
+				'max' => 120
+			));
+			$owner->validatorList->add($lengthValidator);
 		}
 	}
 
@@ -75,6 +79,7 @@ class FileBehavior extends CActiveRecordBehavior
 	 */
 	public function beforeSave($event)
 	{
+		$owner = $this->getOwner();
 		if ($file = CUploadedFile::getInstance($this->getOwner(), $this->filePathAttributeName)) {
 			// старый файл удалим, потому что загружаем новый
 			$this->deleteFile();
@@ -84,13 +89,20 @@ class FileBehavior extends CActiveRecordBehavior
 			$fileName = $this->resolveFileName($this->getSavePath(), $file->getName());
 			// Создаем вложенные папки для файла
 			$dir = $this->getSavePath().$this->resolveDir($fileName);
+
+			$owner->setAttribute($this->filePathAttributeName, $dir.$fileName);
+			$owner->setAttribute($this->fileNameAttributeName, $file->getName());
+			$owner->setAttribute($this->fileSizeAttributeName, $file->getSize());
+
+			if (!$owner->validate(array($this->fileNameAttributeName, $this->fileSizeAttributeName))) {
+				$event->isValid = false;
+				return false;
+			}
+
 			$this->createDir($dir);
 			//сохраняем файл
 			$this->saveFile($file, $dir.$fileName);
 			//выставляем аттрибут у модели
-			$this->getOwner()->setAttribute($this->filePathAttributeName, $dir.$fileName);
-			$this->getOwner()->setAttribute($this->fileNameAttributeName, $file->getName());
-			$this->getOwner()->setAttribute($this->fileSizeAttributeName, $file->getSize());
 		}
 		return true;
 	}

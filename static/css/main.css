@@ -17,8 +17,8 @@ a.a-brand:hover {
 
 .company_inner_content {
     padding: 15px;
-    border-bottom: 1px solid #CCC;
-    border-left: 1px solid #CCC;
-    border-right: 1px solid #CCC;
+    border-bottom: 1px solid #ddd;
+    border-left: 1px solid #ddd;
+    border-right: 1px solid #ddd;
     border-radius: 0 0 5px 5px;
 }
