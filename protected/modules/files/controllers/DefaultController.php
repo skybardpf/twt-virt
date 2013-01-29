@@ -118,7 +118,7 @@ class DefaultController extends Controller
 
 		if (!$dir && !$dir_id) {
 			// Если запрашивали корневую директорию и ее нет - попытаемся ее создать
-			$dir = new Files();
+			$dir = new Files('insert', 1);
 			$dir->company_id = $this->company->id;
 			if ($user_files) $dir->user_id = Yii::app()->user->id;
 			$dir->is_dir = 1;
