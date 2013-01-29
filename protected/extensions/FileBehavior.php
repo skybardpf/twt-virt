@@ -55,13 +55,13 @@ class FileBehavior extends CActiveRecordBehavior
 	public function attach($owner)
 	{
 		parent::attach($owner);
-
 		if (in_array($owner->getScenario(), $this->scenarios)) {
 			// добавляем валидатор файла, не забываем в параметрах валидатора указать значение safe как false
 			$fileValidator = CValidator::createValidator('file', $owner, $this->filePathAttributeName, array(
 				'types' => $this->fileTypes,
 				'maxSize' => $this->maxSize,
-				'allowEmpty' => false,
+				// Жуткий костыль
+				'allowEmpty' => $owner->is_dir,
 				'safe' => false,
 			));
 			$owner->validatorList->add($fileValidator);

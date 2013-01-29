@@ -129,10 +129,8 @@ class DefaultController extends Controller
 
 	protected function new_file(&$new_file, &$new_dir, $dir, $user_files = false) {
 		$new_file = new Files();
-		$new_dir = new Files();
+		$new_dir = new Files('insert', 1);
 
-		$new_dir->is_dir = 1;
-		$new_file->is_dir = 0;
 		$new_dir->setScenario('new_dir');
 		$new_file->setScenario('new_file');
 		$new_dir->company_id = $new_file->company_id = $this->company->id;

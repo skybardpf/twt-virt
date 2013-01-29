@@ -53,7 +53,7 @@ class Files extends CActiveRecord
 	public $size = 0;
 	public $is_dir = 0;
 	public $deleted = 0;
-	public $parent_elem = null;
+	public $parent_elem = NULL;
 	/**
 	 * Returns the static model of the specified AR class.
 	 * @param string $className active record class name.
@@ -62,6 +62,12 @@ class Files extends CActiveRecord
 	public static function model($className=__CLASS__)
 	{
 		return parent::model($className);
+	}
+
+	public function __construct($scenario = 'insert', $is_dir = 0)
+	{
+		$this->is_dir = $is_dir;
+		return parent::__construct($scenario);
 	}
 
 	/**
@@ -89,7 +95,7 @@ class Files extends CActiveRecord
 			array('name', 'length', 'except' => 'new_file', 'max' => 120),
 			array('name', 'is_subdir_unique', 'on' => 'new_file, new_dir, rename'),
 
-			array('name', 'safe'),
+			array('name, is_dir', 'safe'),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
 			array('id, lft, rgt, lvl, company_id, user_id, name, cdate, file, size, deleted, is_dir', 'safe', 'on'=>'search'),
@@ -166,7 +172,7 @@ class Files extends CActiveRecord
 			),
 			'FileBehavior' => array(
 				'class' => 'ext.FileBehavior',
-				'fileTypes' => null
+				'fileTypes' => NULL
 			),
 			'NestedSetBehavior'=>array(
 				'class'=>'ext.NestedSetBehavior',
