@@ -20,7 +20,8 @@ class CompaniesController extends Controller
 		if (isset($_POST[get_class($model)])) {
 			$model->attributes=$_POST[get_class($model)];
 			if ($model->save()) {
-				$this->redirect($this->createUrl('view', array('company_id' => $model->id)));
+//				$this->redirect($this->createUrl('view', array('company_id' => $model->id)));
+				$this->redirect(Yii::app()->homeUrl);
 			}
 		}
 		$this->render('update', array('model' => $model));
