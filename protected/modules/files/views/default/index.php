@@ -10,8 +10,8 @@
 Yii::app()->clientScript->registerScriptFile(CHtml::asset(Yii::app()->basePath.'/modules/files/assets/js/files.js'));
 $this->widget('ext.widgets.loading.LoadingWidget');
 $breadcrumbs = ($dir->lvl == 1)
-	? array('Компания '.$this->company->name)
-	: array('Компания '.$this->company->name => $this->createUrl('index',array('company_id' => $this->company->id)));
+	? array(' '.$this->company->name)
+	: array(' '.$this->company->name => $this->createUrl('index',array('company_id' => $this->company->id)));
 foreach ($ancestors as $ancestor) {
 	if ($ancestor->lvl != 1) {
 		$breadcrumbs[' '.$ancestor->name] = $this->createUrl('index',array('company_id' => $this->company->id, 'dir_id' => $ancestor->id));
@@ -20,6 +20,10 @@ foreach ($ancestors as $ancestor) {
 if ($dir->lvl != 1) $breadcrumbs[] = $dir->name;
 $this->breadcrumbs = $breadcrumbs;
 $this->renderPartial('create', array('new_file' => $new_file, 'new_dir' => $new_dir));
+$this->widget('bootstrap.widgets.TbBreadcrumbs', array(
+	'links' => $this->breadcrumbs,
+	'homeLink' => false,
+));
 ?>
 <?php if (!$files) :?>
 	Данная директория пуста.

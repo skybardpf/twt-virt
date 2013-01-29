@@ -50,10 +50,10 @@ Yii::app()->clientScript->registerCssFile(CHtml::asset(Yii::app()->basePath.'/..
 <div class="container">
 	<div class="row">
 		<div class="span12">
-				<?php
+				<?php /*
 				$this->widget('bootstrap.widgets.TbBreadcrumbs', array(
 					'links' => $this->breadcrumbs
-				));?>
+				));*/ ?>
 			<?=$content?>
 		</div>
 	</div>

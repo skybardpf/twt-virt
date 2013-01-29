@@ -49,6 +49,7 @@
 				))?>
 				<?php echo $form->errorSummary($new_file); ?>
 				<fieldset>
+					<input type="hidden" name="MAX_FILE_SIZE" value="<?=$new_file->maxSize?>">
 					<?=$form->fileFieldRow($new_file, 'file')?>
 					<?=$form->hiddenField($new_file, 'is_dir')?>
 					<?php $this->widget('bootstrap.widgets.TbButton', array('buttonType'=>'submit', 'type'=>'primary', 'label'=> 'Загрузить'))?>

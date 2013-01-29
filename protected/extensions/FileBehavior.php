@@ -61,7 +61,7 @@ class FileBehavior extends CActiveRecordBehavior
 			$fileValidator = CValidator::createValidator('file', $owner, $this->filePathAttributeName, array(
 				'types' => $this->fileTypes,
 				'maxSize' => $this->maxSize,
-				'allowEmpty' => true,
+				'allowEmpty' => false,
 				'safe' => false,
 			));
 			$owner->validatorList->add($fileValidator);
