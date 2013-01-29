@@ -86,8 +86,6 @@ class Files extends CActiveRecord
 			array('size', 'length', 'max'=>20),
 
 			array('name', 'required', 'except' => 'new_file'),
-			array('file', 'required', 'on' => 'new_file'),
-
 			array('name', 'is_subdir_unique', 'on' => 'new_file, new_dir, rename'),
 
 			array('name', 'safe'),
@@ -117,14 +115,14 @@ class Files extends CActiveRecord
 	{
 		return array(
 			'id' => 'ID',
-			'company_id' => 'Company',
-			'user_id' => 'User',
+			'company_id' => 'Компания',
+			'user_id' => 'Пользователь',
 			'name' => 'Имя',
-			'cdate' => 'Cdate',
-			'file' => 'File',
-			'size' => 'Size',
-			'deleted' => 'Deleted',
-			'is_dir' => 'Is Dir',
+			'cdate' => 'Дата создания',
+			'file' => 'Файл',
+			'size' => 'Размер',
+			'deleted' => 'Удален',
+			'is_dir' => 'Директория',
 		);
 	}
 
@@ -166,7 +164,8 @@ class Files extends CActiveRecord
 				'setUpdateOnCreate' => true
 			),
 			'FileBehavior' => array(
-				'class' => 'ext.FileBehavior'
+				'class' => 'ext.FileBehavior',
+				'fileTypes' => null
 			),
 			'NestedSetBehavior'=>array(
 				'class'=>'ext.NestedSetBehavior',

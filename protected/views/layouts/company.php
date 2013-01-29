@@ -9,6 +9,7 @@
 		array('label'=>'Телефония', 'url'=>'#', 'linkOptions' => array('class' => 'muted')),
 		array('label'=>'Сайт', 'url'=>'#', 'linkOptions' => array('class' => 'muted')),
 	),
+	'htmlOptions' => array('class' => 'company_nav_bar')
 )); ?>
-<?php echo $content; ?>
+<div class="company_inner_content"><?php echo $content; ?></div>
 <?php $this->endContent(); ?>

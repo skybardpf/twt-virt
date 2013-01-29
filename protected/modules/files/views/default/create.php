@@ -43,7 +43,7 @@
 				/** @var $form TbActiveForm*/
 				$form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
 					'id'   =>'file-upload-form',
-					'type' =>'inline',
+					'type' =>'horisontal',
 					'enableAjaxValidation'=>false,
 					'htmlOptions' => array('enctype' => 'multipart/form-data')
 				))?>

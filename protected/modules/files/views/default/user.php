@@ -30,7 +30,7 @@ $this->renderPartial('create', array('new_file' => $new_file, 'new_dir' => $new_
 <table class="table table-striped table-hover table-condensed">
 	<tr>
 		<th>Имя</th>
-		<th>Дата</th>
+		<th>Дата создания</th>
 		<th>Размер</th>
 		<th>Действия</th>
 	</tr>
@@ -44,7 +44,7 @@ $this->renderPartial('create', array('new_file' => $new_file, 'new_dir' => $new_
 		</td>
 		<td><?=$file->cdate?></td>
 		<td><?=$file->size_human?></td>
-		<td><a class="file_rename" href="<?=$this->createUrl('rename', array('file_id' => $file->id))?>"><i class="icon-pencil"></i></a></td>
+		<td><a class="file_rename" data-name="<?=$file->name?>" href="<?=$this->createUrl('rename', array('file_id' => $file->id))?>"><i class="icon-pencil"></i></a></td>
 	</tr>
 	<?php endforeach;?>
 </table>
