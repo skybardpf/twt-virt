@@ -2,6 +2,8 @@
 
 class CompaniesController extends Controller
 {
+	public $layout = '//layouts/company';
+
 	public function actionUpdate($company_id)
 	{
 		/** @var $model Company */
@@ -20,8 +22,7 @@ class CompaniesController extends Controller
 		if (isset($_POST[get_class($model)])) {
 			$model->attributes=$_POST[get_class($model)];
 			if ($model->save()) {
-//				$this->redirect($this->createUrl('view', array('company_id' => $model->id)));
-				$this->redirect(Yii::app()->homeUrl);
+				$this->redirect($this->createUrl('view', array('company_id' => $model->id)));
 			}
 		}
 		$this->render('update', array('model' => $model));

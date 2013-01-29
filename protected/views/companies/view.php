@@ -9,19 +9,24 @@ $this->breadcrumbs=array(
 );
 $this->pageTitle = 'Компания '.$company->name;
 ?>
-<h1><?=CHtml::encode($this->pageTitle)?></h1>
+<?php if ($company->admin_user_id == Yii::app()->user->id) : ?>
+	<?php if ($company->deleted) :?>
+		<div class="alert">
+			Компания помечена на удаление <?=Yii::app()->dateFormatter->formatDateTime($company->deleted_date)?>
+		</div>
+	<?php else : ?>
+		<div class="pull-left">
+			<a title="Редактировать" href="<?=$this->createUrl('/companies/update', array('company_id' => $company->id))?>" rel="tooltip" class="btn"><i class="icon-pencil"></i> Редактировать</a>
+			<a title="Пометить на удаление" href="<?=$this->createUrl('/companies/delete', array('company_id' => $company->id))?>" rel="tooltip" class="btn"><i class="icon-trash"></i> Пометить на удаление</a>
+		</div>
 
-<?php $this->widget('bootstrap.widgets.TbMenu', array(
-	'type'=>'pills', // '', 'tabs', 'pills' (or 'list')
-	'stacked'=>false, // whether this is a stacked menu
-	'items'=>array(
-		array('label'=>'Файлы', 'url'=>$this->createUrl('/files/default/index', array('company_id' => $company->id))),
-		array('label'=>'Почта', 'url'=>'#', 'linkOptions' => array('class' => 'muted')),
-		array('label'=>'Телефония', 'url'=>'#', 'linkOptions' => array('class' => 'muted')),
-		array('label'=>'Сайт', 'url'=>'#', 'linkOptions' => array('class' => 'muted')),
-	),
-)); ?>
+		<div class="pull-right">
+			<a title="Пользователи" href="<?=$this->createUrl('/users/')?>" rel="tooltip" class="btn btn-link"><i class="icon-user"></i> Пользователи</a>
+		</div>
 
+		<br><br>
+	<?php endif ?>
+<?php endif ?>
 <?php $this->widget('bootstrap.widgets.TbDetailView', array(
 	'data'=>$company,
 	'attributes'=>$company->resident ? array(
