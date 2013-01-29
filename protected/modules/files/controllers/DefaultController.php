@@ -87,6 +87,12 @@ class DefaultController extends Controller
 		}
 
 	}
+	public function actionGet_file($file_id = null) {
+		if (!$file_id) throw new CHttpException(404, 'Указанного файла не существует.');
+		$file = Files::model()->findByPk($file_id);
+		if (!$file) throw new CHttpException(404, 'Указанного файла не существует.');
+		Yii::app()->request->sendFile($file->name, file_get_contents($file->file));
+	}
 
 	protected function get_cur_dir(&$dir, $dir_id = null, $user_files = false) {
 		// Получим текущую директорию
