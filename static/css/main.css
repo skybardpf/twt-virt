@@ -2,6 +2,14 @@
 	text-decoration: line-through;
 }
 
+.companies th {
+	width: 14%;
+}
+
+.companies .name {
+	width: 30%;
+}
+
 a.a-brand {
 	color: #777777;
 }

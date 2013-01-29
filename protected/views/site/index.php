@@ -10,7 +10,8 @@ $this->pageTitle=Yii::app()->name;
 <h1>Компании</h1>
 <table class="table table-striped table-hover grid-view companies">
 	<tr>
-		<th>Название</th>
+		<th class="name">Название</th>
+		<th>Роль</th>
 		<th>Почта</th>
 		<th>Телефония</th>
 		<th>Сайты</th>
@@ -28,10 +29,11 @@ $this->pageTitle=Yii::app()->name;
 					<?php endif ?>
 				><?=$c->name?></a>
 			</td>
-			<td>53 письма / 3 непрочитанных</td>
-			<td>10 звонков / 1 неотвеченный</td>
+			<td><?=$c->admin_user_id == Yii::app()->user->id ? 'Администратор' : 'Пользователь'?></td>
+			<td>3 /53</td>
+			<td>1 / 10</td>
 			<td>0 / 2</td>
-			<td>Занято 2,3 Гб / 6 Гб</td>
+			<td>2,3 Гб / 6 Гб</td>
 		</tr>
 	<?php endforeach ?>
 </table>
