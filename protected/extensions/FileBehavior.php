@@ -60,8 +60,7 @@ class FileBehavior extends CActiveRecordBehavior
 			$fileValidator = CValidator::createValidator('file', $owner, $this->filePathAttributeName, array(
 				'types' => $this->fileTypes,
 				'maxSize' => $this->maxSize,
-				// TODO Это Жуткий костыль, надо его исправить
-				'allowEmpty' => $owner->is_dir,
+				'allowEmpty' => $this->file_required,
 				'safe' => false,
 			));
 			$owner->validatorList->add($fileValidator);
@@ -182,5 +181,12 @@ class FileBehavior extends CActiveRecordBehavior
 	public function saveFile($file, $path_to_save)
 	{
 		return $file->saveAs($path_to_save);
+	}
+
+	public function getfile_required() {
+		return $this->file_required;
+	}
+	public function setfile_required($val) {
+		$this->file_required = $val;
 	}
 }

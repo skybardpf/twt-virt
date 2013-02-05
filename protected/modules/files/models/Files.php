@@ -45,8 +45,9 @@
  * @method boolean isRoot() Является ли корнем
  *
  * The followings are the available model relations:
- * @property Company $company
- * @property User $user
+ * @property Company $company Компания
+ * @property User $user Пользователь
+ * @property FLinks[] $links Ссылки на этот файл/директорию
  */
 class Files extends CActiveRecord
 {
@@ -54,6 +55,9 @@ class Files extends CActiveRecord
 	public $is_dir = 0;
 	public $deleted = 0;
 	public $parent_elem = NULL;
+	private $file_required = true;
+	public $description = '';
+
 	/**
 	 * Returns the static model of the specified AR class.
 	 * @param string $className active record class name.
@@ -66,8 +70,8 @@ class Files extends CActiveRecord
 
 	public function __construct($scenario = 'insert', $is_dir = 0)
 	{
-		$this->is_dir = $is_dir;
-		return parent::__construct($scenario);
+		$this->file_required = !$is_dir;
+		parent::__construct($scenario);
 	}
 
 	/**
@@ -112,6 +116,7 @@ class Files extends CActiveRecord
 		return array(
 			'company' => array(self::BELONGS_TO, 'Company', 'company_id'),
 			'user' => array(self::BELONGS_TO, 'User', 'user_id'),
+			'links' => array(self::HAS_MANY, 'FLinks', 'file_id')
 		);
 	}
 
@@ -172,7 +177,8 @@ class Files extends CActiveRecord
 			),
 			'FileBehavior' => array(
 				'class' => 'ext.FileBehavior',
-				'fileTypes' => NULL
+				'fileTypes' => NULL,
+				'file_required' => (boolean)!$this->file_required
 			),
 			'NestedSetBehavior'=>array(
 				'class'=>'ext.NestedSetBehavior',
@@ -185,7 +191,7 @@ class Files extends CActiveRecord
 	}
 
 	public function getSize_human() {
-		if (!$this->size) return '-';
+		if (!$this->size) return '—';
 		$labels = array(0 => 'B', 1 => 'KB', 2 => 'MB', 3 => 'GB', 4 => 'TB');
 		$i = 0;
 		$tmp = $this->size;

@@ -34,8 +34,8 @@ class Controller extends CController
 	public function accessRules()
 	{
 		return array(
-			array('allow', 'actions'=>array('login'), 'users' => array('*')),
-			array('deny', 'actions'=>array(), 'users' => array('?')),
+			array('allow', 'actions' => array('login', 'error'), 'users' => array('*')),
+			array('deny',  'actions' => array(),        'users' => array('?')),
 		);
 	}
 
