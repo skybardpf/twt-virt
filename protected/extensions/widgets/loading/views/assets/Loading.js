@@ -40,7 +40,11 @@ $(function() {
 					$(this).hide();
 				}
 			);
-		}
+		},
+        immidiate_hide:function(){
+            this.$el.css({opacity: 0});
+            this.$el.hide();
+        }
 	}
 
 	window.Loading = new LoadingConstructor();

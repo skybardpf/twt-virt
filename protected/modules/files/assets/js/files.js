@@ -1,9 +1,10 @@
 $(document).ready(function(){
     $('a.file_rename').click(function(){
+        $(this.parentNode.parentNode.parentNode).removeClass('open');
         var new_name = window.prompt('Введите новое имя:', this.dataset.name);
         if (new_name && new_name != this.dataset.name) {
             Loading.show();
-            $.post(this.href, {name: new_name, ajax: 'index_rename'}, function(data){
+            $.post(this.dataset.link, {name: new_name, ajax: 'index_rename'}, function(data){
                 if (data.error) {
                     Loading.hide();
                     alert('Произошла ошибка: '+data.message);
@@ -18,13 +19,13 @@ $(document).ready(function(){
     function parseLinkData(data) {
         if (data.ret == 0) {
             if (data.new == 1) {
+                Loading.hide();
                 document.getElementById('modal-header').innerHTML = data.title;
                 document.getElementById('modal-body').innerHTML = data.html;
                 document.getElementById('modal-footer').innerHTML = data.footer;
-                Loading.hide();
                 $('#ModalWindow').modal('show');
             } else {
-                Loading.hide();
+                Loading.immidiate_hide();
                 $('#ModalWindow').modal('hide')
                 window.prompt('Ваша ссылка:', data.link);
             }
@@ -34,6 +35,7 @@ $(document).ready(function(){
         }
     }
     $('a.file_link').click(function(){
+        $(this.parentNode.parentNode.parentNode).removeClass('open');
         Loading.show();
         $.post(this.href, function(data){
             parseLinkData(data);
