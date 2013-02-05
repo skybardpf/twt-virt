@@ -44,7 +44,7 @@ class PublishedController extends Controller
 			if ($archive->open($arch_name , ZipArchive::CREATE) === true) {
 				foreach ($files as $file) {
 					if (!$file->is_dir && file_exists($file->file))
-						$archive->addFile(realpath($file->file), Misc::transliterate($file->name));
+						$archive->addFile(realpath($file->file), /*Misc::transliterate(*/iconv('utf-8', 'cp866', $file->name)/*)*/);
 						//$archive->addFromString($file->name, file_get_contents($file->file));
 				}
 				$archive->close();
