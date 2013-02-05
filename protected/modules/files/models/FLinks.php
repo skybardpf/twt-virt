@@ -108,17 +108,6 @@ class FLinks extends CActiveRecord
 		));
 	}
 
-	/**
-	 * Возвращает допустимые значения для длительности действия временной ссылки
-	 */
-	public function getDurationValues() {
-		return array(
-			3600  => '1 час',
-			10800 => '3 часа',
-			21600 => '6 часов',
-			43200 => '12 часов',
-			86400 => '24 часа');
-	}
 	/** Генерирует ключ для файла */
 	public function generateKey() {
 		$rand = sprintf('%08x%08x%08x%08x',mt_rand(),mt_rand(),mt_rand(),mt_rand());

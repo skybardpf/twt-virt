@@ -8,7 +8,7 @@
  */
 ?>
 <?php /** @var $dir Files */$dir = $link->file; ?>
-<h2><?=$dir->name?></h2> Доступна до <?=$link->edate?>
+<div><h2 class="pull-left"><?=$dir->name?></h2> <span class="muted" style="top: 23px; left: 10px; position: relative;">(доступна до <?=$link->edate?>)</span><div class="clearfix"></div></div>
 <?php
 $criteria = new CDbCriteria();
 $criteria->order = 'is_dir DESC, name ASC';
@@ -54,7 +54,7 @@ if (!$files) :?>
 		$this->widget('bootstrap.widgets.TbButton', array(
 			'buttonType'=>'submit',
 			'type'=>'primary',
-			'label'=> 'Загрузить архив',
+			'label'=> 'Скачать в архиве',
 			'disabled' => 1,
 			'htmlOptions' => array('id' => 'archive_dnld_btn')
 			)

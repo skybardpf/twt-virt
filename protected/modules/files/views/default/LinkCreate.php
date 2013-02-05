@@ -12,6 +12,10 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
 	'enableAjaxValidation' => false,
 ))?>
 	<fieldset>
-		<?=$form->radioButtonListInlineRow($model, 'duration', $model->getDurationValues())?>
+		<label><input type="radio" name="FLink[duration]" value="3600" checked="checked"> на 1 час</label><br/>
+		<label><input type="radio" name="FLink[duration]" value="10800"> на 3 часа</label><br/>
+		<label><input type="radio" name="FLink[duration]" value="21600"> на 6 часов</label><br/>
+		<label><input type="radio" name="FLink[duration]" value="43200"> на 12 часов</label><br/>
+		<label><input type="radio" name="FLink[duration]" value="86400"> на 24 часа</label>
 	</fieldset>
 <?php $this->endWidget();?>
