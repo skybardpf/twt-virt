@@ -19,7 +19,13 @@ foreach ($ancestors as $ancestor) {
 }
 if ($dir->lvl != 1) $breadcrumbs[] = $dir->name;
 $this->breadcrumbs = $breadcrumbs;
-$this->renderPartial('create', array('new_file' => $new_file, 'new_dir' => $new_dir));
+?>
+<?php $this->renderPartial('create', array('new_file' => $new_file, 'new_dir' => $new_dir));?>
+<div class="row-fluid"><div class="span2 offset10"><div class="pull-right">
+	<i class="icon-trash"></i>&nbsp;<a href="<?=$this->createUrl('basket', array('company_id' => $this->company->id))?>">Корзина</a></div><div class="clearfix">
+</div></div></div>
+
+<?php
 $this->widget('bootstrap.widgets.TbBreadcrumbs', array(
 	'links' => $this->breadcrumbs,
 	'homeLink' => false,

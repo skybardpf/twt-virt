@@ -4,19 +4,20 @@
  * This is the model class for table "f_files".
  *
  * The followings are the available columns in table 'f_files':
- * @property string $id
- * @property string $root
- * @property string $lft
- * @property string $rgt
- * @property string $lvl
- * @property string $company_id
- * @property string $user_id
- * @property string $name
- * @property string $cdate
- * @property string $mdate
- * @property string $file
- * @property string $size
- * @property integer $deleted
+ * @property integer $id
+ * @property integer $root
+ * @property integer $lft
+ * @property integer $rgt
+ * @property integer $lvl
+ * @property integer $company_id
+ * @property integer $user_id
+ * @property integer $is_basket
+ * @property string  $name
+ * @property string  $cdate
+ * @property string  $mdate
+ * @property string  $deldate
+ * @property string  $file
+ * @property string  $size
  * @property integer $is_dir
  *
  * @method Files roots() Выборка всех корней

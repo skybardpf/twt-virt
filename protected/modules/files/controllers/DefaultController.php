@@ -65,6 +65,10 @@ class DefaultController extends Controller
 			)
 		);
 	}
+	public function actionRecycle() {
+
+	}
+
 	public function actionRename($file_id = NULL) {
 		if (!$file_id) throw new CHttpException(404, 'Указанного файла не существует.');
 
@@ -81,7 +85,7 @@ class DefaultController extends Controller
 				echo json_encode(array('error' => 0, 'link' => $this->createUrl($file->user_id?'user':'index', array('company_id' => $file->company_id, 'dir_id' => $dir->id))));
 				Yii::app()->end();
 			} else {
-				echo json_encode(array('error' => 1, 'message' => $file->errors['name']));
+				echo json_encode(array('error' => 1, 'message' => $file->errors));
 				Yii::app()->end();
 			}
 		}
@@ -206,7 +210,8 @@ class DefaultController extends Controller
 
 	protected function new_file(&$new_file, &$new_dir, $dir, $user_files = false) {
 		$new_file = new Files();
-		$new_dir = new Files('insert', 1);
+		$new_dir = new Files('new_dir');
+		$new_dir->is_dir = 1;
 
 		$new_file->description = 'new_file';
 		$new_dir->description = 'new_dir';

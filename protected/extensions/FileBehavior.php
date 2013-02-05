@@ -18,7 +18,7 @@ class FileBehavior extends CActiveRecordBehavior
 	/**
 	 * @var array сценарии валидации к которым будут добавлены правила валидации загрузки файлов
 	 */
-	public $scenarios = array('insert', 'update', 'add', 'edit');
+	public $scenarios = array('insert', 'add');
 	/**
 	 * @var string типы файлов, которые можно загружать (нужно для валидации)
 	 */
