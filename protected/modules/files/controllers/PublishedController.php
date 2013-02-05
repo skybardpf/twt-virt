@@ -52,6 +52,7 @@ class PublishedController extends Controller
 				$files_names = array(); $i = 1;
 				if ($archive->open($arch_name , ZipArchive::CREATE) === true) {
 					foreach ($files as $file) {
+
 						$f_name = @iconv('utf-8', 'cp866', $file->name);
 						if (!$f_name) {
 							// Заменим имя файла на первое доступное.
@@ -63,13 +64,14 @@ class PublishedController extends Controller
 							while(in_array($i.$extension, $files_names)) {
 								$i++;
 							}
-							$files_names[] = $f_name = $i.$extension;
+							$files_names[] = $i.$extension;
+							$f_name = iconv('utf-8', 'cp866', $i.$extension);
 						} else {
 							$files_names[] = $file->name;
 						}
 						// Наконец то добавим файл в архив
 						if (!$file->is_dir && file_exists($file->file))
-							$archive->addFile(realpath($file->file), iconv('utf-8', 'cp866', $f_name));
+							$archive->addFile(realpath($file->file), $f_name);
 					}
 					$archive->close();
 					Yii::app()->request->sendFile($link->file->name.'.zip', file_get_contents($arch_name), null, false);
