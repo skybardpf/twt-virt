@@ -46,13 +46,14 @@ $(document).ready(function(){
     });
     $('#recycle_remove_all').click(function(){
         if (window.confirm('Вы действительно хотите очистить корзину? Действие нельзя отменить.')) {
+            var back_link = this.dataset.recycle;
             Loading.show();
             $.post(this.href, function(data){
                 Loading.immidiate_hide();
                 if (data.ret) {
                     alert(data.ret+': '+data.error);
                 } else {
-                    window.location.reload();
+                    window.location = back_link;
                 }
             }
             , 'json');

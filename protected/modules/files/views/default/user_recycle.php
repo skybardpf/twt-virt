@@ -37,7 +37,7 @@ $this->breadcrumbs = $breadcrumbs;
 	));?>
     </div>
     <div class="span2"><div class="pull-right" style="margin-top: 25px;">
-        <i class="icon-remove-circle"></i>&nbsp;<a id="recycle_remove_all" href="<?=$this->createUrl('remove_all', array('company_id' => $this->company->id))?>">Очистить корзину</a></div><div class="clearfix">
+        <i class="icon-remove-circle"></i>&nbsp;<a id="recycle_remove_all" data-recycle="<?=$this->createUrl('user_recycle', array('company_id' => $this->company->id))?>" href="<?=$this->createUrl('remove_all', array('company_id' => $this->company->id))?>">Очистить корзину</a></div><div class="clearfix">
     </div></div>
 </div>
 
