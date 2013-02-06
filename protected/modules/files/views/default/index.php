@@ -1,6 +1,6 @@
 <?php
 /*
- * @var $this Controller
+ * @var $this DefaultController
  * @var $files Files[]
  * @var $new_file Files
  * @var $dir Files
@@ -9,6 +9,7 @@
 
 Yii::app()->clientScript->registerScriptFile(CHtml::asset(Yii::app()->basePath.'/modules/files/assets/js/files.js'));
 $this->widget('ext.widgets.loading.LoadingWidget');
+
 $breadcrumbs = ($dir->lvl == 1)
 	? array(' '.$this->company->name)
 	: array(' '.$this->company->name => $this->createUrl('index',array('company_id' => $this->company->id)));
@@ -20,17 +21,29 @@ foreach ($ancestors as $ancestor) {
 if ($dir->lvl != 1) $breadcrumbs[] = $dir->name;
 $this->breadcrumbs = $breadcrumbs;
 ?>
-<?php $this->renderPartial('create', array('new_file' => $new_file, 'new_dir' => $new_dir));?>
-<div class="row-fluid"><div class="span2 offset10"><div class="pull-right">
-	<i class="icon-trash"></i>&nbsp;<a href="<?=$this->createUrl('recycle', array('company_id' => $this->company->id))?>">Корзина</a></div><div class="clearfix">
-</div></div></div>
 
-<?php
-$this->widget('bootstrap.widgets.TbBreadcrumbs', array(
+<?php $this->renderPartial('create', array('new_file' => $new_file, 'new_dir' => $new_dir));?>
+<div class="row-fluid">
+	<div class="span10">
+		<?php $this->widget('bootstrap.widgets.TbMenu', array(
+			'type'=> 'pills', // '', 'tabs', 'pills' (or 'list')
+			'stacked'=>false, // whether this is a stacked menu
+			'items'=>array(
+				array('label'=>'Папка компании', 'url' => $this->createUrl('index',array('company_id' => $this->company->id)), 'active'=>true),
+				array('label'=>'Личная папка', 'url'=>$this->createUrl('user',array('company_id' => $this->company->id))),
+			),
+		));?>
+	</div>
+	<div class="span2"><div class="pull-right" style="margin-top: 25px;">
+		<i class="icon-trash"></i>&nbsp;<a href="<?=$this->createUrl('recycle', array('company_id' => $this->company->id))?>">Корзина компании</a></div><div class="clearfix">
+	</div></div>
+</div>
+
+<?php $this->widget('bootstrap.widgets.TbBreadcrumbs', array(
 	'links' => $this->breadcrumbs,
 	'homeLink' => false,
-));
-?>
+));?>
+
 <?php if (!$files) :?>
 	Данная директория пуста.
 <?php else: ?>
@@ -39,7 +52,7 @@ $this->widget('bootstrap.widgets.TbBreadcrumbs', array(
 		<th>Имя</th>
 		<th>Дата создания</th>
 		<th>Размер</th>
-		<th>Действия</th>
+		<th></th>
 	</tr>
 	<?php foreach ($files as $file) :?>
 	<tr>

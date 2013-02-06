@@ -3,7 +3,7 @@
 class DefaultController extends Controller
 {
 	public $layout = '/layouts/owner';
-	public function actionIndex($dir_id = NULL) {
+	public function actionIndex($dir_id = null) {
 		/** @var $dir Files */
 		$dir = NULL;
 		$this->get_cur_dir($dir, $dir_id);
@@ -24,7 +24,7 @@ class DefaultController extends Controller
 			)
 		);
 	}
-	public function actionUser($dir_id = NULL) {
+	public function actionUser($dir_id = null) {
 		$dir = NULL;
 		$this->get_cur_dir($dir, $dir_id, true);
 
@@ -44,9 +44,9 @@ class DefaultController extends Controller
 			)
 		);
 	}
-	public function actionRecycle($dir_id = NULL) {
+	public function actionRecycle($dir_id = null) {
 		/** @var $dir Files */
-		$dir = NULL;
+		$dir = null;
 		$this->get_cur_dir($dir, $dir_id, false, true);
 
 		$this->render(
@@ -58,8 +58,23 @@ class DefaultController extends Controller
 			)
 		);
 	}
+	public function actionUser_recycle($dir_id = null) {
+		/** @var $dir Files */
+		$dir = null;
+		$this->get_cur_dir($dir, $dir_id, true, true);
 
-	public function actionRename($file_id = NULL) {
+		$this->render(
+			'user_recycle',
+			array(
+				'dir'       => $dir,
+				'files'     => $dir->listDirectory(),
+				'ancestors' => $dir->getAncestors()
+			)
+		);
+
+	}
+
+	public function actionRename($file_id = null) {
 		if (!$file_id) throw new CHttpException(404, 'Указанного файла не существует.');
 
 		if ($_POST['ajax'] && $_POST['ajax'] == 'index_rename') {
@@ -79,7 +94,6 @@ class DefaultController extends Controller
 				Yii::app()->end();
 			}
 		}
-
 	}
 	/** Скачивание файла */
 	public function actionGet_file($file_id = NULL) {
@@ -166,7 +180,7 @@ class DefaultController extends Controller
 		try {
 			$command = Yii::app()->db->createCommand(
 				'UPDATE f_files t
-			 LEFT OUTER JOIN f_files as t2 ON t2.lft < t.lft AND t2.rgt > t.rgt AND t2.lvl = t.lvl - 1
+			 LEFT OUTER JOIN f_files as t2 ON t2.root = t.root AND t2.lft < t.lft AND t2.rgt > t.rgt AND t2.lvl = t.lvl - 1
 			 SET t.recycled_pid = t2.id, t.is_recycle = 1, t.deldate = :deldate
 			 WHERE t.lft >= :file_lft AND t.rgt <= :file_rgt AND t.root = :file_root'
 			)->bindValues(array(
@@ -269,6 +283,77 @@ class DefaultController extends Controller
 		$transaction->commit();
 		return $this->ajaxReturn($ret);
 	}
+	public function actionRemove($file_id = null) {
+		$ret = array('ret' => 0);
+		if (!$file_id) {
+			$ret['error'] = 'Указанного файла/папки не существует.';
+			$ret['ret'] = 1;
+			return $this->ajaxReturn($ret);
+		}
+
+		/** @var $file Files */
+		$file = Files::model()->findByPk($file_id);
+		if (!$file) {
+			$ret['error'] = 'Указанного файла/папки не существует.';
+			$ret['ret'] = 2;
+			return $this->ajaxReturn($ret);
+		}
+
+		if (!$file->is_recycle) {
+			$ret['error'] = 'Файл/папка не в корзине.';
+			$ret['ret'] = 3;
+			return $this->ajaxReturn($ret);
+		}
+
+		$files = $file->descendants()->findAll();
+		$files[] = $file;
+		$transaction = Yii::app()->db->beginTransaction();
+		try {
+			$file->deleteNode();
+		} catch (Exception $e) {
+			$transaction->rollback();
+			$ret['error'] = 'Ошибка при удалении файла/папки.';
+			$ret['ret'] = 4;
+			return $this->ajaxReturn($ret);
+		}
+		$transaction->commit();
+		foreach ($files as $file) {
+			if (!$file->is_dir && $file->file) {
+				$f_name = realpath($file->file);
+				if (file_exists($f_name)) {
+					unlink($f_name);
+				}
+			}
+		}
+		return $this->ajaxReturn($ret);
+	}
+	public function actionRemove_all() {
+		$ret = array('ret' => 0);
+
+		$dir = null;
+		$this->get_cur_dir($dir, null, true, true);
+		$files = $dir->descendants()->findAll();
+		$transaction = Yii::app()->db->beginTransaction();
+		try {
+			$dir->deleteNode();
+		} catch (Exception $e) {
+			$transaction->rollback();
+			$ret['error'] = 'Ошибка при удалении файла/папки.';
+			$ret['ret'] = 4;
+			return $this->ajaxReturn($ret);
+		}
+		$transaction->commit();
+		foreach ($files as $file) {
+			if (!$file->is_dir && $file->file) {
+				$f_name = realpath($file->file);
+				if (file_exists($f_name)) {
+					unlink($f_name);
+				}
+			}
+		}
+		return $this->ajaxReturn($ret);
+	}
+
 	/** Создание новой ссылки */
 	protected function CreateLink($file) {
 		$model = new FLinks('create');

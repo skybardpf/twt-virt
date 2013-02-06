@@ -118,7 +118,7 @@ class FileBehavior extends CActiveRecordBehavior
 	/**
 	 * Удаляем файл
 	 */
-	protected function deleteFile()
+	public function deleteFile()
 	{
 		$file = $this->getOwner()->getAttribute($this->filePathAttributeName);
 		if (is_file($this->getSavePath().$file)) unlink($this->getSavePath().$file);
