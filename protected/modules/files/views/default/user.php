@@ -64,7 +64,7 @@ $this->breadcrumbs = $breadcrumbs;
 		<td><?=$file->size_human?></td>
 		<td>
             <div class="dropdown">
-                <a class="dropdown-toggle" data-toggle="dropdown" href="#">Действия<span class="caret"></span></a>
+                <a class="dropdown-toggle" data-toggle="dropdown" href="#">Действия<span class="caret" style="border-top: 4px solid rgb(5, 95, 255);"></span></a>
                 <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
                     <li><a class="file_rename" data-name="<?=$file->name?>" data-link="<?=$this->createUrl('rename', array('file_id' => $file->id, 'company_id' => $this->company->id))?>" href="#"><i class="icon-pencil"></i>&nbsp;Переименовать</a></li>
                     <li><a class="file_link"   href="<?=$this->createUrl('publish_link', array('file_id' => $file->id, 'company_id' => $this->company->id))?>"><i class="icon-share-alt"></i>&nbsp;Временная ссылка</a></li>
