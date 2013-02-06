@@ -10,11 +10,11 @@ Yii::app()->clientScript->registerScriptFile(CHtml::asset(Yii::app()->basePath.'
 $this->widget('ext.widgets.loading.LoadingWidget');
 $breadcrumbs = ($dir->lvl == 1)
 	? array(
-		' '.$this->company->name => $this->createUrl('index',array('company_id' => $this->company->id)),
+		'Папка компании' => $this->createUrl('index',array('company_id' => $this->company->id)),
 		'Корзина'
 	)
 	: array(
-		' '.$this->company->name => $this->createUrl('index',array('company_id' => $this->company->id)),
+		'Папка компании' => $this->createUrl('index',array('company_id' => $this->company->id)),
 		'Корзина' => $this->createUrl('recycle',array('company_id' => $this->company->id)),
 	);
 foreach ($ancestors as $ancestor) {

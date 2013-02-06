@@ -10,8 +10,8 @@ Yii::app()->clientScript->registerScriptFile(CHtml::asset(Yii::app()->basePath.'
 $this->widget('ext.widgets.loading.LoadingWidget');
 
 $breadcrumbs = ($dir->lvl == 1)
-	? array(' '.$this->company->name)
-	: array(' '.$this->company->name => $this->createUrl('user',array('company_id' => $this->company->id)));
+	? array('Личная папка')
+	: array('Личная папка' => $this->createUrl('user',array('company_id' => $this->company->id)));
 foreach ($ancestors as $ancestor) {
 	if ($ancestor->lvl != 1) {
 		$breadcrumbs[' '.$ancestor->name] = $this->createUrl('user',array('company_id' => $this->company->id, 'dir_id' => $ancestor->id));
