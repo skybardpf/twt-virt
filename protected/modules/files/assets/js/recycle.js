@@ -10,7 +10,7 @@ $(document).ready(function(){
         $.post(this.href, function(data){
             Loading.immidiate_hide();
             if (data.ret) {
-                alert(data.ret+': '+data.error);
+                alert(data.error);
             } else {
                 window.location.reload();
             }
@@ -34,7 +34,7 @@ $(document).ready(function(){
                 $.post(this.href, function(data){
                     Loading.immidiate_hide();
                     if (data.ret) {
-                        alert(data.ret+': '+data.error);
+                        alert(data.error);
                     } else {
                         window.location.reload();
                     }
@@ -51,7 +51,7 @@ $(document).ready(function(){
             $.post(this.href, function(data){
                 Loading.immidiate_hide();
                 if (data.ret) {
-                    alert(data.ret+': '+data.error);
+                    alert(data.error);
                 } else {
                     window.location = back_link;
                 }
