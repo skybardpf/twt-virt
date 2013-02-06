@@ -4,19 +4,9 @@ class DefaultController extends Controller
 {
 	public $layout = '/layouts/owner';
 	public function actionIndex($dir_id = NULL) {
+		/** @var $dir Files */
 		$dir = NULL;
 		$this->get_cur_dir($dir, $dir_id);
-
-		// Файлы директории
-		$criteria = new CDbCriteria();
-		$criteria->order = 'is_dir DESC, name ASC';
-		$files = $dir->children()->findAll($criteria);
-
-		// Путь до директории
-		$criteria = new CDbCriteria();
-		$criteria->order = 'lft ASC';
-		$criteria->condition = 'is_dir = 1';
-		$ancestors = $dir->ancestors()->findAll($criteria);
 
 		$new_file = NULL;
 		$new_dir = NULL;
@@ -27,27 +17,16 @@ class DefaultController extends Controller
 			'index',
 			array(
 				'dir'       => $dir,
-				'files'     => $files,
+				'files'     => $dir->listDirectory(),
 				'new_file'  => $new_file,
 				'new_dir'   => $new_dir,
-				'ancestors' => $ancestors
+				'ancestors' => $dir->getAncestors()
 			)
 		);
 	}
 	public function actionUser($dir_id = NULL) {
 		$dir = NULL;
 		$this->get_cur_dir($dir, $dir_id, true);
-
-		// Файлы директории
-		$criteria = new CDbCriteria();
-		$criteria->order = 'is_dir DESC, name ASC';
-		$files = $dir->children()->findAll($criteria);
-
-		// Путь до директории
-		$criteria = new CDbCriteria();
-		$criteria->order = 'lft ASC';
-		$criteria->condition = 'is_dir = 1';
-		$ancestors = $dir->ancestors()->findAll($criteria);
 
 		$new_file = NULL;
 		$new_dir = NULL;
@@ -58,15 +37,26 @@ class DefaultController extends Controller
 			'user',
 			array(
 				'dir'       => $dir,
-				'files'     => $files,
+				'files'     => $dir->listDirectory(),
 				'new_file'  => $new_file,
 				'new_dir'   => $new_dir,
-				'ancestors' => $ancestors
+				'ancestors' => $dir->getAncestors()
 			)
 		);
 	}
-	public function actionRecycle() {
+	public function actionRecycle($dir_id = NULL) {
+		/** @var $dir Files */
+		$dir = NULL;
+		$this->get_cur_dir($dir, $dir_id, false, true);
 
+		$this->render(
+			'recycle',
+			array(
+				'dir'       => $dir,
+				'files'     => $dir->listDirectory(),
+				'ancestors' => $dir->getAncestors()
+			)
+		);
 	}
 
 	public function actionRename($file_id = NULL) {
@@ -91,12 +81,19 @@ class DefaultController extends Controller
 		}
 
 	}
+	/** Скачивание файла */
 	public function actionGet_file($file_id = NULL) {
 		if (!$file_id) throw new CHttpException(404, 'Указанного файла не существует.');
 		$file = Files::model()->findByPk($file_id);
 		if (!$file) throw new CHttpException(404, 'Указанного файла не существует.');
 		Yii::app()->request->sendFile($file->name, file_get_contents($file->file));
 	}
+
+	/** Публикация ссылки на файл/папку
+	 * @param null $file_id
+	 *
+	 * @return int
+	 */
 	public function actionPublish_link($file_id = NULL) {
 		$ret = array('ret' => 0);
 		if (!$file_id) {
@@ -127,6 +124,151 @@ class DefaultController extends Controller
 
 	}
 
+	/** Перемещение файлов/папок в корзину (AJAX метод)
+	 * @param null $file_id
+	 *
+	 * @return int
+	 * @throws FilesException
+	 */
+	public function actionDelete($file_id = NULL) {
+		$ret = array('ret' => 0);
+		if (!$file_id) {
+			$ret['error'] = 'Указанного файла/папки не существует.';
+			$ret['ret'] = 1;
+			return $this->ajaxReturn($ret);
+		}
+
+		/** @var $file Files */
+		$file = Files::model()->findByPk($file_id);
+		if (!$file) {
+			$ret['error'] = 'Указанного файла/папки не существует.';
+			$ret['ret'] = 2;
+			return $this->ajaxReturn($ret);
+		}
+
+		if ($file->is_recycle) {
+			$ret['error'] = 'Файл/папка уже удален(а).';
+			$ret['ret'] = 3;
+			return $this->ajaxReturn($ret);
+		}
+
+		/** @var $recycle Files Папка корзины*/
+		$recycle = NULL;
+		try {
+			$this->get_cur_dir($recycle, NULL, (boolean)$file->user_id, true);
+		} catch(Exception $e) {
+			$ret['error'] = 'Не удалось получить корзину.';
+			$ret['ret'] = 4;
+			return $this->ajaxReturn($ret);
+		}
+
+		$transaction = Yii::app()->db->beginTransaction();
+		try {
+			$command = Yii::app()->db->createCommand(
+				'UPDATE f_files t
+			 LEFT OUTER JOIN f_files as t2 ON t2.lft < t.lft AND t2.rgt > t.rgt AND t2.lvl = t.lvl - 1
+			 SET t.recycled_pid = t2.id, t.is_recycle = 1, t.deldate = :deldate
+			 WHERE t.lft >= :file_lft AND t.rgt <= :file_rgt AND t.root = :file_root'
+			)->bindValues(array(
+				':file_lft'  => $file->lft,
+				':file_rgt'  => $file->rgt,
+				':file_root' => $file->root,
+				':deldate'   => date('Y-m-d H:i:s')
+			));
+			if (!$command->execute()) {
+				throw new FilesException('Ошибка при переносе в корзину.', 5);
+			}
+			if (!$file->moveAsLast($recycle)) {
+				throw new FilesException('Ошибка при переносе в корзину.', 6);
+			}
+		} catch (Exception $e) {
+			$transaction->rollback();
+			if (get_class($e) == 'FilesExtension') {
+				$ret['ret'] = $e->getCode();
+				$ret['error'] = $e->getMessage();
+			} else {
+				$ret['ret'] = 7;
+				$ret['error'] = YII_DEBUG ? 'Ошибка при переносе в корзину.' : $e->getMessage();
+			}
+			return $this->ajaxReturn($ret);
+		}
+
+		$transaction->commit();
+		return $this->ajaxReturn($ret);
+	}
+
+	public function actionRestore($file_id = NULL) {
+		$ret = array('ret' => 0);
+		if (!$file_id) {
+			$ret['error'] = 'Указанного файла/папки не существует.';
+			$ret['ret'] = 1;
+			return $this->ajaxReturn($ret);
+		}
+
+		/** @var $file Files */
+		$file = Files::model()->findByPk($file_id);
+		if (!$file) {
+			$ret['error'] = 'Указанного файла/папки не существует.';
+			$ret['ret'] = 2;
+			return $this->ajaxReturn($ret);
+		}
+
+		if (!$file->is_recycle) {
+			$ret['error'] = 'Файл/папка не в корзине.';
+			$ret['ret'] = 3;
+			return $this->ajaxReturn($ret);
+		}
+
+		/** @var $parent Files */
+		$parent = Files::model()->findByPk($file->recycled_pid);
+		if (!$parent || $parent->is_recycle) {
+			$ret['error'] = $file->is_dir
+				? 'Папка не может быть восстановлена, так как папка, в которой она находилась, удалена.'
+				: 'Файл не может быть восстановлен, так как папка, в которой он находился, удалена.';
+			$ret['ret'] = 4;
+			return $this->ajaxReturn($ret);
+		}
+
+		if ($parent->children()->findByAttributes(array('name' => $file->name))) {
+			$ret['error'] = $file->is_dir
+				? 'Папка не может быть восстановлена, так как в папке, в которой она находилась, есть файл/папка с таким же именем.'
+				: 'Файл не может быть восстановлен, так как в папке, в которой он находился, есть файл/папка с таким же именем.';
+			$ret['ret'] = 4;
+			return $this->ajaxReturn($ret);
+		}
+
+		$transaction = Yii::app()->db->beginTransaction();
+		try {
+			$command = Yii::app()->db->createCommand(
+				'UPDATE f_files t
+			 	SET t.recycled_pid = NULL, t.is_recycle = 0, t.deldate = NULL
+			 	WHERE t.lft >= :file_lft AND t.rgt <= :file_rgt AND t.root = :file_root'
+			)->bindValues(array(
+				':file_lft'  => $file->lft,
+				':file_rgt'  => $file->rgt,
+				':file_root' => $file->root,
+			));
+			if (!$command->execute()) {
+				throw new FilesException('Ошибка при восстановлении из корзины.', 5);
+			}
+			if (!$file->moveAsLast($parent)) {
+				throw new FilesException('Ошибка при восстановлении из корзины.', 6);
+			}
+		} catch (Exception $e) {
+			$transaction->rollback();
+			if (get_class($e) == 'FilesExtension') {
+				$ret['ret'] = $e->getCode();
+				$ret['error'] = $e->getMessage();
+			} else {
+				$ret['ret'] = 7;
+				$ret['error'] = YII_DEBUG ? 'Ошибка при восстановлении из корзины.' : $e->getMessage();
+			}
+			return $this->ajaxReturn($ret);
+		}
+
+		$transaction->commit();
+		return $this->ajaxReturn($ret);
+	}
 	/** Создание новой ссылки */
 	protected function CreateLink($file) {
 		$model = new FLinks('create');
@@ -175,16 +317,30 @@ class DefaultController extends Controller
 		throw new CHttpException(404, 'Доступно только через AJAX запрос');
 	}
 
-	protected function get_cur_dir(&$dir, $dir_id = NULL, $user_files = false) {
+	/**
+	 * Получим текущую директорию в зависимости от окружения (пользовательская/компании, в корзине/нет)
+	 *
+	 * Если директория корневая (например корневая директория компании или корневая директория пользователя) и ее еще нет в БД - создадим ее и вернем
+	 *
+	 * @param $dir
+	 * @param null $dir_id
+	 * @param bool $user_files
+	 * @param bool $recycle
+	 *
+	 * @throws CHttpException
+	 */
+	protected function get_cur_dir(&$dir, $dir_id = NULL, $user_files = false, $recycle = false) {
 		// Получим текущую директорию
 		$criteria = new CDbCriteria();
 
 		if ($user_files) {
-			// Файлы пользователя
+			// Директория относится к пользовательским
 			$criteria->addCondition('user_id = :user_id');
 			$criteria->params[':user_id'] = Yii::app()->user->id;
 		}
-		else $criteria->addCondition('user_id IS NULL'); // Файлы компании
+		else $criteria->addCondition('user_id IS NULL'); // Директория компании
+
+		$criteria->addCondition('is_recycle = '.($recycle ? 1 : 0)); // Директория относится к корзине или нет
 
 		$criteria->addCondition('company_id = :company_id');
 		$criteria->params[':company_id'] = $this->company->id;
@@ -202,6 +358,7 @@ class DefaultController extends Controller
 			$dir = new Files('insert', 1);
 			$dir->company_id = $this->company->id;
 			if ($user_files) $dir->user_id = Yii::app()->user->id;
+			if ($recycle) $dir->is_recycle = 1;
 			$dir->is_dir = 1;
 			$dir->name = $this->company->name;
 			if (!$dir->saveNode()) throw new CHttpException(404, 'Не получилось создать корневой элемент.');
@@ -239,3 +396,5 @@ class DefaultController extends Controller
 		}
 	}
 }
+
+class FilesExtension extends Exception {}

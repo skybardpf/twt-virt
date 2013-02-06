@@ -9,16 +9,18 @@
  * @property integer $lft
  * @property integer $rgt
  * @property integer $lvl
- * @property integer $company_id
- * @property integer $user_id
- * @property integer $is_basket
- * @property string  $name
- * @property string  $cdate
- * @property string  $mdate
- * @property string  $deldate
- * @property string  $file
- * @property string  $size
- * @property integer $is_dir
+ *
+ * @property integer $company_id    ID компании
+ * @property integer $user_id       ID пользователя (файл или папка - пользовательские)
+ * @property integer $is_recycle    Файл или папка в корзине
+ * @property integer $recycled_pid  Родительская папка перед перемещением в корзину
+ * @property string  $name          Имя
+ * @property string  $cdate         Дата создания
+ * @property string  $mdate         Дата редактирования
+ * @property string  $deldate       Дата перемещения в корзину
+ * @property string  $file          Файл
+ * @property string  $size          Размер
+ * @property integer $is_dir        Это директория
  *
  * @method Files roots() Выборка всех корней
  * @method Files descendants(int $depth=NULL) Выборка всех потомков узла
@@ -39,7 +41,8 @@
  * @method boolean prepend(CActiveRecord $target, boolean $runValidation=true, array $attributes=true) Добавление дочерних узлов
  * @method boolean moveBefore(CActiveRecord $target) Перемещение узла перед $target
  * @method boolean moveAfter(CActiveRecord $target) Перемещение узла после $target
- * @method boolean moveAsFirst(CActiveRecord $target) Перемещение узла первым в $traget
+ * @method boolean moveAsFirst(CActiveRecord $target) Перемещение узла первым в $target
+ * @method boolean moveAsLast(CActiveRecord $target) Перемещение узла последним в $target
  * @method boolean moveAsRoot() Перемещение узла
  * @method boolean isDescendantOf(CActiveRecord $subj) Является ли потомком
  * @method boolean isLeaf() Является ли узел листом
@@ -217,5 +220,29 @@ class Files extends CActiveRecord
 		$elements = $parent_dir->children()->find($criteria);
 		$labels = $this->attributeLabels();
 		if ($elements) $this->addError($attribute, $labels[$attribute].' должно быть уникальным в своей папке.');
+	}
+
+	/** Возвращает всех родителей узла
+	 *
+	 * @return Files[]
+	 */
+	public function getAncestors() {
+		$criteria = new CDbCriteria();
+		$criteria->order = 'lft ASC';
+		$criteria->condition = 'is_dir = 1';
+		return $this->ancestors()->findAll($criteria);
+	}
+
+	/** Возвращает файлы и директории в обычном порядке
+	 *
+	 * Первыми идут директории, затем файлы, все в алфавитном порядке.
+	 *
+	 * @return Files[]|bool
+	 */
+	public function listDirectory() {
+		if (!$this->is_dir) return false;
+		$criteria = new CDbCriteria();
+		$criteria->order = 'is_dir DESC, name ASC';
+		return $this->children()->findAll($criteria);
 	}
 }

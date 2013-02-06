@@ -52,4 +52,15 @@ $(document).ready(function(){
         }, 'json');
         return false;
     });
+    $('a.file_delete').click(function(){
+        $(this.parentNode.parentNode.parentNode).removeClass('open');
+        Loading.show();
+        $.post(this.href, function(data){
+            Loading.immidiate_hide();
+            if (data.ret) {
+                alert(data.ret+': '+data.error);
+            } else window.location.reload();
+        }, 'json');
+        return false;
+    });
 });
