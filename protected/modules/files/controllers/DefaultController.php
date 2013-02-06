@@ -247,7 +247,7 @@ class DefaultController extends Controller
 			$ret['error'] = $file->is_dir
 				? 'Папка не может быть восстановлена, так как в папке, в которой она находилась, есть файл/папка с таким же именем.'
 				: 'Файл не может быть восстановлен, так как в папке, в которой он находился, есть файл/папка с таким же именем.';
-			$ret['ret'] = 4;
+			$ret['ret'] = 5;
 			return $this->ajaxReturn($ret);
 		}
 
@@ -263,10 +263,10 @@ class DefaultController extends Controller
 				':file_root' => $file->root,
 			));
 			if (!$command->execute()) {
-				throw new FilesException('Ошибка при восстановлении из корзины.', 5);
+				throw new FilesException('Ошибка при восстановлении из корзины.', 6);
 			}
 			if (!$file->moveAsLast($parent)) {
-				throw new FilesException('Ошибка при восстановлении из корзины.', 6);
+				throw new FilesException('Ошибка при восстановлении из корзины.', 7);
 			}
 		} catch (Exception $e) {
 			$transaction->rollback();
@@ -274,7 +274,7 @@ class DefaultController extends Controller
 				$ret['ret'] = $e->getCode();
 				$ret['error'] = $e->getMessage();
 			} else {
-				$ret['ret'] = 7;
+				$ret['ret'] = 8;
 				$ret['error'] = YII_DEBUG ? 'Ошибка при восстановлении из корзины.' : $e->getMessage();
 			}
 			return $this->ajaxReturn($ret);
@@ -339,7 +339,7 @@ class DefaultController extends Controller
 		} catch (Exception $e) {
 			$transaction->rollback();
 			$ret['error'] = 'Ошибка при удалении файла/папки.';
-			$ret['ret'] = 4;
+			$ret['ret'] = 1;
 			return $this->ajaxReturn($ret);
 		}
 		$transaction->commit();
