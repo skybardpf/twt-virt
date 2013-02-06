@@ -68,7 +68,7 @@ $this->widget('bootstrap.widgets.TbBreadcrumbs', array(
         <td><?=$file->size_human?></td>
         <td>
             <div class="dropdown">
-                <a class="dropdown-toggle" data-toggle="dropdown" href="#">Действия<span class="caret" style="border-top: 4px solid rgb(5, 95, 255);"></span></a>
+                <a class="dropdown-toggle" data-toggle="dropdown" href="#">Действия<span class="caret" style="border-top: 4px solid rgb(0, 136, 204);"></span></a>
                 <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
                     <li><a class="recycle_restore" href="<?=$this->createUrl('restore', array('file_id' => $file->id, 'company_id' => $this->company->id))?>"><i class="icon-arrow-up"></i>&nbsp;Восстановить</a></li>
                 </ul>
