@@ -24,10 +24,14 @@ class PublishedController extends Controller
 			if ($link->file->is_dir) {
 				$this->render('show', array('link' => $link));
 			} else {
-				if (file_exists($link->file->file))
+				if ($link->file->is_recycle) {
+					$this->render('error', array('message' => 'Извините, запрошенный файл был удален.'));
+				} elseif (file_exists($link->file->file)) {
 					Yii::app()->request->sendFile($link->file->name, file_get_contents($link->file->file));
-				else
-					throw new CHttpException(404, 'Файла нет на месте.');
+				} else {
+					Yii::log('Запрошенного файла нет физически id:'.$link->file->id, CLogger::LEVEL_ERROR, 'files');
+					$this->render('error', array('message' => 'Приносим свои извинения, произошла ошибка. Ее исправлением уже занимаются.'));
+				}
 			}
 		}
 	}
@@ -47,20 +51,33 @@ class PublishedController extends Controller
 			if (empty($_POST['Files']) && $file_id) {
 				// Запросили конкретный файл из опубликованной директории.
 				$file = $link->file->children()->findByPk($file_id);
-				if (!$file) throw new CHttpException(404, 'Временная ссылка недействительна.');
-				if (file_exists($file->file)) Yii::app()->request->sendFile($file->name, file_get_contents($file->file));
-				else throw new CHttpException(404, 'Файла нет на месте.');
+				if (!$file) {
+					$this->render('error', array('message' => 'Извините, запрошенный файл был удален.'));
+				}
+				elseif (file_exists($file->file))  {
+					Yii::app()->request->sendFile($file->name, file_get_contents($file->file));
+				}
+				else {
+					Yii::log('Запрошенного файла нет физически id:'.$link->file->id, CLogger::LEVEL_ERROR, 'files');
+					$this->render('error', array('message' => 'Приносим свои извинения, произошла ошибка. Ее исправлением уже занимаются.'));
+				}
 			} elseif (!empty($_POST['Files']['id'])) {
 				// Запросили архив файлов из опубликованной директории.
 				$criteria = new CDbCriteria();
 				$criteria->addInCondition('id', $_POST['Files']['id']);
 				$files = $link->file->children()->findAll($criteria);
-				if (!$files) throw new CHttpException(404, 'Временная ссылка недействительна.');
+				if (!$files) {
+					$this->render('error', array('message' => 'Извините, один из запрошенных файлов был удален, попробуйте еще раз.'));
+					return;
+				}
 
 				// Проверим, все ли запрошенные файлы есть в папке.
 				$ids = array();
 				foreach ($files as $f) { $ids[] = $f->id; }
-				if (array_diff($_POST['Files']['id'], $ids)) throw new CHttpException(404, 'Временная ссылка недействительна.');
+				if (array_diff($_POST['Files']['id'], $ids)) {
+					$this->render('error', array('message' => 'Извините, один из запрошенных файлов был удален, попробуйте еще раз.'));
+					return;
+				}
 
 				// Создадим, отправим и сотрем архив с файлами.
 				$archive = new ZipArchive();
@@ -70,35 +87,52 @@ class PublishedController extends Controller
 
 				// Уже использованные имена файлов и счетчик-имя для файлов, имена которых не получается сконвертировать в cp866
 				$files_names = array(); $i = 1;
+
 				if ($archive->open($arch_name , ZipArchive::CREATE) === true) {
-					foreach ($files as $file) {
+					$error = 0;
+					try {
+						foreach ($files as $file) {
 
-						$string = $file->name; // Имя файла
-						$from = mb_strrpos($string, '.'); // начало расширения
-						$f_name = $from ? @iconv('utf-8', 'cp866//IGNORE', mb_substr($string, 0, $from)) : ''; // Перекодированное имя файла
-						$extension = $from ? @iconv('utf-8', 'cp866//IGNORE', mb_substr($string, $from+1)) : ''; // Перекодированное расширение
-						if (!$extension) $extension = '1';
+							$string = $file->name; // Имя файла
+							$from = mb_strrpos($string, '.'); // начало расширения
+							$f_name = $from ? @iconv('utf-8', 'cp866//IGNORE', mb_substr($string, 0, $from)) : ''; // Перекодированное имя файла
+							$extension = $from ? @iconv('utf-8', 'cp866//IGNORE', mb_substr($string, $from+1)) : ''; // Перекодированное расширение
+							if (!$extension) $extension = '1';
 
-						// Подбор незанятого имени файла
-						while(in_array($f_name.'('.$i.').'.$extension, $files_names)) {
-							$i++;
+							// Подбор незанятого имени файла
+							while(in_array($f_name.'('.$i.').'.$extension, $files_names)) {
+								$i++;
+							}
+							// Регистрация выбранного имени файла как занятого
+							$files_names[] = $file_name = $f_name.'('.$i.').'.$extension;
+
+							// Наконец то добавим файл в архив
+							if (!$file->is_dir && file_exists($file->file))
+								$archive->addFile(realpath($file->file), $file_name);
+							elseif ($file->is_dir) {
+								throw new FilesExtension('Произошла ошибка, попробуйте еще раз.');
+							} else {
+								Yii::log('Запрошенного файла нет физически id:'.$file->id, CLogger::LEVEL_ERROR, 'files');
+								throw new FilesExtension('Приносим свои извинения, произошла ошибка. Ее исправлением уже занимаются.');
+							}
 						}
-						// Регистрация выбранного имени файла как занятого
-						$files_names[] = $file_name = $f_name.'('.$i.').'.$extension;
-
-						// Наконец то добавим файл в архив
-						if (!$file->is_dir && file_exists($file->file))
-							$archive->addFile(realpath($file->file), $file_name);
+					} catch (FilesException $e) {
+						$error = 1;
+						$this->render('error', array('message' => $e->getMessage));
+					} catch (Exception $e) {
+						$error = 1;
+						$this->render('error', array('message' => 'При создании архива произошла ошибка. Приносим свои извинения.'));
 					}
 					$archive->close();
-					Yii::app()->request->sendFile($link->file->name.'.zip', file_get_contents($arch_name), NULL, false);
+					if (!$error) Yii::app()->request->sendFile($link->file->name.'.zip', file_get_contents($arch_name), NULL, false);
 					unlink($arch_name);
-					exit;
+					if (!$error) Yii::app()->end();
+					return;
 				} else {
-					throw new CHttpException(404, 'При создании архива произошла ошибка. Приносим свои извинения.');
+					$this->render('error', array('message' => 'При создании архива произошла ошибка. Приносим свои извинения.'));
 				}
 			} else {
-				throw new CHttpException(404, 'Временная ссылка недействительна.');
+				$this->render('error', array('message' => 'Произошла ошибка, попробуйте еще раз.'));
 			}
 		}
 	}

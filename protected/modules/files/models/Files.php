@@ -246,3 +246,5 @@ class Files extends CActiveRecord
 		return $this->children()->findAll($criteria);
 	}
 }
+
+class FilesExtension extends Exception {}

@@ -562,5 +562,3 @@ class DefaultController extends Controller
 		}
 	}
 }
-
-class FilesExtension extends Exception {}
