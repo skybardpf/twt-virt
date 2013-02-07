@@ -1,0 +1,6 @@
+.dir_hidden { display: none;}
+.dir_list { list-style-type: none;}
+.dir_list .icon-folder-open{ margin-right: 3px;}
+.dir_expand.icon-folder-close { margin-right: 5px;}
+.dir_selected {font-weight: bold; text-decoration: underline;}
+.dir_target {cursor: pointer;}

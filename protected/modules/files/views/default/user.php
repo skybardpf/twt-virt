@@ -7,6 +7,7 @@
  * @var $ancestors Files[]
  */
 Yii::app()->clientScript->registerScriptFile(CHtml::asset(Yii::app()->basePath.'/modules/files/assets/js/files.js'));
+Yii::app()->clientScript->registerCssFile(CHtml::asset(Yii::app()->basePath.'/modules/files/assets/css/move.css'));
 $this->widget('ext.widgets.loading.LoadingWidget');
 
 $breadcrumbs = ($dir->lvl == 1)
@@ -67,6 +68,7 @@ $this->breadcrumbs = $breadcrumbs;
                 <a class="dropdown-toggle" data-toggle="dropdown" href="#">Действия<span class="caret" style="border-top: 4px solid rgb(0, 136, 204);"></span></a>
                 <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
                     <li><a class="file_rename" data-name="<?=$file->name?>" data-link="<?=$this->createUrl('rename', array('file_id' => $file->id, 'company_id' => $this->company->id))?>" href="#"><i class="icon-pencil"></i>&nbsp;Переименовать</a></li>
+                    <li><a class="file_move"   href="<?=$this->createUrl('move', array('file_id' => $file->id, 'company_id' => $this->company->id))?>"><i class="icon-share"></i>&nbsp;Переместить в</a></li>
                     <li><a class="file_link"   href="<?=$this->createUrl('publish_link', array('file_id' => $file->id, 'company_id' => $this->company->id))?>"><i class="icon-share-alt"></i>&nbsp;Временная ссылка</a></li>
                     <li><a class="file_delete" href="<?=$this->createUrl('delete', array('file_id' => $file->id, 'company_id' => $this->company->id))?>"><i class="icon-trash"></i>&nbsp;В корзину</a></li>
                 </ul>

@@ -411,8 +411,174 @@ class DefaultController extends Controller
 		return $this->ajaxReturn($ret);
 	}
 
+	public function actionMove($file_id = NULL) {
+		$ret = array('ret' => 0);
+		if (!$file_id) {
+			$ret['ret'] = 1;
+			$ret['error'] = 'Выбранного файла/директории не существует.';
+			return $this->ajaxReturn($ret);
+		}
+
+		/** @var $file Files */
+		$file = Files::model()->findByPk($file_id);
+		if (!$file) {
+			$ret['ret'] = 2;
+			$ret['error'] = 'Выбранного файла/директории не существует.';
+			return $this->ajaxReturn($ret);
+		}
+		if ($file->is_recycle) {
+			$ret['ret'] = 3;
+			$ret['error'] = 'Выбранный файл был удален. Обновите пожалуйста страницу.';
+			return $this->ajaxReturn($ret);
+		}
+
+		/** @var $dir Files */
+		$dir = NULL;
+		try {
+			$this->get_cur_dir($dir, NULL, (boolean)$file->user_id, false);
+		} catch (Exception $e) {
+			$ret['ret'] = 4;
+			$ret['error'] = $e->getMessage();
+			return $this->ajaxReturn($ret);
+		}
+		if (!$dir) {
+			$ret['ret'] = 5;
+			Yii::log('Ошибка при получении/создании корневого элемента company_id:'.$file->company_id.' user_id:'.$file->user_id.' recycle:false', CLogger::LEVEL_ERROR);
+			$ret['error'] = 'Произошла ошибка. Приносим свои извинения. Мы уже работаем над ее исправлением.';
+			return $this->ajaxReturn($ret);
+		}
+
+		$values = array(
+			':dir_lft'  => $dir->lft,
+			':dir_rgt'  => $dir->rgt,
+			':dir_root' => $dir->root,
+			':file_lft' => $file->lft,
+			':file_rgt' => $file->rgt,
+		);
+		$query = 'SELECT t.id as id, t.name as name, t.lft as lft, t.rgt as rgt, t.lvl as lvl, t2.id as pid
+			 FROM f_files t
+			 LEFT OUTER JOIN f_files as t2 ON t2.root = t.root AND t2.lft < t.lft AND t2.rgt > t.rgt AND t2.lvl = t.lvl - 1
+			 WHERE t.lft > :dir_lft AND t.rgt < :dir_rgt AND t.root = :dir_root AND t.is_dir = 1 AND (t.lft < :file_lft OR t.rgt > :file_rgt)
+			 ORDER BY t.lvl ASC, t.name ASC';
+		$command = Yii::app()->db->createCommand($query)->bindValues($values);
+		try {
+			$structure = $command->queryAll(true);
+		} catch (Exception $e) {
+			$ret['ret'] = 6;
+			Yii::log('Ошибка при получении структуры каталогов. Запрос: '.$query.' параметры: '.var_export($values, true), CLogger::LEVEL_ERROR);
+			$ret['error'] = 'Произошла ошибка. Приносим свои извинения. Мы уже работаем над ее исправлением.';
+			return $this->ajaxReturn($ret);
+		}
+
+		if (!$structure) {
+			$ret['ret'] = 5;
+			$ret['error'] = 'К сожалению, некуда переносить данный файл/папку.';
+			return $this->ajaxReturn($ret);
+		}
+		// Это будет структура каталогов в корневым каталогом в самом верху.
+		$struct = array(1 => array('id' => $dir->id, 'lvl' => $dir->lvl, 'pid' => 0, 'name' => $dir->user_id ? 'Личная папка' : 'Папка компании'));
+		// Зависимости id и пути в массиве
+		$dependencies = array($dir->id => array());
+		$i = 2;
+		foreach ($structure as $str) {
+			$dest = &$struct[1]; // Место назначения элемента (на основе пути до родителя)
+			$path = $dependencies[$str['pid']]; // Путь до предка
+			if ($path) {
+				foreach ($path as $p) {
+					$dest = &$dest['childrens'][$p]; // Место назначения элемента (на основе пути до родителя)
+				}
+			}
+			$dest['childrens'][$i] = $str; // Добавим элемент
+			$path[] = $i; // Укажем путь к элементу
+			$dependencies[$str['id']] = $path; // Добавим в пути
+			$i++;
+			unset($dest);
+		}
+		$ret['structure'] = $struct;
+		$ret = array(
+			'ret'    => 0,
+			'title'  => 'Переместить в:',
+			'html'   => $this->renderPartial('Move', array('struct' => $struct, 'file' => $file), 1),
+			'footer' => $this->renderPartial('MoveFooter', array('file' => $file), 1),
+		);
+		return $this->ajaxReturn($ret);
+	}
+
+	public function actionMove_to($file_id = null) {
+		$ret = array('ret' => 0);
+		// Нет файла
+		if (!$file_id) {
+			$ret['ret'] = 1;
+			$ret['error'] = 'Выбранного файла/директории не существует.';
+			return $this->ajaxReturn($ret);
+		}
+
+		/** @var $file Files */
+		$file = Files::model()->findByPk($file_id);
+		// Нет файла
+		if (!$file) {
+			$ret['ret'] = 2;
+			$ret['error'] = 'Выбранного файла/директории не существует.';
+			return $this->ajaxReturn($ret);
+		}
+		// Файл в корзине
+		if ($file->is_recycle) {
+			$ret['ret'] = 3;
+			$ret['error'] = 'Выбранный файл был удален. Обновите пожалуйста страницу.';
+			return $this->ajaxReturn($ret);
+		}
+
+		// Нет цели
+		if (empty($_POST['target_id'])) {
+			$ret['ret'] = 4;
+			$ret['error'] = 'Папки назначения не существует.';
+			return $this->ajaxReturn($ret);
+		}
+		/** @var $target Files */
+		$target = Files::model()->findByPk($_POST['target_id']);
+		// Нет цели
+		if (!$target) {
+			$ret['ret'] = 5;
+			$ret['error'] = 'Выбранной папки назначения не существует.';
+			return $this->ajaxReturn($ret);
+		}
+		// Цель в корзине
+		if ($target->is_recycle) {
+			$ret['ret'] = 6;
+			$ret['error'] = 'Выбранная папка назначение была удалена. Обновите пожалуйста страницу.';
+			return $this->ajaxReturn($ret);
+		}
+		// Файл и цель в разных рутах
+		if ($target->root != $file->root) {
+			$ret['ret'] = 7;
+			$ret['error'] = 'Нельзя перемещать файлы/папки между разными компаниями и/или из личной папки в папку компании.';
+			return $this->ajaxReturn($ret);
+		}
+		// Цель - не папка
+		if (!$target->is_dir) {
+			$ret['ret'] = 8;
+			$ret['error'] = 'Нельзя перемещать файлы/папки в файл.';
+			return $this->ajaxReturn($ret);
+		}
+		$check = $target->children()->findByAttributes(array('name' => $file->name));
+		if ($check) {
+			$ret['ret'] = 9;
+			$ret['error'] = 'В выбранной папке уже есть файл/папка с таким именем.';
+			return $this->ajaxReturn($ret);
+		}
+		try {
+			$file->moveAsLast($target);
+		} catch (Exception $e) {
+			$ret['ret'] = 10;
+			Yii::log('Ошибка при попытке перенести файл/папку id: '.$file->id.' в папку id: '.$target->id, CLogger::LEVEL_ERROR);
+			$ret['error'] = 'Во время перемещения файла/папки произошла ошибка. Приносим свои извинения. Мы уже работаем над ее исправлением.';
+			return $this->ajaxReturn($ret);
+		}
+		return $this->ajaxReturn($ret);
+	}
+
 	/**
-	 * Создаание новой ссылки
+	 * Создание новой ссылки
 	 * @param $file
 	 *
 	 * @return int
@@ -560,5 +726,34 @@ class DefaultController extends Controller
 				$this->redirect($this->createUrl($user_files ? 'user' : 'index', array('company_id' => $this->company->id, 'dir_id' => $dir->id)));
 			}
 		}
+	}
+
+	/**
+	 * Генерация представления папок в модальном окне для диалога перемещения файла/папки
+	 * @param $struct
+	 * @param int $lvl
+	 *
+	 * @return string
+	 */
+	public function RenderDirs($struct, $lvl = 0) {
+		// <ul> или <ul class="dir_hidden"> если уровень род. папки больше 1
+		$ret = '<ul class="dir_list'.($lvl > 1 ? ' dir_hidden': '').'">';
+		foreach($struct as $str) {
+			$ret .= '<li>';
+			// Если у папки есть дети, то нужна иконка плюса или минуса (плюс для скрытых папок, минус для раскрытых)
+
+			$ret .= '<i class="dir_expand'.
+				(($lvl > 0 && isset($str['childrens']) && !empty($str['childrens'])) ? ' icon-folder-close' : ' icon-folder-open').
+				'"></i>';
+
+			$ret .= '<span class="dir_target" data-id="'.$str['id'].'">'.$str['name'].'</span>';
+			if (isset($str['childrens']) && !empty($str['childrens'])) {
+				$ret.= $this->RenderDirs($str['childrens'], $str['lvl']);
+			}
+			$ret .='</li>';
+		}
+
+		$ret .= '</ul>';
+		return $ret;
 	}
 }
