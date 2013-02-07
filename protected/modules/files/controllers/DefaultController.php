@@ -3,14 +3,19 @@
 class DefaultController extends Controller
 {
 	public $layout = '/layouts/owner';
-	public function actionIndex($dir_id = null) {
+
+	/**
+	 * Вывод содержимого папки компании или любой вложенной в ней папки и вызов обработчика создания папки/загрузки файла
+	 *
+	 * @param null $dir_id
+	 */
+	public function actionIndex($dir_id = NULL) {
 		/** @var $dir Files */
 		$dir = NULL;
 		$this->get_cur_dir($dir, $dir_id);
 
-		$new_file = NULL;
-		$new_dir = NULL;
-
+		$new_file = NULL; /** @var $new_file Files */
+		$new_dir = NULL; /** @var $new_dir Files */
 		$this->new_file($new_file, $new_dir, $dir);
 
 		$this->render(
@@ -24,13 +29,18 @@ class DefaultController extends Controller
 			)
 		);
 	}
-	public function actionUser($dir_id = null) {
+
+	/**
+	 * Вывод содержимого пользовательской папки или любой вложенной в ней папки и вызов обработчика создания папки/загрузки файла
+	 *
+	 * @param null $dir_id
+	 */
+	public function actionUser($dir_id = NULL) {
 		$dir = NULL;
 		$this->get_cur_dir($dir, $dir_id, true);
 
 		$new_file = NULL;
 		$new_dir = NULL;
-
 		$this->new_file($new_file, $new_dir, $dir, true);
 
 		$this->render(
@@ -44,9 +54,14 @@ class DefaultController extends Controller
 			)
 		);
 	}
-	public function actionRecycle($dir_id = null) {
+
+	/**
+	 * Вывод содержимого корзины компании или любой вложенной в ней папки
+	 * @param null $dir_id
+	 */
+	public function actionRecycle($dir_id = NULL) {
 		/** @var $dir Files */
-		$dir = null;
+		$dir = NULL;
 		$this->get_cur_dir($dir, $dir_id, false, true);
 
 		$this->render(
@@ -58,9 +73,14 @@ class DefaultController extends Controller
 			)
 		);
 	}
-	public function actionUser_recycle($dir_id = null) {
+
+	/**
+	 * Вывод содержимого пользовательской корзины или любой вложенной в ней папки
+	 * @param null $dir_id
+	 */
+	public function actionUser_recycle($dir_id = NULL) {
 		/** @var $dir Files */
-		$dir = null;
+		$dir = NULL;
 		$this->get_cur_dir($dir, $dir_id, true, true);
 
 		$this->render(
@@ -74,7 +94,17 @@ class DefaultController extends Controller
 
 	}
 
-	public function actionRename($file_id = null) {
+	/**
+	 * AJAX метод переименования файла/папки
+	 *
+	 * возвращает JSON encoded результат,
+	 * error = 0 если все ОК
+	 * иначе error = <код ошибки> и message = <описание ошибки>
+	 * @param null $file_id
+	 *
+	 * @throws CHttpException
+	 */
+	public function actionRename($file_id = NULL) {
 		if (!$file_id) throw new CHttpException(404, 'Указанного файла не существует.');
 
 		if ($_POST['ajax'] && $_POST['ajax'] == 'index_rename') {
@@ -95,7 +125,13 @@ class DefaultController extends Controller
 			}
 		}
 	}
-	/** Скачивание файла */
+
+	/**
+	 * Скачивание файла из интерфейса авторизованного пользователя.
+	 * @param null $file_id
+	 *
+	 * @throws CHttpException
+	 */
 	public function actionGet_file($file_id = NULL) {
 		if (!$file_id) throw new CHttpException(404, 'Указанного файла не существует.');
 		$file = Files::model()->findByPk($file_id);
@@ -103,7 +139,8 @@ class DefaultController extends Controller
 		Yii::app()->request->sendFile($file->name, file_get_contents($file->file));
 	}
 
-	/** Публикация ссылки на файл/папку
+	/**
+	 * Публикация ссылки на файл/папку
 	 * @param null $file_id
 	 *
 	 * @return int
@@ -138,7 +175,8 @@ class DefaultController extends Controller
 
 	}
 
-	/** Перемещение файлов/папок в корзину (AJAX метод)
+	/**
+	 * AJAX метод перемещения файлов/папок в корзину
 	 * @param null $file_id
 	 *
 	 * @return int
@@ -211,6 +249,13 @@ class DefaultController extends Controller
 		return $this->ajaxReturn($ret);
 	}
 
+	/**
+	 * AJAX метод восстановления файла/папки из корзины
+	 * @param null $file_id
+	 *
+	 * @return int
+	 * @throws FilesException
+	 */
 	public function actionRestore($file_id = NULL) {
 		$ret = array('ret' => 0);
 		if (!$file_id) {
@@ -283,7 +328,14 @@ class DefaultController extends Controller
 		$transaction->commit();
 		return $this->ajaxReturn($ret);
 	}
-	public function actionRemove($file_id = null) {
+
+	/**
+	 * AJAX метод окончательного удаления файла/папки из <b>пользовательской</b> корзины
+	 * @param null $file_id
+	 *
+	 * @return int
+	 */
+	public function actionRemove($file_id = NULL) {
 		$ret = array('ret' => 0);
 		if (!$file_id) {
 			$ret['error'] = 'Указанного файла/папки не существует.';
@@ -327,11 +379,16 @@ class DefaultController extends Controller
 		}
 		return $this->ajaxReturn($ret);
 	}
+
+	/**
+	 * AJAX метод очищения пользовательской корзины
+	 * @return int
+	 */
 	public function actionRemove_all() {
 		$ret = array('ret' => 0);
 
-		$dir = null;
-		$this->get_cur_dir($dir, null, true, true);
+		$dir = NULL;
+		$this->get_cur_dir($dir, NULL, true, true);
 		$files = $dir->descendants()->findAll();
 		$transaction = Yii::app()->db->beginTransaction();
 		try {
@@ -354,7 +411,12 @@ class DefaultController extends Controller
 		return $this->ajaxReturn($ret);
 	}
 
-	/** Создание новой ссылки */
+	/**
+	 * Создаание новой ссылки
+	 * @param $file
+	 *
+	 * @return int
+	 */
 	protected function CreateLink($file) {
 		$model = new FLinks('create');
 		if (isset($_POST['FLinks'])) {
@@ -379,7 +441,13 @@ class DefaultController extends Controller
 		);
 		return $this->ajaxReturn($ret);
 	}
-	/** Показ временной ссылки */
+
+	/**
+	 * Показ временной ссылки
+	 * @param $link
+	 *
+	 * @return int
+	 */
 	protected function ShowLink($link) {
 		$ret = array(
 			'ret'    => 0,
@@ -389,7 +457,13 @@ class DefaultController extends Controller
 		return $this->ajaxReturn($ret);
 	}
 
-	/** Обработка AJAX запроса - вернуть JSON представление ответа, если включен дебаг - сгенерировать нормальный вывод */
+	/**
+	 * Обработка AJAX запроса - вернуть JSON представление ответа, если включен дебаг - сгенерировать нормальный вывод
+	 * @param $ret
+	 *
+	 * @return int
+	 * @throws CHttpException
+	 */
 	protected function ajaxReturn($ret) {
 		if (Yii::app()->request->isAjaxRequest) {
 			echo json_encode($ret);
@@ -450,6 +524,13 @@ class DefaultController extends Controller
 		} elseif (!$dir) throw new CHttpException(404, 'Запрошенной директории нет, возможно ее удалили.');
 	}
 
+	/**
+	 * Создание моделей для новой папки и файла и обработка POST для их сохранения
+	 * @param $new_file
+	 * @param $new_dir
+	 * @param $dir
+	 * @param bool $user_files
+	 */
 	protected function new_file(&$new_file, &$new_dir, $dir, $user_files = false) {
 		$new_file = new Files();
 		$new_dir = new Files('new_dir');
