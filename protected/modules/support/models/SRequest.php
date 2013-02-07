@@ -7,6 +7,7 @@
  * @property string $id
  * @property string $uid
  * @property integer $opened
+ * @property integer $readed
  * @property string $cdate
  * @property string $title
  * @property string $l_message_id
@@ -19,6 +20,7 @@
 class SRequest extends CActiveRecord
 {
 	public $opened = 1;
+
 	/**
 	 * Returns the static model of the specified AR class.
 	 * @param string $className active record class name.

@@ -22,6 +22,7 @@ Yii::app()->clientScript->registerCssFile(CHtml::asset(Yii::app()->basePath.'/..
 	if ($this->company) {
 		$brandName .= ' → ' . (	mb_strlen($this->company->name) > 30 ? mb_substr($this->company->name, 0, 30) . '…': $this->company->name);
 	}
+	$requests_count = SRequest::model()->countByAttributes(array('readed' => 0, 'uid' => Yii::app()->user->id)); // Количество непрочитанных ответов от техпод.
 	$this->widget('bootstrap.widgets.TbNavbar', array(
 		'brand'=> $brandName,
 		'brandUrl'=> false,
@@ -34,7 +35,7 @@ Yii::app()->clientScript->registerCssFile(CHtml::asset(Yii::app()->basePath.'/..
 				'items'=>(!Yii::app()->user->isGuest ?
 					array(
 //						Yii::app()->user->data->isAdmin ? array('label' => 'Пользователи', 'url' => '/users/index') : array(),
-						array('label' => 'Поддержка', 'url' => array('/support/')),
+						array('label' => 'Поддержка'.($requests_count ? ' ('.$requests_count.')' : ''), 'url' => array('/support/')),
 						array('label' => Yii::app()->user->data->fullName, 'items'=>array(
 							array('label'=>'Профиль', 'url'=>array('/users/profile')),
 							'---',

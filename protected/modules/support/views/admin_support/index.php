@@ -14,13 +14,13 @@ $this->breadcrumbs=array('Техническая поддержка');
 	<tr>
 		<th>#</th>
 		<th>Заголовок</th>
-		<th>Дата сообщения</th>
+		<th>Последнее сообщение</th>
 		<th>Отправитель сообщения</th>
 		<th>Текст сообщения</th>
 		<th>Закрыт</th>
 	</tr>
 	<?php foreach ($requests as $r) :?>
-	<tr class="request_row<?=($r->opened?'':' success')?><?=(($r->opened && $r->l_message->to_admin)?' warning':'')?>" data-prev_class="<?=($r->l_message->to_admin?' warning':'')?>" data-url="<?=$this->createUrl('/support/admin_support/view/', array('id' => $r->id));?>">
+	<tr class="request_row<?=($r->opened?'':' success')?>" data-url="<?=$this->createUrl('/support/admin_support/view/', array('id' => $r->id));?>">
 		<td><?=$r->id?></td>
 		<td><?=$r->title?></td>
 		<td><?=$r->l_message->cdate?></td>
@@ -39,3 +39,7 @@ $this->breadcrumbs=array('Техническая поддержка');
 	</tr>
 	<?php endforeach?>
 </table>
+<?php // display pagination
+$this->widget('CLinkPager', array(
+	'pages' => $pager,
+)) ?>

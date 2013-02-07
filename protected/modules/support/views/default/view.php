@@ -15,7 +15,7 @@ $this->breadcrumbs = array(
 		<th>Отправитель</th>
 		<th>Текст сообщения</th>
 	</tr>
-	<?php foreach ($request->messages as $m) :?>
+	<?php foreach ($messages as $m) :?>
 	<tr>
 		<td><?=$m->cdate?></td>
 		<td><?=($m->to_admin?'Вы':'Администратор')?></td>
@@ -23,6 +23,10 @@ $this->breadcrumbs = array(
 	</tr>
 	<?php endforeach?>
 </table>
+<?php // display pagination
+$this->widget('CLinkPager', array(
+	'pages' => $pager,
+)) ?><div class="clearfix"></div><br/>
 <?php
 /** @var $form TbActiveForm*/
 $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(

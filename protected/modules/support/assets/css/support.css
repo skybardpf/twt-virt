@@ -1,3 +1,6 @@
 tr.request_row {
     cursor: pointer;
 }
+.request_row.not_readed {
+    font-weight: bold;
+}

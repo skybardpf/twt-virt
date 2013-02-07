@@ -2,13 +2,19 @@
 
 class Admin_supportController extends CmsController
 {
-	public function actionIndex()
+	public function actionIndex($page = 1)
 	{
 		$condition = new CDbCriteria();
-		$condition->order = 'l_message.cdate DESC';
+		$condition->order = 'opened DESC, l_message.cdate DESC';
+
+		$pager = new CPagination(SRequest::model()->with('l_message')->count($condition));
+		$pager->setPageSize(50);
+		$pager->setCurrentPage($page-1);
+		$pager->applyLimit($condition);
+
 		$requests = SRequest::model()->with('l_message', 'user')->findAll($condition);
 		//CVarDumper::dump($requests, 3, 1);
-		$this->render('index', array('requests' => $requests));
+		$this->render('index', array('requests' => $requests, 'pager' => $pager));
 	}
 
 	public function actionClose_switch($id) {
@@ -28,6 +34,7 @@ class Admin_supportController extends CmsController
 	}
 
 	public function actionView($id) {
+		/** @var $request SRequest */
 		$request = SRequest::model()->findByPk($id);
 		$message = new SMessage();
 		$message->request_id = $request->id;
@@ -35,6 +42,8 @@ class Admin_supportController extends CmsController
 			$message->attributes = $_POST['SMessage'];
 			$message->to_admin = 0;
 			if ($message->save()) {
+				$request->readed = 0;
+				$request->save(false, array('readed'));
 				$message = new SMessage();
 				$message->request_id = $request->id;
 			}

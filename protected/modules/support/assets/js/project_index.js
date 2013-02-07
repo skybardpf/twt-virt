@@ -15,10 +15,8 @@ $(document).ready(function(){
                     var parent = checkbox.parentNode.parentNode;
                     if (data.opened) {
                         $(parent).removeClass('success');
-                        if (parent.dataset.prev_class) $(parent).addClass(parent.dataset.prev_class);
                         checkbox.checked = 0;
                     } else {
-                        $(parent).removeClass('warning');
                         $(parent).addClass('success');
                         checkbox.checked = 1;
                     }
