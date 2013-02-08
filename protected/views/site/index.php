@@ -33,7 +33,7 @@ $this->pageTitle=Yii::app()->name;
 			<td>3 /53</td>
 			<td>1 / 10</td>
 			<td>0 / 2</td>
-			<td>2,3 Гб / 6 Гб</td>
+			<td><?=$c->getF_qoute_view()?></td>
 		</tr>
 	<?php endforeach ?>
 </table>

@@ -178,7 +178,7 @@ class Company extends CActiveRecord
 			'deleted' => 'Помечено на удаление',
 			'deleted_date' => 'Дата отметки',
 			'f_quote' => 'Квота файлового хранилица в МБ',
-			'f_qoute_view' => 'Квота'
+			'f_qoute_view' => 'Файлы'
 		);
 	}
 

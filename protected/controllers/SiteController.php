@@ -8,6 +8,7 @@ class SiteController extends Controller
 	 */
 	public function actionIndex()
 	{
+		Yii::app()->getModule('files');
 		$this->render('index', array('companies' => Yii::app()->user->data->companies));
 	}
 
