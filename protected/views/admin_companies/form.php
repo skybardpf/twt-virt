@@ -4,6 +4,9 @@
  * @var $model Company
  * @var $form TbActiveForm
  */
+
+Yii::app()->clientScript->registerScriptFile(CHtml::asset(Yii::app()->basePath.'/../static/js/select2.min.js'));
+Yii::app()->clientScript->registerCssFile(CHtml::asset(Yii::app()->basePath.'/../static/css/select2.css'));
 Yii::app()->clientScript->registerScriptFile(CHtml::asset(Yii::app()->basePath.'/../static/js/company_form.js'));
 ?>
 
@@ -23,7 +26,7 @@ Yii::app()->clientScript->registerScriptFile(CHtml::asset(Yii::app()->basePath.'
 	</div>
 	<fieldset class="">
 		<?=$form->textFieldRow($model,'name', array('class' => 'input-xxlarge')); ?>
-		<?=$form->dropDownListRow($model, 'admin_user_id', array(null => 'не выбран') + CHtml::listData(User::model()->findAll(), 'id', 'fullName'),array('class' => 'input-xxlarge'))?>
+		<?=$form->dropDownListRow($model, 'admin_user_id', array(null => '') + CHtml::listData(User::model()->findAll(), 'id', 'fullName'), array('class' => 'input-xxlarge', 'data-placeholder' => 'Не выбран'))?>
 		<?=$form->checkBoxRow($model, 'deleted')?>
 
 		<legend>Реквизиты компании</legend>
