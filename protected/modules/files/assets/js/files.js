@@ -101,6 +101,10 @@ $(document).ready(function(){
     // Выбор папки назначения для перемещения
     $('.dir_target').live('click', function(){
         var $this = $(this);
+        var $i = $(this.parentNode).children('i');
+        if ($i.hasClass('icon-folder-close') && $i.hasClass('dir_expand')) {
+            $i.click();
+        }
         if ($this.hasClass('dir_selected')) {
             $('.dir_target').removeClass('dir_selected');
             $('#move_button').addClass('disabled').attr('disabled', 'disabled');

@@ -742,7 +742,7 @@ class DefaultController extends Controller
 			$ret .= '<li>';
 			// Если у папки есть дети, то нужна иконка плюса или минуса (плюс для скрытых папок, минус для раскрытых)
 
-			$ret .= '<i class="dir_expand'.
+			$ret .= '<i class="'.((isset($str['childrens']) && !empty($str['childrens'])) ? 'dir_expand' : '').
 				(($lvl > 0 && isset($str['childrens']) && !empty($str['childrens'])) ? ' icon-folder-close' : ' icon-folder-open').
 				'"></i>';
 
