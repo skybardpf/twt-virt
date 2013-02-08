@@ -101,6 +101,7 @@ class Files extends CActiveRecord
 
 			array('name', 'required', 'except' => 'new_file'),
 			array('name', 'length', 'except' => 'new_file', 'max' => 120),
+			array('size', 'validateUploadSize', 'on' => 'new_file'),
 			array('name', 'is_subdir_unique', 'on' => 'new_file, new_dir, rename'),
 
 			array('name, is_dir', 'safe'),
@@ -245,6 +246,13 @@ class Files extends CActiveRecord
 		$criteria->order = 'is_dir DESC, name ASC';
 		return $this->children()->findAll($criteria);
 	}
+
+	public function validateUploadSize($attribute, $params) {
+		if ($this->company->f_quote*1048576 - $this->company->used_quote < $this->size) {
+			$this->addError('size', 'Загрузка данного файла превысит квоту компании.');
+		}
+	}
+
 }
 
 class FilesExtension extends Exception {}

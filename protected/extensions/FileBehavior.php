@@ -27,7 +27,7 @@ class FileBehavior extends CActiveRecordBehavior
 	/**
 	 * @var int размер файла
 	 */
-	public $maxSize = 10485760;
+	public $maxSize = null;
 
 	/**
 	 * Шорткат для Yii::getPathOfAlias($this->savePathAlias).DIRECTORY_SEPARATOR. Возвращает путь к директории,
@@ -93,7 +93,7 @@ class FileBehavior extends CActiveRecordBehavior
 			$owner->setAttribute($this->fileNameAttributeName, $file->getName());
 			$owner->setAttribute($this->fileSizeAttributeName, $file->getSize());
 
-			if (!$owner->validate(array($this->fileNameAttributeName, $this->fileSizeAttributeName))) {
+			if (!$owner->validate(array($this->fileNameAttributeName, $this->fileSizeAttributeName, $this->fileSizeAttributeName))) {
 				$event->isValid = false;
 				return false;
 			}
