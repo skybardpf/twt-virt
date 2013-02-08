@@ -7,8 +7,8 @@
  * @property string $id
  * @property string $name
 
- * @property string $legal_address
- * @property string $actual_address
+ * @property string $legal_address   // Юр адрес
+ * @property string $actual_address  // Факт адрес
  * @property string $phone
  * @property string $email
  * @property string $resident
@@ -26,6 +26,7 @@
  * @property string $registration_country
  * @property string $swift
  * @property string $iban
+ * @property integer $f_quote                // Квота файлов в МБ
  *
  * @property string $position_name1
  * @property string $position_owner1
@@ -76,7 +77,7 @@ class Company extends CActiveRecord
 		return array(
 			array('name', 'required'),
 			array('admin_user_id, deleted', 'safe', 'on' => 'update, insert'),
-			array('legal_address, actual_address, phone, email, resident, inn, kpp, okopf, ogrn, account_number, bank, bik, correspondent_account, vat, registration_number, registration_date, registration_country, swift, iban, position_name1, position_owner1, position_name2, position_owner2, position_name3, position_owner3', 'safe'),
+			array('legal_address, actual_address, phone, email, resident, inn, kpp, okopf, ogrn, account_number, bank, bik, correspondent_account, vat, registration_number, registration_date, registration_country, swift, iban, position_name1, position_owner1, position_name2, position_owner2, position_name3, position_owner3, f_quote', 'safe'),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
 			array('id, name, inn, kpp', 'safe', 'on'=>'search'),
@@ -86,11 +87,11 @@ class Company extends CActiveRecord
 	protected function beforeSave()
 	{
 		if (!$this->admin_user_id) {
-			$this->admin_user_id = null;
+			$this->admin_user_id = NULL;
 		}
 
 		if ($this->deleted == 0) {
-			$this->deleted_date = null;
+			$this->deleted_date = NULL;
 		}
 		return parent::beforeSave();
 	}
@@ -107,6 +108,7 @@ class Company extends CActiveRecord
 			'user2company' => array(self::HAS_MANY, 'User2company', 'company_id'),
 			'users' => array(self::HAS_MANY, 'User', array('user_id' => 'id'), 'through' => 'user2company'),
 			'admin_user' => array(self::BELONGS_TO, 'User', 'admin_user_id'),
+			'used_quote' => array(self::STAT, 'Files', 'company_id', 'select' => 'SUM(size)')
 		);
 	}
 
@@ -175,6 +177,8 @@ class Company extends CActiveRecord
 			'admin_user_id' => 'Администратор',
 			'deleted' => 'Помечено на удаление',
 			'deleted_date' => 'Дата отметки',
+			'f_quote' => 'Квота файлового хранилица в МБ',
+			'f_qoute_view' => 'Квота'
 		);
 	}
 
@@ -188,7 +192,7 @@ class Company extends CActiveRecord
 	public function unMarkDeleted()
 	{
 		$this->deleted = 0;
-		$this->deleted_date = null;
+		$this->deleted_date = NULL;
 		return $this->save(false);
 	}
 
@@ -211,5 +215,30 @@ class Company extends CActiveRecord
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
 		));
+	}
+
+	/**
+	 * Представляет нормальный вывод квоты в виде использовано/всего
+	 * @return string
+	 */
+	public function getF_qoute_view(){
+		return $this->HumanizeQuoteSize($this->used_quote).' / '.$this->HumanizeQuoteSize($this->f_quote, 2);
+	}
+
+	/**
+	 * Приводит размер (файла или квоты к нормальному виду)
+	 * @param $bytes
+	 * @param int $lvl
+	 * @return string
+	 */
+	protected function HumanizeQuoteSize($bytes, $lvl = 0) {
+		if (!$bytes) return '—';
+		$labels = array(0 => 'B', 1 => 'KB', 2 => 'MB', 3 => 'GB', 4 => 'TB');
+		while ($bytes > 1024) {
+			$bytes = $bytes / 1024;
+			$lvl++;
+		}
+		if (!isset($labels[$lvl])) return 'Очень много.';
+		else return number_format($bytes, 2).' '.$labels[$lvl];
 	}
 }

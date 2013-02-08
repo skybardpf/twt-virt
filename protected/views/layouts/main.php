@@ -22,6 +22,7 @@ Yii::app()->clientScript->registerCssFile(CHtml::asset(Yii::app()->basePath.'/..
 	if ($this->company) {
 		$brandName .= ' → ' . (	mb_strlen($this->company->name) > 30 ? mb_substr($this->company->name, 0, 30) . '…': $this->company->name);
 	}
+	Yii::app()->getModule('support');
 	$requests_count = SRequest::model()->countByAttributes(array('readed' => 0, 'uid' => Yii::app()->user->id)); // Количество непрочитанных ответов от техпод.
 	$this->widget('bootstrap.widgets.TbNavbar', array(
 		'brand'=> $brandName,

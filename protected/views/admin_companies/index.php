@@ -21,8 +21,7 @@ $this->widget('ext.bootstrap.widgets.TbGridView', array(
 	'columns' => array(
 		'id',
 		'name',
-		'inn',
-		'kpp',
+		'f_qoute_view',
 		array('name' => 'deleted', 'value' => '$data->deleted ? "Да" : "Нет"'),
 		array('name' => 'deleted_date', 'value' => 'Yii::app()->dateFormatter->formatDateTime($data->deleted_date)'),
 		array(

@@ -31,6 +31,7 @@ Yii::app()->clientScript->registerScriptFile(CHtml::asset(Yii::app()->basePath.'
 		<?=$form->textFieldRow($model,'actual_address', array('class' => 'input-xxlarge')); ?>
 		<?=$form->textFieldRow($model,'phone', array('class' => 'input-xxlarge')); ?>
 		<?=$form->textFieldRow($model,'email', array('class' => 'input-xxlarge')); ?>
+		<?=$form->textFieldRow($model,'f_quote', array('class' => 'input-xxlarge')); ?>
 		<?=$form->dropDownListRow($model,'resident', array(0 => 'Не резидент РФ', 1 => 'Резидент РФ'), array('class' => 'input-xxlarge')); ?>
 		<fieldset data-resident="1" <?=$model->resident? '' : 'style="display: none;"'?>>
 			<?=$form->textFieldRow($model,'inn', array('class' => 'input-xxlarge', 'disabled' => !$model->resident)); ?>

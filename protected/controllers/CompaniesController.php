@@ -4,6 +4,11 @@ class CompaniesController extends Controller
 {
 	public $layout = '//layouts/company';
 
+	public function runAction($action) {
+		Yii::app()->getModule('files');
+		return parent::runAction($action);
+	}
+
 	public function actionUpdate($company_id)
 	{
 		/** @var $model Company */

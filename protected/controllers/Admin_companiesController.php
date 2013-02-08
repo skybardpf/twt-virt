@@ -2,6 +2,12 @@
 
 class Admin_companiesController extends CmsController
 {
+	public function runAction($action)
+	{
+		Yii::app()->getModule('files');
+		parent::runAction($action);
+	}
+
 	public function actions()
 	{
 		return array(
