@@ -55,6 +55,11 @@
  */
 class Files extends CActiveRecord
 {
+	const KB = 1024;
+	const MB = 1048576;
+	const GB = 1073741824;
+	const TB = 1099511627776;
+
 	public $size = 0;
 	public $is_dir = 0;
 	public $deleted = 0;
@@ -248,7 +253,7 @@ class Files extends CActiveRecord
 	}
 
 	public function validateUploadSize($attribute, $params) {
-		if ($this->company->f_quote*1048576 - $this->company->used_quote < $this->size) {
+		if ($this->company->f_quote*Files::MB - $this->company->used_quote < $this->size) {
 			$this->addError('size', 'Загрузка данного файла превысит квоту компании.');
 		}
 	}
