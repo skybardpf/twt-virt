@@ -36,7 +36,7 @@ Yii::app()->clientScript->registerCssFile(CHtml::asset(Yii::app()->basePath.'/..
 				'items'=>(!Yii::app()->user->isGuest ?
 					array(
 //						Yii::app()->user->data->isAdmin ? array('label' => 'Пользователи', 'url' => '/users/index') : array(),
-						array('label' => 'Поддержка'.($requests_count ? ' ('.$requests_count.')' : ''), 'url' => array('/support/')),
+						array('label' => 'Поддержка'.($requests_count ? ' ('.$requests_count.')' : ''), 'url' => array('/support/'), 'itemOptions' => array('style' => 'font-weight: bold;')),
 						array('label' => Yii::app()->user->data->fullName, 'items'=>array(
 							array('label'=>'Профиль', 'url'=>array('/users/profile')),
 							'---',
@@ -60,6 +60,9 @@ Yii::app()->clientScript->registerCssFile(CHtml::asset(Yii::app()->basePath.'/..
 		</div>
 	</div>
 </div>
-
+<footer class="container">
+    <hr>
+    © <?=Yii::app()->name?>, <?=date('Y')?>
+</footer>
 </body>
 </html>

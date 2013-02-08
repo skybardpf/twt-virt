@@ -14,10 +14,10 @@ $(document).ready(function(){
                 if (data.error == '0') {
                     var parent = checkbox.parentNode.parentNode;
                     if (data.opened) {
-                        $(parent).removeClass('success');
+                        $(parent).addClass('not_readed').addClass('warning');
                         checkbox.checked = 0;
                     } else {
-                        $(parent).addClass('success');
+                        $(parent).removeClass('not_readed').removeClass('warning');
                         checkbox.checked = 1;
                     }
                 }

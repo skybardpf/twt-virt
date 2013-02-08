@@ -133,6 +133,7 @@ $(document).ready(function(){
                 if (data.ret) {
                     alert(data.error);
                 } else {
+//                    prompt(data.message, data.link);
                     window.location.reload();
                 }
             }, 'json');

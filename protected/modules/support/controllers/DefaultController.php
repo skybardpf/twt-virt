@@ -80,11 +80,9 @@ class DefaultController extends Controller
 			if ($message->save()) {
 				// Поставим запросу статус "открыт"
 				$request->opened = 1;
-				$request->save();
+				$request->save(false, array('opened'));
 
-				// Новое сообщение от пользователя, т.к. мы на той же странице
-				$message = new SMessage();
-				$message->request_id = $request->id;
+				$this->refresh();
 			}
 		}
 		$this->render('view', array(

@@ -574,6 +574,16 @@ class DefaultController extends Controller
 			$ret['error'] = 'Во время перемещения файла/папки произошла ошибка. Приносим свои извинения. Мы уже работаем над ее исправлением.';
 			return $this->ajaxReturn($ret);
 		}
+
+		// Сообщение об успешном переносе с путем к файлу/папке и ссылкой.
+		$path = array($target->user_id ? 'Личная папка' : 'Папка компании');
+		foreach($target->ancestors()->findAll() as $ancestor) {
+			if ($ancestor->lvl != 1) {
+				$path[] = $ancestor->name;
+			}
+		}
+		$ret['message'] = 'Файл/папка был успешно перенесен в '.implode(' / ', $path);
+		$ret['link'] = $this->createAbsoluteUrl($target->user_id ? 'user' : 'index', array('company_id' => $target->company_id, 'dir_id' => $target->id));
 		return $this->ajaxReturn($ret);
 	}
 

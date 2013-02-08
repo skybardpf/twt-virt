@@ -20,7 +20,7 @@ $this->breadcrumbs=array('Техническая поддержка');
 		<th>Закрыт</th>
 	</tr>
 	<?php foreach ($requests as $r) :?>
-	<tr class="request_row<?=($r->opened?'':' success')?>" data-url="<?=$this->createUrl('/support/admin_support/view/', array('id' => $r->id));?>">
+	<tr class="request_row<?=($r->opened?' warning not_readed':'')?>" data-url="<?=$this->createUrl('/support/admin_support/view/', array('id' => $r->id));?>">
 		<td><?=$r->id?></td>
 		<td><?=$r->title?></td>
 		<td><?=$r->l_message->cdate?></td>
