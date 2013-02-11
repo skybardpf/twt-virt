@@ -112,7 +112,7 @@ class SMessage extends CActiveRecord
 		$this->request->l_message_id = $this->id;
 		if ($this->to_admin) {
 			$this->request->opened = 1;
-			$this->request->readed = 0;
+			$this->request->readed = 1;
 		} else {
 			$this->request->readed = 0;
 		}
