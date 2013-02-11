@@ -42,10 +42,7 @@ class Admin_supportController extends CmsController
 			$message->attributes = $_POST['SMessage'];
 			$message->to_admin = 0;
 			if ($message->save()) {
-				$request->readed = 0;
-				$request->save(false, array('readed'));
-				$message = new SMessage();
-				$message->request_id = $request->id;
+				$this->refresh();
 			}
 		}
 		$this->render('view', array('request' => $request, 'message' => $message));

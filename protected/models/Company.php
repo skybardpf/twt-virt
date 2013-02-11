@@ -16,16 +16,10 @@
  * @property string $kpp
  * @property string $okopf
  * @property string $ogrn
- * @property string $account_number
- * @property string $bank
- * @property string $bik
- * @property string $correspondent_account
  * @property string $vat
  * @property string $registration_number
  * @property string $registration_date
  * @property string $registration_country
- * @property string $swift
- * @property string $iban
  * @property integer $f_quote                // Квота файлов в МБ
  *
  * @property string $position_name1
@@ -43,6 +37,8 @@
  * @property User[] $users
  * @property User2company[] $user2company
  * @property User $admin_user
+ * @property CBankAccount[] $res_banks
+ * @property CBankAccount[] $nonres_banks
  */
 class Company extends CActiveRecord
 {
@@ -108,7 +104,7 @@ class Company extends CActiveRecord
 			'user2company' => array(self::HAS_MANY, 'User2company', 'company_id'),
 			'users' => array(self::HAS_MANY, 'User', array('user_id' => 'id'), 'through' => 'user2company'),
 			'admin_user' => array(self::BELONGS_TO, 'User', 'admin_user_id'),
-			'used_quote' => array(self::STAT, 'Files', 'company_id', 'select' => 'SUM(size)')
+			'used_quote' => array(self::STAT, 'Files', 'company_id', 'select' => 'SUM(size)'),
 		);
 	}
 
@@ -158,16 +154,10 @@ class Company extends CActiveRecord
 			'kpp' => 'КПП',
 			'okopf' => 'ОКОПФ',
 			'ogrn' => 'ОГРН',
-			'account_number' => 'Номер счета',
-			'bank' => 'Банк',
-			'bik' => 'БИК',
-			'correspondent_account' => 'КоррСчет',
 			'vat' => 'VAT номер',
 			'registration_number' => 'Регистрационный номер',
 			'registration_date' => 'Дата регистрации',
 			'registration_country' => 'Страна регистрации',
-			'swift' => 'SWIFT код',
-			'iban' => 'IBAN',
 			'position_name1' => 'Должность',
 			'position_owner1' => 'ФИО',
 			'position_name2' => 'Должность',

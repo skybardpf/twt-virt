@@ -43,7 +43,6 @@ class DefaultController extends Controller
 				if ($message->save()) {
 					$transaction->commit();
 					$this->redirect($this->createUrl('/support/'));
-					Yii::app()->end();
 				}
 			}
 			$transaction->rollback();
@@ -78,10 +77,6 @@ class DefaultController extends Controller
 			$message->attributes = $_POST['SMessage'];
 			$message->to_admin = 1;
 			if ($message->save()) {
-				// Поставим запросу статус "открыт"
-				$request->opened = 1;
-				$request->save(false, array('opened'));
-
 				$this->refresh();
 			}
 		}

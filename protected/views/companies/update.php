@@ -4,6 +4,8 @@
  * @var $model Company
  * @var $form TbActiveForm
  */
+Yii::app()->clientScript->registerScriptFile(CHtml::asset(Yii::app()->basePath.'/../static/js/select2.min.js'));
+Yii::app()->clientScript->registerCssFile(CHtml::asset(Yii::app()->basePath.'/../static/css/select2.css'));
 Yii::app()->clientScript->registerScriptFile(CHtml::asset(Yii::app()->basePath.'/../static/js/company_form.js'));
 
 $this->breadcrumbs=array(
@@ -42,26 +44,14 @@ $this->pageTitle = 'Редактирование компании «' . $model->
 			<?=$form->textFieldRow($model,'kpp', array('class' => 'input-xxlarge', 'disabled' => !$model->resident)); ?>
 			<?=$form->textFieldRow($model,'okopf', array('class' => 'input-xxlarge', 'disabled' => !$model->resident)); ?>
 			<?=$form->textFieldRow($model,'ogrn', array('class' => 'input-xxlarge', 'disabled' => !$model->resident)); ?>
-
-			<legend>Реквизиты банковского счета</legend>
-			<?=$form->textFieldRow($model,'account_number', array('class' => 'input-xxlarge', 'disabled' => !$model->resident)); ?>
-			<?=$form->textFieldRow($model,'bank', array('class' => 'input-xxlarge', 'disabled' => !$model->resident)); ?>
-			<?=$form->textFieldRow($model,'bik', array('class' => 'input-xxlarge', 'disabled' => !$model->resident)); ?>
-			<?=$form->textFieldRow($model,'correspondent_account', array('class' => 'input-xxlarge', 'disabled' => !$model->resident)); ?>
-
 		</fieldset>
 		<fieldset data-resident="0" <?=$model->resident ? 'style="display: none;"' : ''?>>
 			<?=$form->textFieldRow($model,'vat', array('class' => 'input-xxlarge', 'disabled' => $model->resident)); ?>
 			<?=$form->textFieldRow($model,'registration_number', array('class' => 'input-xxlarge', 'disabled' => $model->resident)); ?>
 			<?=$form->textFieldRow($model,'registration_date', array('class' => 'input-xxlarge', 'disabled' => $model->resident)); ?>
 			<?=$form->textFieldRow($model,'registration_country', array('class' => 'input-xxlarge', 'disabled' => $model->resident)); ?>
-
-			<legend>Реквизиты банковского счета</legend>
-			<?=$form->textFieldRow($model,'account_number', array('class' => 'input-xxlarge', 'disabled' => $model->resident)); ?>
-			<?=$form->textFieldRow($model,'bank', array('class' => 'input-xxlarge', 'disabled' => $model->resident)); ?>
-			<?=$form->textFieldRow($model,'swift', array('class' => 'input-xxlarge', 'disabled' => $model->resident)); ?>
-			<?=$form->textFieldRow($model,'iban', array('class' => 'input-xxlarge', 'disabled' => $model->resident)); ?>
-
+        </fieldset>
+        <fieldset>
 			<legend>Данные о руководстве</legend>
 			<?=$form->textFieldRow($model,'position_name1', array('class' => 'input-xxlarge', 'disabled' => $model->resident)); ?>
 			<?=$form->textFieldRow($model,'position_owner1', array('class' => 'input-xxlarge', 'disabled' => $model->resident)); ?>

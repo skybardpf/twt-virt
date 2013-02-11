@@ -42,7 +42,7 @@ class Controller extends CController
 	protected function beforeAction($action)
 	{
 		if ($id = Yii::app()->request->getParam('company_id')) {
-			$this->company = Company::model()->findByPk($id);
+			$this->company = Company::model()->with()->findByPk($id);
 		}
 		return parent::beforeAction($action);
 	}
