@@ -1,4 +1,5 @@
 $(document).ready(function(){
+    // Переименовать файл/папку
     $('a.file_rename').click(function(){
         $(this.parentNode.parentNode.parentNode).removeClass('open');
         var new_name = window.prompt('Введите новое имя:', this.dataset.name);
@@ -29,6 +30,10 @@ $(document).ready(function(){
                 Loading.immidiate_hide();
                 $('#ModalWindow').modal('hide')
                 window.prompt('Ваша ссылка:', data.link);
+                var $delete_link = $('[data-file_id='+data.file_id+']').find('[data-action=delete_link]');
+                if (!$delete_link.length) {
+                    $('[data-file_id='+data.file_id+'] > ul').append(data.remove_link);
+                }
             }
         } else {
             Loading.immidiate_hide();

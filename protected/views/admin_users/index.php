@@ -35,6 +35,9 @@ $this->pageTitle = 'Пользователи';
 				$(event.target).val(ui.item.label);
 				$(document.getElementById("company_filter_field")).val(ui.item.value).trigger("change");
 				return false;
+			},
+			focus: function (event, ui) {
+				return false;
 			}
 		});
 		$(document).on("change", "#company_filter_field", function(event){

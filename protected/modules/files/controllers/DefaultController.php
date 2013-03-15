@@ -700,15 +700,17 @@ class DefaultController extends Controller
 
 	/**
 	 * Показ временной ссылки
-	 * @param $link
+	 * @param $link FLinks
 	 *
 	 * @return int
 	 */
 	protected function ShowLink($link) {
 		$ret = array(
-			'ret'    => 0,
-			'new'    => 0,
-			'link'   => $this->createAbsoluteUrl('//files/published/show', array('key' => $link->key))
+			'ret'         => 0,
+			'new'         => 0,
+			'link'        => $this->createAbsoluteUrl('//files/published/show', array('key' => $link->key)),
+			'remove_link' => '<li><a data-action="delete_link" class="link_delete" href="'.$this->createUrl('delete_link', array('file_id' => $link->file_id, 'company_id' => $this->company->id)).'"><i class="icon-remove"></i>&nbsp;Удалить временную ссылку</a></li>',
+			'file_id'     => $link->file_id,
 		);
 		return $this->ajaxReturn($ret);
 	}
