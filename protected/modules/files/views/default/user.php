@@ -42,7 +42,7 @@ $this->breadcrumbs = $breadcrumbs;
 	'links' => $this->breadcrumbs,
 	'homeLink' => false,
 ));?>
-
+<div id="alerts_container"></div>
 <?php if (!$files) :?>
 Данная директория пуста.
 <?php else: ?>
