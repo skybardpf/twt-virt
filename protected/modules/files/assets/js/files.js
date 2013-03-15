@@ -16,6 +16,7 @@ $(document).ready(function(){
         }
         return false;
     });
+
     function parseLinkData(data) {
         if (data.ret == 0) {
             if (data.new == 1) {
@@ -34,6 +35,7 @@ $(document).ready(function(){
             alert(data.error);
         }
     }
+
     $('a.file_link').click(function(){
         $(this.parentNode.parentNode.parentNode).removeClass('open');
         Loading.show();
@@ -52,6 +54,7 @@ $(document).ready(function(){
         }, 'json');
         return false;
     });
+
     $('a.file_delete').click(function(){
         $(this.parentNode.parentNode.parentNode).removeClass('open');
         Loading.show();
@@ -64,82 +67,99 @@ $(document).ready(function(){
         return false;
     });
 
-    /* ↓↓↓↓ Перемещение файлов и папок ↓↓↓↓ */
-
-    // Диалог выбора места назначения
-    $('a.file_move').click(function(){
+    $(document).on('click', '[data-action=delete_link]', function(event){
         $(this.parentNode.parentNode.parentNode).removeClass('open');
         Loading.show();
+        var action_link = this;
         $.post(this.href, function(data){
+            Loading.immidiate_hide();
+            var a_cont = document.getElementById('alerts_container');
             if (data.ret) {
-                Loading.immidiate_hide();
-                alert(data.error);
+                $(a_cont).append('<div class="alert alert-error"><button type="button" class="close" data-dismiss="alert">&times;</button><h4>Ошибка!</h4>'+data.error+'</div>');
             } else {
-                Loading.hide();
-                document.getElementById('modal-header').innerHTML = data.title;
-                document.getElementById('modal-body').innerHTML = data.html;
-                document.getElementById('modal-footer').innerHTML = data.footer;
-                $('#ModalWindow').modal('show');
-                console.dir(data);
+                $(action_link.parentNode).remove();
+                $(a_cont).append('<div class="alert alert-success"><button type="button" class="close" data-dismiss="alert">&times;</button><h4>Готово!</h4>'+data.message+'</div>');
             }
         }, 'json');
         return false;
     });
 
-    // Сворачивание и разворачивание папок в модальном окне
-    $('.dir_expand').live('click', function(){
-        var $this = $(this);
-        if ($this.hasClass('icon-folder-close')) {
-            $this.removeClass('icon-folder-close').addClass('icon-folder-open');
-        } else {
-            $this.removeClass('icon-folder-open').addClass('icon-folder-close');
-        }
-        $(this.parentNode).children('ul').toggle()
-        return false;
-    });
+    // ↓↓↓↓ Перемещение файлов и папок ↓↓↓↓
 
-    // Выбор папки назначения для перемещения
-    $('.dir_target').live('click', function(){
-        var $this = $(this);
-        var $i = $(this.parentNode).children('i');
-        if ($i.hasClass('icon-folder-close') && $i.hasClass('dir_expand')) {
-            $i.click();
-        }
-        if ($this.hasClass('dir_selected')) {
-            $('.dir_target').removeClass('dir_selected');
-            $('#move_button').addClass('disabled').attr('disabled', 'disabled');
-        } else {
-            $('.dir_target').removeClass('dir_selected');
-            $(this).addClass('dir_selected');
-            $('#move_button').removeClass('disabled').removeAttr('disabled');
-        }
-        return false;
-    });
-
-    $('#move_button').live('click', function(){
-        var $this = $(this);
-        // Нажата выключенная кнопка
-        if ($this.hasClass('disabled')) return false;
-
-        var $elem = $('.dir_target.dir_selected');
-        if ($elem.length == 0) {
-            alert('Выберите пожалуйста папку-назначение.');
-        } else if ($elem.length > 1) {
-            alert('Может быть выбрана только одна папка.');
-        } else {
+        // Диалог выбора места назначения
+        $('a.file_move').click(function(){
+            $(this.parentNode.parentNode.parentNode).removeClass('open');
             Loading.show();
-            $.post(this.dataset.link, {target_id: $elem.get(0).dataset.id}, function(data){
-                Loading.immidiate_hide();
+            $.post(this.href, function(data){
                 if (data.ret) {
+                    Loading.immidiate_hide();
                     alert(data.error);
                 } else {
-//                    prompt(data.message, data.link);
-                    window.location.reload();
+                    Loading.hide();
+                    document.getElementById('modal-header').innerHTML = data.title;
+                    document.getElementById('modal-body').innerHTML = data.html;
+                    document.getElementById('modal-footer').innerHTML = data.footer;
+                    $('#ModalWindow').modal('show');
+                    console.dir(data);
                 }
             }, 'json');
-        }
-        return false;
-    });
+            return false;
+        });
 
-    /* ↑↑↑↑ Перемещение файлов и папок ↑↑↑↑ */
+        // Сворачивание и разворачивание папок в модальном окне
+        $('.dir_expand').live('click', function(){
+            var $this = $(this);
+            if ($this.hasClass('icon-folder-close')) {
+                $this.removeClass('icon-folder-close').addClass('icon-folder-open');
+            } else {
+                $this.removeClass('icon-folder-open').addClass('icon-folder-close');
+            }
+            $(this.parentNode).children('ul').toggle()
+            return false;
+        });
+
+        // Выбор папки назначения для перемещения
+        $('.dir_target').live('click', function(){
+            var $this = $(this);
+            var $i = $(this.parentNode).children('i');
+            if ($i.hasClass('icon-folder-close') && $i.hasClass('dir_expand')) {
+                $i.click();
+            }
+            if ($this.hasClass('dir_selected')) {
+                $('.dir_target').removeClass('dir_selected');
+                $('#move_button').addClass('disabled').attr('disabled', 'disabled');
+            } else {
+                $('.dir_target').removeClass('dir_selected');
+                $(this).addClass('dir_selected');
+                $('#move_button').removeClass('disabled').removeAttr('disabled');
+            }
+            return false;
+        });
+
+        $('#move_button').live('click', function(){
+            var $this = $(this);
+            // Нажата выключенная кнопка
+            if ($this.hasClass('disabled')) return false;
+
+            var $elem = $('.dir_target.dir_selected');
+            if ($elem.length == 0) {
+                alert('Выберите пожалуйста папку-назначение.');
+            } else if ($elem.length > 1) {
+                alert('Может быть выбрана только одна папка.');
+            } else {
+                Loading.show();
+                $.post(this.dataset.link, {target_id: $elem.get(0).dataset.id}, function(data){
+                    Loading.immidiate_hide();
+                    if (data.ret) {
+                        alert(data.error);
+                    } else {
+    //                    prompt(data.message, data.link);
+                        window.location.reload();
+                    }
+                }, 'json');
+            }
+            return false;
+        });
+
+    // ↑↑↑↑ Перемещение файлов и папок ↑↑↑↑
 });

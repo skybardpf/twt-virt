@@ -18,13 +18,33 @@ class DefaultController extends Controller
 		$new_dir = NULL; /** @var $new_dir Files */
 		$this->new_file($new_file, $new_dir, $dir);
 
+		// Получим список временных ссылок для списка
+		$files_list = $dir->listDirectory();
+		$ids = array();
+		if ($files_list) { foreach($files_list as $tmp) {
+			$ids[] = $tmp->id;
+		} }
+		$criteria = new CDbCriteria();
+		$criteria->addInCondition('id', $ids);
+		$criteria->addCondition('user_id = :user_id');
+		$criteria->addCondition('edate >= :edate');
+		$criteria->params[':user_id'] = Yii::app()->user->id;
+		$criteria->params['edate'] = date('Y-m-d H:i:s');
+		$links_tmp = FLinks::model()->findAll($criteria);
+		$links = array();
+		if ($links_tmp) { foreach ($links_tmp as $link) {
+			$links[$link->file_id] = $link;
+		} }
+		unset($links_tmp, $ids, $tmp, $criteria, $link);
+
 		$this->render(
 			'index',
 			array(
 				'dir'       => $dir,
-				'files'     => $dir->listDirectory(),
+				'files'     => $files_list,
 				'new_file'  => $new_file,
 				'new_dir'   => $new_dir,
+				'links'     => $links,
 				'ancestors' => $dir->getAncestors()
 			)
 		);
@@ -173,6 +193,39 @@ class DefaultController extends Controller
 			$this->CreateLink($file);
 		}
 
+	}
+
+	/**
+	 * AJAX метод удаления временной ссылки
+	 * @param null $file_id
+	 */
+	public function actionDelete_link($file_id = NULL) {
+		$ret = array('ret' => 0);
+		if (!$file_id = intval($file_id)) {
+			$ret['ret'] = 1;
+			$ret['error'] = 'Указанного файла не существует';
+			$this->ajaxReturn($ret);
+		}
+		$criteria = new CDbCriteria();
+		$criteria->addCondition('file_id = :file_id');
+		$criteria->addCondition('user_id = :user_id');
+		$criteria->params[':file_id'] = $file_id;
+		$criteria->params[':user_id'] = Yii::app()->user->id;
+		/** @var $link FLinks */
+		$link = FLinks::model()->find($criteria);
+		if (!$link) {
+			$ret['ret'] = 2;
+			$ret['error'] = 'Ссылки на указанный файл не существует';
+		} elseif ($link->edate < date('Y-m-d H:i:s')) {
+			$ret['ret'] = 3;
+			$ret['error'] = 'Срок действия ссылки на указанный файл истек.';
+		} elseif ($link->delete()) {
+			$ret['message'] = 'Временная ссылка удалена.';
+		} else {
+			$ret['ret'] = 4;
+			$ret['error'] = 'При удалении временной ссылки произошла ошибка.';
+		}
+		return $this->ajaxReturn($ret);
 	}
 
 	/**
@@ -384,11 +437,18 @@ class DefaultController extends Controller
 	 * AJAX метод очищения пользовательской корзины
 	 * @return int
 	 */
-	public function actionRemove_all() {
+	public function actionRemove_all($user_dir = true) {
 		$ret = array('ret' => 0);
+		$user_dir = (boolean)$user_dir;
+
+		if (!$user_dir && Yii::app()->user->id != $this->company->admin_user_id) {
+			$ret['error'] = 'Вы не являетесь администратором данной компании и не можете удалять файлы из ее корзины.';
+			$ret['ret'] = 1;
+			return $this->ajaxReturn($ret);
+		}
 
 		$dir = NULL;
-		$this->get_cur_dir($dir, NULL, true, true);
+		$this->get_cur_dir($dir, NULL, $user_dir, true);
 		$files = $dir->descendants()->findAll();
 		$transaction = Yii::app()->db->beginTransaction();
 		try {
@@ -504,7 +564,7 @@ class DefaultController extends Controller
 		return $this->ajaxReturn($ret);
 	}
 
-	public function actionMove_to($file_id = null) {
+	public function actionMove_to($file_id = NULL) {
 		$ret = array('ret' => 0);
 		// Нет файла
 		if (!$file_id) {

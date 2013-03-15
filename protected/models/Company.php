@@ -44,6 +44,7 @@ class Company extends CActiveRecord
 {
 	public $deleted = 0;
 	public $resident = 1;
+	public $f_quote = 50;
 
 	/**
 	 * Returns the static model of the specified AR class.
@@ -71,9 +72,9 @@ class Company extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('name', 'required'),
+			array('name, f_quote', 'required'),
 			array('admin_user_id, deleted', 'safe', 'on' => 'update, insert'),
-			array('legal_address, actual_address, phone, email, resident, inn, kpp, okopf, ogrn, account_number, bank, bik, correspondent_account, vat, registration_number, registration_date, registration_country, swift, iban, position_name1, position_owner1, position_name2, position_owner2, position_name3, position_owner3, f_quote', 'safe'),
+			array('legal_address, actual_address, phone, email, resident, inn, kpp, okopf, ogrn, account_number, bank, bik, correspondent_account, vat, registration_number, registration_date, registration_country, swift, iban, position_name1, position_owner1, position_name2, position_owner2, position_name3, position_owner3', 'safe'),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
 			array('id, name, inn, kpp', 'safe', 'on'=>'search'),
