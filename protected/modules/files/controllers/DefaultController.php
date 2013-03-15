@@ -25,7 +25,7 @@ class DefaultController extends Controller
 			$ids[] = $tmp->id;
 		} }
 		$criteria = new CDbCriteria();
-		$criteria->addInCondition('id', $ids);
+		$criteria->addInCondition('file_id', $ids);
 		$criteria->addCondition('user_id = :user_id');
 		$criteria->addCondition('edate >= :edate');
 		$criteria->params[':user_id'] = Yii::app()->user->id;
@@ -70,7 +70,7 @@ class DefaultController extends Controller
 			$ids[] = $tmp->id;
 		} }
 		$criteria = new CDbCriteria();
-		$criteria->addInCondition('id', $ids);
+		$criteria->addInCondition('file_id', $ids);
 		$criteria->addCondition('user_id = :user_id');
 		$criteria->addCondition('edate >= :edate');
 		$criteria->params[':user_id'] = Yii::app()->user->id;
