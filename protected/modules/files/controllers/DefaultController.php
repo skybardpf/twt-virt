@@ -63,6 +63,25 @@ class DefaultController extends Controller
 		$new_dir = NULL;
 		$this->new_file($new_file, $new_dir, $dir, true);
 
+		// Получим список временных ссылок для списка
+		$files_list = $dir->listDirectory();
+		$ids = array();
+		if ($files_list) { foreach($files_list as $tmp) {
+			$ids[] = $tmp->id;
+		} }
+		$criteria = new CDbCriteria();
+		$criteria->addInCondition('id', $ids);
+		$criteria->addCondition('user_id = :user_id');
+		$criteria->addCondition('edate >= :edate');
+		$criteria->params[':user_id'] = Yii::app()->user->id;
+		$criteria->params['edate'] = date('Y-m-d H:i:s');
+		$links_tmp = FLinks::model()->findAll($criteria);
+		$links = array();
+		if ($links_tmp) { foreach ($links_tmp as $link) {
+			$links[$link->file_id] = $link;
+		} }
+		unset($links_tmp, $ids, $tmp, $criteria, $link);
+
 		$this->render(
 			'user',
 			array(
@@ -70,6 +89,7 @@ class DefaultController extends Controller
 				'files'     => $dir->listDirectory(),
 				'new_file'  => $new_file,
 				'new_dir'   => $new_dir,
+				'links'     => $links,
 				'ancestors' => $dir->getAncestors()
 			)
 		);

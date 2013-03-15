@@ -73,10 +73,9 @@ $this->breadcrumbs = $breadcrumbs;
                     <li><a class="file_rename" data-name="<?=$file->name?>" data-link="<?=$this->createUrl('rename', array('file_id' => $file->id, 'company_id' => $this->company->id))?>" href="#"><i class="icon-pencil"></i>&nbsp;Переименовать</a></li>
                     <li><a class="file_move"   href="<?=$this->createUrl('move', array('file_id' => $file->id, 'company_id' => $this->company->id))?>"><i class="icon-share"></i>&nbsp;Переместить в</a></li>
                     <li><a class="file_delete" href="<?=$this->createUrl('delete', array('file_id' => $file->id, 'company_id' => $this->company->id))?>"><i class="icon-trash"></i>&nbsp;В корзину</a></li>
-                    <li><hr></li>
 	                <li><a class="file_link"   href="<?=$this->createUrl('publish_link', array('file_id' => $file->id, 'company_id' => $this->company->id))?>"><i class="icon-share-alt"></i>&nbsp;Временная ссылка</a></li>
 	                <?php if (isset($links[$file->id])) :?>
-	                    <li><a data-action="delete_link" class="link_delete" href="<?=$this->createUrl('delete_link', array('file_id' => $file->id, 'company_id' => $this->company->id))?>"><i class="icon-trash"></i>&nbsp;Удалить временную ссылку</a></li>
+	                    <li><a data-action="delete_link" class="link_delete" href="<?=$this->createUrl('delete_link', array('file_id' => $file->id, 'company_id' => $this->company->id))?>"><i class="icon-remove"></i>&nbsp;Удалить временную ссылку</a></li>
 	                <?php endif; ?>
                 </ul>
             </div>
