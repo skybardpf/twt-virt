@@ -32,8 +32,9 @@ class User extends CActiveRecord
 	public $isAdmin = false;
 
 	public $companies_ids = array();
+	public $companies_ids_string = array();
 
-
+	public $admin_action = false; // Это для костыля. TODO Надо конкретно рефакторить companies_ids
 
 	public function getFullName()
 	{
@@ -66,7 +67,7 @@ class User extends CActiveRecord
 		// will receive user inputs.
 		return array(
 			array('email, password', 'required', 'on' => 'login'),
-			array('email, name, surname, companies_ids', 'required', 'on' => 'insert,update,owner_update,owner_create'),
+			array('email, name, surname, companies_ids, companies_ids_string', 'required', 'on' => 'insert,update,owner_update,owner_create'),
 			array('email, name, surname', 'required', 'on' => 'profile'),
 			array('companies_ids', 'safe', 'on' => 'owner_update,only_company,owner_create'),
 			array('email', 'unique', 'on' => 'insert,update,owner_update,owner_create,profile'),
@@ -76,6 +77,7 @@ class User extends CActiveRecord
 			array('password, repassword', 'required', 'on' => 'insert, change_pass,owner_create'),
 			array('repassword', 'compare', 'compareAttribute' => 'password', 'on' => 'insert, change_pass, owner_create'),
 			array('phone', 'safe', 'on' => 'insert,update,owner_update,owner_create,profile'),
+
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
 			array('id, email, password, name, surname, phone, active', 'safe', 'on'=>'search'),
@@ -101,18 +103,19 @@ class User extends CActiveRecord
 	public function attributeLabels()
 	{
 		return array(
-			'id' => 'ID',
-			'email' => 'E-mail',
-			'old_password' => 'Старый пароль',
-			'password' => 'Пароль',
-			'repassword' => 'Повтор пороля',
-			'name' => 'Имя',
-			'surname' => 'Фамилия',
-			'fullName' => 'Полное имя',
-			'phone' => 'Телефон',
-			'salt' => 'Соль',
-			'active' => 'Активный',
-			'companies_ids' => 'Компании'
+			'id'                    => 'ID',
+			'email'                 => 'E-mail',
+			'old_password'          => 'Старый пароль',
+			'password'              => 'Пароль',
+			'repassword'            => 'Повтор пороля',
+			'name'                  => 'Имя',
+			'surname'               => 'Фамилия',
+			'fullName'              => 'Полное имя',
+			'phone'                 => 'Телефон',
+			'salt'                  => 'Соль',
+			'active'                => 'Активный',
+			'companies_ids'         => 'Компании',
+			'companies_ids_string'  => 'Компании'
 		);
 	}
 
@@ -124,16 +127,25 @@ class User extends CActiveRecord
 				$this->isAdmin = true;
 			}
 		}
+		$this->companies_ids_string = implode(', ',$this->companies_ids);
+
 		parent::afterFind();
 	}
 
 
 	public function beforeSave()
 	{
+		if (in_array($this->scenario, array('insert', 'update')) && $this->admin_action) {
+			$temp = explode(',', $this->companies_ids_string);
+			$temp = array_unique($temp);
+			$this->companies_ids = $temp;
+		}
+
 		if ($this->password && $this->repassword) {
 			$this->salt = md5(microtime(true).rand().'my_strong_salt456564897521646');
 			$this->password = self::createHash($this->password, $this->salt);
 		}
+
 		return parent::beforeSave();
 	}
 
@@ -231,5 +243,10 @@ class User extends CActiveRecord
 			$this->addError('', $this->_identity->errorMessage);
 			return false;
 		}
+	}
+
+	// Чтобы в массив companies_ids записать значиния из мултиселект2 инпута companies_ids_string
+	public function parse_companies_string() {
+
 	}
 }

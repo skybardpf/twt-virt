@@ -43,6 +43,12 @@ $this->pageTitle = 'Компания '.$company->name;
 		'bank',
 		'bik',
 		'correspondent_account',
+		'position_name1',
+		'position_owner1',
+		'position_name2',
+		'position_owner2',
+		'position_name3',
+		'position_owner3',
 	) : array(
 		'name',
 		'legal_address',

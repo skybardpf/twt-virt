@@ -4,15 +4,19 @@
  * @var $model User
  * @var $form TbActiveForm
  */
+
+Yii::app()->clientScript->registerScriptFile($this->asset_static.'/js/select2.min.js');
+Yii::app()->clientScript->registerCssFile($this->asset_static.'/css/select2.css');
 ?>
 
 <div class="form">
 
-<?php $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
-	'id'=>'model-form-form',
-	'type'=>'horizontal',
-	'enableAjaxValidation'=>true,
-
+<?php
+	/** @var $form TbActiveForm */
+	$form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
+		'id'=>'model-form-form',
+		'type'=>'horizontal',
+		'enableAjaxValidation'=>true,
 ))?>
 
 	<?php echo $form->errorSummary($model); ?>
@@ -34,6 +38,7 @@
 		<?php endif ?>
 		<?=$form->checkBoxRow($model, 'active')?>
 
+		<?php /*
 		<div class="control-group">
 			<?=$form->labelEx($model, 'companies_ids', array('class' => 'control-label'))?>
 			<div class="controls">
@@ -61,6 +66,42 @@
 						<?=CHtml::label($company->name, $baseID.'_'.$id)?>
 					</div>
 				<?php endforeach ?>
+			</div>
+		</div> */?>
+		<div class="control-group">
+			<?=$form->labelEx($model, 'companies_ids_string', array('class' => 'control-label'))?>
+			<div class="controls">
+				<?php
+				echo CHtml::hiddenField('User[companies_ids_string]', '');
+				$baseID = CHtml::getIdByName('User[companies_ids_string]');
+
+				$data = array();
+				$preload_data = array();
+				foreach ($model->getCompaniesList() as $company) {
+					$tmp = array(
+						'id'        => $company->id,
+						'text'      => $company->name,
+						'locked'    => $company->admin_user_id && $company->admin_user_id == $model->id,
+					);
+					if (in_array($company->id, $model->companies_ids)) {
+						$preload_data[] = $company->id;
+					}
+					$data[] = $tmp;
+
+				}
+				Yii::app()->clientScript->registerScript('user_update_companies_select', 'js:
+					$(document).ready(function(){
+						$("#'.$baseID.'").select2({
+							data: '.CJavaScript::encode($data).',
+							width: "530px",
+							multiple: true,
+							allowClear: true,
+							minimumInputLength: 1,
+						});
+						$("#'.$baseID.'").select2("val", '.CJavaScript::encode($preload_data).');
+						//$("#'.$baseID.'").select2("data", '.CJavaScript::encode($preload_data).');
+					});
+				'); ?>
 			</div>
 		</div>
 	</fieldset>

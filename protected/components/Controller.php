@@ -24,6 +24,16 @@ class Controller extends CController
 	/** @var Company */
 	public $company = NULL;
 
+	/** @var string Static asset path*/
+	public $asset_static = '';
+
+	public function init()
+	{
+		$this->asset_static = CHtml::asset(Yii::app()->basePath.'/../static/');
+		parent::init();
+	}
+
+
 	public function filters()
 	{
 		return array(

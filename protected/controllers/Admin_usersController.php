@@ -4,18 +4,22 @@ class Admin_usersController extends CmsController
 {
 	public function actions()
 	{
+		$new = new User();
+		$new->admin_action = true;
+		$model = User::model();
+		$model->admin_action = true;
 		return array(
 			'create'=>array(
 				'class'=>'ext.admin_actions.CreateAction',
-				'model'=> new User(),
+				'model'=> $new,
 			),
 			'update'=>array(
 				'class'=>'ext.admin_actions.UpdateAction',
-				'model'=> User::model(),
+				'model'=> $model,
 			),
 			'delete'=>array(
 				'class'=>'ext.admin_actions.DeleteAction',
-				'model'=> User::model(),
+				'model'=> $model,
 			)
 		);
 	}

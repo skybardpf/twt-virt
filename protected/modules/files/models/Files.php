@@ -269,10 +269,43 @@ class Files extends CActiveRecord
 		/** @var $links FLinks[] */
 		$links = FLinks::model()->findAllByAttributes(array('file_id' => $this->id));
 		$ret = true;
-		if ($links) { foreach($links as $link) {
-			$ret = $ret && $link->delete();
-		} }
+		$ids = array();
+		if ($links) { foreach($links as $link) { $ids[$link->id] = 1; } }
+		if ($ids) {
+			$criteria = new CDbCriteria();
+			$criteria->addInCondition('id', array_keys($ids));
+			$ret = $ret && count($ids) == FLinks::model()->deleteAll($criteria);
+		}
 		return $ret && parent::beforeDelete();
+	}
+
+	/**
+	 * Действия перед удалением группы записей.
+	 * @param string $condition
+	 * @param array $params
+	 *
+	 * @return int
+	 */
+	public function deleteAll($condition = '', $params = array())
+	{
+		$builder  = $this->getCommandBuilder();
+		$criteria = $builder->createCriteria($condition,$params);
+		$files    = $this->findAll($criteria);
+		$ids      = array();
+		if ($files) { foreach ($files as $file) { $ids[] = $file->id; } }
+		if ($ids) {
+			$criteria = new CDbCriteria();
+			$criteria->addInCondition('file_id', $ids);
+			$links = FLinks::model()->findAll($criteria);
+			$ids = array();
+			if ($links) { foreach($links as $link) { $ids[] = $link->id; } }
+			if ($ids) {
+				$criteria = new CDbCriteria();
+				$criteria->addInCondition('id', $ids);
+				FLinks::model()->deleteAll($criteria);
+			}
+		}
+		return parent::deleteAll($condition, $params);
 	}
 
 

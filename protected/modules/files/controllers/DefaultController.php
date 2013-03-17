@@ -467,6 +467,7 @@ class DefaultController extends Controller
 			return $this->ajaxReturn($ret);
 		}
 
+		/** @var $dir Files */
 		$dir = NULL;
 		$this->get_cur_dir($dir, NULL, $user_dir, true);
 		$files = $dir->descendants()->findAll();
