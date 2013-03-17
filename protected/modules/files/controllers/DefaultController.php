@@ -477,6 +477,7 @@ class DefaultController extends Controller
 			$transaction->rollback();
 			$ret['error'] = 'Ошибка при удалении файла/папки.';
 			$ret['ret'] = 1;
+			$ret['err_desc'] = $e->getMessage();
 			return $this->ajaxReturn($ret);
 		}
 		$transaction->commit();

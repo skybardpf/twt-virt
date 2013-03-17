@@ -258,6 +258,24 @@ class Files extends CActiveRecord
 		}
 	}
 
+	/**
+	 * Действия перед удалением записи
+	 *
+	 * 1) Требуется удалить все временные ссылки на этот файл.
+	 * @return bool
+	 */
+	protected function beforeDelete()
+	{
+		/** @var $links FLinks[] */
+		$links = FLinks::model()->findAllByAttributes(array('file_id' => $this->id));
+		$ret = true;
+		if ($links) { foreach($links as $link) {
+			$ret = $ret && $link->delete();
+		} }
+		return $ret && parent::beforeDelete();
+	}
+
+
 }
 
 class FilesExtension extends Exception {}
