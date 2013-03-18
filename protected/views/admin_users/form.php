@@ -99,6 +99,9 @@ Yii::app()->clientScript->registerCssFile($this->asset_static.'/css/select2.css'
 							minimumInputLength: 1,
 						});
 						$("#'.$baseID.'").select2("val", '.CJavaScript::encode($preload_data).');
+                        $(document.getElementById("'.$baseID.'").parentNode).on("blur", "input", function(event){
+                            $(document.getElementById("'.$baseID.'")).select2("close");
+                        });
 						//$("#'.$baseID.'").select2("data", '.CJavaScript::encode($preload_data).');
 					});
 				'); ?>

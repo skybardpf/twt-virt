@@ -32,7 +32,7 @@ class User extends CActiveRecord
 	public $isAdmin = false;
 
 	public $companies_ids = array();
-	public $companies_ids_string = array();
+	public $companies_ids_string = '';
 
 	public $admin_action = false; // Это для костыля. TODO Надо конкретно рефакторить companies_ids
 
