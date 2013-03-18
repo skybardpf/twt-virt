@@ -1,6 +1,7 @@
 /*
 Version: 3.2 Timestamp: Mon Sep 10 10:38:04 PDT 2012
 */
+
 .select2-container {
     position: relative;
     display: inline-block;
@@ -510,6 +511,10 @@ disabled look for already selected choices in the results dropdown
 
 .select2-offscreen { position: absolute; left: -10000px; }
 
+.select2-drop-mask {
+	position: fixed;
+}
+
 /* Retina-ize icons */
 
 @media only screen and (-webkit-min-device-pixel-ratio: 1.5) {
@@ -522,3 +527,4 @@ disabled look for already selected choices in the results dropdown
 		background-position: 100% -21px !important;
 	}
 }
+
