@@ -7,7 +7,8 @@
  * @var $ancestors Files[]
  * @var $links FLinks[]
  */
-
+Yii::app()->clientScript->registerCssFile(CHtml::asset(Yii::app()->basePath.'/../static/css/jquery-ui-1.10.2.custom.min.css'));
+Yii::app()->clientScript->registerCoreScript('jquery.ui');
 Yii::app()->clientScript->registerScriptFile(CHtml::asset(Yii::app()->basePath.'/modules/files/assets/js/files.js'));
 Yii::app()->clientScript->registerCssFile(CHtml::asset(Yii::app()->basePath.'/modules/files/assets/css/move.css'));
 $this->widget('ext.widgets.loading.LoadingWidget');
@@ -55,6 +56,7 @@ $this->breadcrumbs = $breadcrumbs;
 		<th>Дата создания</th>
 		<th>Размер</th>
 		<th></th>
+		<th></th>
 	</tr>
 	<?php foreach ($files as $file) :?>
 	<tr>
@@ -79,6 +81,14 @@ $this->breadcrumbs = $breadcrumbs;
 	                <?php endif; ?>
                 </ul>
             </div>
+		</td>
+		<td style="max-width: 20px;" data-td_file_id="<?=$file->id?>">
+			<?php if (isset($links[$file->id])) :?>
+				<div>
+					<a class="file_link"   href="<?=$this->createUrl('publish_link', array('file_id' => $file->id, 'company_id' => $this->company->id))?>"><i class="icon-share-alt"></i>&nbsp;</a>
+					<a data-action="delete_link" class="link_delete" href="<?=$this->createUrl('delete_link', array('file_id' => $file->id, 'company_id' => $this->company->id))?>"><i class="icon-remove"></i>&nbsp;</a>
+				</div>
+			<?php endif; ?>
 		</td>
 	</tr>
 	<?php endforeach;?>

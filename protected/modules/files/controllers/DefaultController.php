@@ -712,6 +712,10 @@ class DefaultController extends Controller
 			'new'         => 0,
 			'link'        => $this->createAbsoluteUrl('//files/published/show', array('key' => $link->key)),
 			'remove_link' => '<li><a data-action="delete_link" class="link_delete" href="'.$this->createUrl('delete_link', array('file_id' => $link->file_id, 'company_id' => $this->company->id)).'"><i class="icon-remove"></i>&nbsp;Удалить временную ссылку</a></li>',
+			'show_remove_icons' => '<div>
+										<a class="file_link"   href="'.$this->createUrl('publish_link', array('file_id' => $link->file_id, 'company_id' => $this->company->id)).'"><i class="icon-share-alt"></i>&nbsp;</a>
+										<a data-action="delete_link" class="link_delete" href="'.$this->createUrl('delete_link', array('file_id' => $link->file_id, 'company_id' => $this->company->id)).'"><i class="icon-remove"></i>&nbsp;</a>
+									</div>',
 			'file_id'     => $link->file_id,
 		);
 		return $this->ajaxReturn($ret);

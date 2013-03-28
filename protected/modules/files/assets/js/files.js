@@ -29,10 +29,24 @@ $(document).ready(function(){
             } else {
                 Loading.immidiate_hide();
                 $('#ModalWindow').modal('hide')
-                window.prompt('Ваша ссылка:', data.link);
+                //window.prompt('Ваша ссылка:', data.link);
+	            $('<div><input type="text" style="width:248px;" value="'+data.link+'"></div>').dialog({
+		            resizable: false,
+		            title: 'Ваша ссылка',
+		            buttons: [
+			            {
+				            text: "Ok",
+				            'class': 'btn',
+				            click: function() { $( this ).dialog( "close" ); }
+			            }
+		            ]
+	            });
                 var $delete_link = $('[data-file_id='+data.file_id+']').find('[data-action=delete_link]');
                 if (!$delete_link.length) {
-                    $('[data-file_id='+data.file_id+'] > ul').append(data.remove_link);
+                    // Вставляем ссылку "Удалить временную ссылку"
+	                $('[data-file_id='+data.file_id+'] > ul').append(data.remove_link);
+	                // Вставляем в правую колонку таблицы две иконки: "Посмотреть временную ссылку" и  "Удалить временную ссылку"
+	                $('[data-td_file_id='+data.file_id+']').append(data.show_remove_icons);
                 }
             }
         } else {
@@ -82,7 +96,11 @@ $(document).ready(function(){
             if (data.ret) {
                 $(a_cont).append('<div class="alert alert-error"><button type="button" class="close" data-dismiss="alert">&times;</button><h4>Ошибка!</h4>'+data.error+'</div>');
             } else {
-                $(action_link.parentNode).remove();
+	            // при удалении временной ссылки удаляется ссылка на удаление в выпадающем меню и ссылки просмотра/удаления в правом столбце таблицы
+	            $('[data-action="delete_link"]').each(function () {
+					$(this.parentNode).remove();
+	            });
+                //$(action_link.parentNode).remove();
                 $(a_cont).append('<div class="alert alert-success"><button type="button" class="close" data-dismiss="alert">&times;</button><h4>Готово!</h4>'+data.message+'</div>');
             }
         }, 'json');
