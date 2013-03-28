@@ -49,7 +49,7 @@ $(document).ready(function(){
         }
     }
 
-    $('a.file_link').click(function(){
+	$(document).on('click', 'a.file_link', function(){
         $(this.parentNode.parentNode.parentNode).removeClass('open');
         Loading.show();
         $.post(this.href, function(data){
