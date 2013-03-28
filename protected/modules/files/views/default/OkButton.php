@@ -5,7 +5,7 @@
  */
 //** @var DefaultController $this */
 $this->widget('bootstrap.widgets.TbButton', array(
-	'label'=>'Ок',
+	'label'=>$button_text,
 	'url'=>'#',
 	'htmlOptions'=>array('class' => 'btn btn-primary', 'data-dismiss' => 'modal'),
 ));

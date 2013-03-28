@@ -719,7 +719,7 @@ class DefaultController extends Controller
 			'file_id'     => $link->file_id,
 			'title'  => 'Ваша ссылка',
 			'html'   => '<div><input type="text" style="cursor: text; width: 517px;" readonly value="'.$this->createAbsoluteUrl('//files/published/show', array('key' => $link->key)).'"></div>',
-			'footer' => $this->renderPartial('OkButton', array(), 1),
+			'footer' => $this->renderPartial('OkButton', array('button_text' => 'Закрыть'), 1),
 		);
 		return $this->ajaxReturn($ret);
 	}
