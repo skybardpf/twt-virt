@@ -9,6 +9,31 @@ class PublishedController extends Controller
 	public $layout = '/layouts/published';
 
 	/**
+	 * Получает (по идентификатору и директории, на которую изначально создана временная ссылка) директорию, являющуюся поддиректорией директории, на которую изначально создана временная ссылка
+	 * @param null $root_dir - директории, на которую изначально создана временная ссылка
+	 * @param null $dir_id - идентификатор директории, которую надо получить
+	 * @return mixed
+	 */
+	private function getDir($root_dir, $dir_id = NULL) {
+		if ($root_dir) {
+			if ($dir_id) {
+				$criteria = new CDbCriteria();
+				$criteria->condition = 'is_dir = 1';
+				$criteria->addCondition('id = :id');
+				$criteria->params = array(':id' => $dir_id);
+				$dir = $root_dir->children()->find($criteria);
+				if ($dir) {
+					return $dir;
+				} else {
+					throw new CHttpException(404, 'Временная ссылка недействительна.');
+				}
+			} else {
+				return $root_dir;
+			}
+		}
+	}
+
+	/**
 	 * Показ простому пользователю содержимого временной ссылки
 	 *
 	 * Отдача файла если временная ссылка на файл и листинг директории - если на директорию.
@@ -16,20 +41,21 @@ class PublishedController extends Controller
 	 *
 	 * @throws CHttpException
 	 */
-	public function actionShow($key = NULL) {
+	public function actionShow($key = NULL, $dir_id = NULL) {
 		$link = $this->CheckLink($key);
+		$file = $this->getDir($link->file, $dir_id);
 		if ($link->edate < date('Y-m-d H:i:s', time())) {
 			$this->render('error', array('message' => 'Время действия временной ссылки истекло.'));
 		} else {
-			if ($link->file->is_dir) {
-				$this->render('show', array('link' => $link));
+			if ($file->is_dir) {
+				$this->render('show', array('link' => $link, 'dir' => $file, 'ancestors' => $file->getAncestors()));
 			} else {
-				if ($link->file->is_recycle) {
+				if ($file->is_recycle) {
 					$this->render('error', array('message' => 'Извините, запрошенный файл был удален.'));
-				} elseif (file_exists($link->file->file)) {
-					Yii::app()->request->sendFile($link->file->name, file_get_contents($link->file->file));
+				} elseif (file_exists($file->file)) {
+					Yii::app()->request->sendFile($file->name, file_get_contents($file->file));
 				} else {
-					Yii::log('Запрошенного файла нет физически id:'.$link->file->id, CLogger::LEVEL_ERROR, 'files');
+					Yii::log('Запрошенного файла нет физически id:'.$file->id, CLogger::LEVEL_ERROR, 'files');
 					$this->render('error', array('message' => 'Приносим свои извинения, произошла ошибка. Ее исправлением уже занимаются.'));
 				}
 			}
@@ -43,14 +69,15 @@ class PublishedController extends Controller
 	 *
 	 * @throws CHttpException
 	 */
-	public function actionDownload($key = NULL, $file_id = NULL) {
+	public function actionDownload($key = NULL, $dir_id = NULL, $file_id = NULL) {
 		$link = $this->CheckLink($key);
+		$dir = $this->getDir($link->file, $dir_id);
 		if ($link->edate < date('Y-m-d H:i:s', time())) {
 			$this->render('error', array('message' => 'Время действия временной ссылки истекло.'));
 		} else {
 			if (empty($_POST['Files']) && $file_id) {
 				// Запросили конкретный файл из опубликованной директории.
-				$file = $link->file->children()->findByPk($file_id);
+				$file = $dir->children()->findByPk($file_id);
 				if (!$file) {
 					$this->render('error', array('message' => 'Извините, запрошенный файл был удален.'));
 				}
@@ -58,14 +85,14 @@ class PublishedController extends Controller
 					Yii::app()->request->sendFile($file->name, file_get_contents($file->file));
 				}
 				else {
-					Yii::log('Запрошенного файла нет физически id:'.$link->file->id, CLogger::LEVEL_ERROR, 'files');
+					Yii::log('Запрошенного файла нет физически id:'.$dir->id, CLogger::LEVEL_ERROR, 'files');
 					$this->render('error', array('message' => 'Приносим свои извинения, произошла ошибка. Ее исправлением уже занимаются.'));
 				}
 			} elseif (!empty($_POST['Files']['id'])) {
 				// Запросили архив файлов из опубликованной директории.
 				$criteria = new CDbCriteria();
 				$criteria->addInCondition('id', $_POST['Files']['id']);
-				$files = $link->file->children()->findAll($criteria);
+				$files = $dir->children()->findAll($criteria);
 				if (!$files) {
 					$this->render('error', array('message' => 'Извините, один из запрошенных файлов был удален, попробуйте еще раз.'));
 					return;
@@ -124,7 +151,7 @@ class PublishedController extends Controller
 						$this->render('error', array('message' => 'При создании архива произошла ошибка. Приносим свои извинения.'));
 					}
 					$archive->close();
-					if (!$error) Yii::app()->request->sendFile($link->file->name.'.zip', file_get_contents($arch_name), NULL, false);
+					if (!$error) Yii::app()->request->sendFile($dir->name.'.zip', file_get_contents($arch_name), NULL, false);
 					unlink($arch_name);
 					if (!$error) Yii::app()->end();
 					return;

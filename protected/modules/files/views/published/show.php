@@ -5,9 +5,27 @@
  *
  * @var PublishedController $this
  * @var FLinks $link
+ * @var Files $dir
  */
+// чтобы в хлебные крошки не включать ссылки на папки выше изначально расшаренной папки
+$after_root_dir = false;
+foreach ($ancestors as $ancestor) {
+	if (!$after_root_dir) {
+		$after_root_dir = ($link->file_id == $ancestor->id);
+	}
+	if ($after_root_dir && $ancestor->lvl != 1) {
+		$breadcrumbs[$ancestor->name] = ($link->file_id == $ancestor->id) ? $this->createUrl('', array('key' => $link->key)): $this->createUrl('', array('key' => $link->key, 'dir_id' => $ancestor->id));
+	}
+}
+if ($dir->lvl != 1) $breadcrumbs[] = $dir->name;
+$this->breadcrumbs = $breadcrumbs;
 ?>
-<?php /** @var $dir Files */$dir = $link->file; ?>
+
+<?php $this->widget('bootstrap.widgets.TbBreadcrumbs', array(
+	'links' => $this->breadcrumbs,
+	'homeLink' => false,
+));?>
+
 <div><h2 class="pull-left"><?=$dir->name?></h2> <span class="muted" style="top: 23px; left: 10px; position: relative;">(доступна до <?=$link->edate?>)</span><div class="clearfix"></div></div>
 <?php
 $criteria = new CDbCriteria();
@@ -20,7 +38,7 @@ if (!$files) :?>
 	'id' => 'zip-download-form',
 	'type' => 'inline',
 	'enableAjaxValidation' => true,
-	'action' => $this->createUrl('download', array('key' => $link->key))
+	'action' => $this->createUrl('download', array('key' => $link->key, 'dir_id' => ($link->file_id == $dir->id) ? 0 : $dir->id))
 ));
 	// Чтобы узнать, есть ли файлы в директории возьмем последний элемент, т.к. директории сверху.
 	end($files);
@@ -41,8 +59,8 @@ if (!$files) :?>
         <td>
 			<?=($file->is_dir?'<i class="icon-folder-open"></i>':'')?>
 			<?php
-                if ($file->is_dir) echo $file->name;
-				else echo CHtml::link($file->name, $this->createUrl('download', array('key' => $link->key, 'file_id' => $file->id)));
+                if ($file->is_dir) echo CHtml::link($file->name, $this->createUrl('show', array('key' => $link->key, 'dir_id' => $file->id)));
+				else echo CHtml::link($file->name, $this->createUrl('download', array('key' => $link->key, 'dir_id' => ($link->file_id == $dir->id) ? 0 : $dir->id, 'file_id' => $file->id)));
 			?>
         </td>
         <td><?=$file->cdate?></td>
