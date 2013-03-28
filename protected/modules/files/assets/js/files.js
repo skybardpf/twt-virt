@@ -28,19 +28,13 @@ $(document).ready(function(){
                 $('#ModalWindow').modal('show');
             } else {
                 Loading.immidiate_hide();
-                $('#ModalWindow').modal('hide')
+                //$('#ModalWindow').modal('hide');
                 //window.prompt('Ваша ссылка:', data.link);
-	            $('<div><input type="text" style="width:248px;" value="'+data.link+'"></div>').dialog({
-		            resizable: false,
-		            title: 'Ваша ссылка',
-		            buttons: [
-			            {
-				            text: "Ok",
-				            'class': 'btn',
-				            click: function() { $( this ).dialog( "close" ); }
-			            }
-		            ]
-	            });
+	            document.getElementById('modal-header').innerHTML = data.title;
+	            document.getElementById('modal-body').innerHTML = data.html;
+	            document.getElementById('modal-footer').innerHTML = data.footer;
+	            $('#ModalWindow').modal('show');
+
                 var $delete_link = $('[data-file_id='+data.file_id+']').find('[data-action=delete_link]');
                 if (!$delete_link.length) {
                     // Вставляем ссылку "Удалить временную ссылку"
@@ -97,7 +91,7 @@ $(document).ready(function(){
                 $(a_cont).append('<div class="alert alert-error"><button type="button" class="close" data-dismiss="alert">&times;</button><h4>Ошибка!</h4>'+data.error+'</div>');
             } else {
 	            // при удалении временной ссылки удаляется ссылка на удаление в выпадающем меню и ссылки просмотра/удаления в правом столбце таблицы
-	            $('[data-action="delete_link"]').each(function () {
+	            $(action_link).parents('tr').find('[data-action="delete_link"]').each(function () {
 					$(this.parentNode).remove();
 	            });
                 //$(action_link.parentNode).remove();

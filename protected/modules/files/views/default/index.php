@@ -7,8 +7,6 @@
  * @var $ancestors Files[]
  * @var $links FLinks[]
  */
-Yii::app()->clientScript->registerCssFile(CHtml::asset(Yii::app()->basePath.'/../static/css/jquery-ui-1.10.2.custom.min.css'));
-Yii::app()->clientScript->registerCoreScript('jquery.ui');
 Yii::app()->clientScript->registerScriptFile(CHtml::asset(Yii::app()->basePath.'/modules/files/assets/js/files.js'));
 Yii::app()->clientScript->registerCssFile(CHtml::asset(Yii::app()->basePath.'/modules/files/assets/css/move.css'));
 $this->widget('ext.widgets.loading.LoadingWidget');
@@ -104,3 +102,4 @@ $this->breadcrumbs = $breadcrumbs;
 <div class="modal-body" id="modal-body"></div>
 <div class="modal-footer" id="modal-footer"></div>
 <?php $this->endWidget(); ?>
+

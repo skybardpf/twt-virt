@@ -717,6 +717,9 @@ class DefaultController extends Controller
 										<a data-action="delete_link" class="link_delete" href="'.$this->createUrl('delete_link', array('file_id' => $link->file_id, 'company_id' => $this->company->id)).'"><i class="icon-remove"></i>&nbsp;</a>
 									</div>',
 			'file_id'     => $link->file_id,
+			'title'  => 'Ваша ссылка',
+			'html'   => '<div><input type="text" class="span5" style="cursor: text;" readonly value="'.$this->createAbsoluteUrl('//files/published/show', array('key' => $link->key)).'"></div>',
+			'footer' => $this->renderPartial('OkButton', array(), 1),
 		);
 		return $this->ajaxReturn($ret);
 	}
