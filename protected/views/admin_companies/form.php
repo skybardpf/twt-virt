@@ -28,7 +28,50 @@ Yii::app()->clientScript->registerScriptFile(CHtml::asset(Yii::app()->basePath.'
 	</div>
 	<fieldset class="">
 		<?=$form->textFieldRow($model,'name', array('class' => 'input-xxlarge')); ?>
-		<?=$form->dropDownListRow($model, 'admin_user_id', array(null => '') + CHtml::listData(User::model()->findAll(), 'id', 'fullName'), array('class' => 'input-xxlarge', 'data-placeholder' => 'Не выбран'))?>
+
+
+		<div class="control-group">
+			<?=$form->labelEx($model, 'admin_user_id', array('class' => 'control-label'))?>
+			<div class="controls">
+				<?php
+				echo CHtml::hiddenField('User[admin_ids_string]', '');
+				$baseID = CHtml::getIdByName('User[admin_ids_string]');
+
+				$data = array();
+				$preload_data = array();
+				foreach (User::model()->findAll() as $user) {
+					$tmp = array(
+						'id'        => $user->id,
+						'text'      => $user->name,
+						'locked'    => 0,
+					);
+					if (in_array($user->id, $model->admin_ids)) {
+						$preload_data[] = $user->id;
+					}
+					$data[] = $tmp;
+
+				}
+				Yii::app()->clientScript->registerScript('company_update_admins_select', 'js:
+					$(document).ready(function(){
+						$("#'.$baseID.'").select2({
+							data: '.CJavaScript::encode($data).',
+							width: "530px",
+							multiple: true,
+							allowClear: true,
+							minimumInputLength: 1,
+						});
+						$("#'.$baseID.'").select2("val", '.CJavaScript::encode($preload_data).');
+                        $(document.getElementById("'.$baseID.'").parentNode).on("blur", "input", function(event){
+                            $(document.getElementById("'.$baseID.'")).select2("close");
+                        });
+						//$("#'.$baseID.'").select2("data", '.CJavaScript::encode($preload_data).');
+					});
+				'); ?>
+			</div>
+		</div>
+
+
+		<?php /*$form->dropDownListRow($model, 'admin_user_id', array(null => '') + CHtml::listData(User::model()->findAll(), 'id', 'fullName'), array('class' => 'input-xxlarge', 'data-placeholder' => 'Не выбран'))*/?>
 		<?=$form->checkBoxRow($model, 'deleted')?>
 
 		<fieldset>

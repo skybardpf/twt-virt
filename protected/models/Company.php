@@ -45,6 +45,7 @@ class Company extends CActiveRecord
 	public $deleted = 0;
 	public $resident = 1;
 	public $f_quote = 50;
+	public $admin_ids = array(); // массив идентификаторов администраторов компании
 
 	/**
 	 * Returns the static model of the specified AR class.
@@ -108,6 +109,7 @@ class Company extends CActiveRecord
 			'used_quote' => array(self::STAT, 'Files', 'company_id', 'select' => 'SUM(size)'),
 		);
 	}
+
 
 	protected function afterSave()
 	{

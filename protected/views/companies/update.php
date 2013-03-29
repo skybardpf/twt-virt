@@ -27,7 +27,9 @@ $this->pageTitle = 'Редактирование компании «' . $model->
 
 	<?php echo $form->errorSummary($model); ?>
 	<div class="form-actions">
-		<?php $buttons = $this->widget('bootstrap.widgets.TbButton', array('buttonType'=>'submit', 'type'=>'primary', 'label'=> ($model->isNewRecord ? 'Добавить' : 'Сохранить')), true); ?>
+		<?php $buttons =
+			$this->widget('bootstrap.widgets.TbButton', array('buttonType'=>'submit', 'type'=>'primary', 'label'=> ($model->isNewRecord ? 'Добавить' : 'Сохранить')), true).'&nbsp'.
+			$this->widget('bootstrap.widgets.TbButton', array('label'=> 'Отмена', 'url' => $this->createUrl('/companies/view', array('company_id' => $model->id))), true); ?>
 		<?=$buttons?>
 	</div>
 	<fieldset>
