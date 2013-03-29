@@ -75,8 +75,8 @@ class Company extends CActiveRecord
 		// will receive user inputs.
 		return array(
 			array('name, f_quote', 'required'),
-			array('admin_user_id, deleted', 'safe', 'on' => 'update, insert'),
-			array('legal_address, actual_address, phone, email, resident, inn, kpp, okopf, ogrn, account_number, bank, bik, correspondent_account, vat, registration_number, registration_date, registration_country, swift, iban, position_name1, position_owner1, position_name2, position_owner2, position_name3, position_owner3', 'safe'),
+			array('admin_user_id, deleted, admin_ids_string, admin_ids', 'safe', 'on' => 'update, insert'),
+			array('admin_ids_string, admin_ids, legal_address, actual_address, phone, email, resident, inn, kpp, okopf, ogrn, account_number, bank, bik, correspondent_account, vat, registration_number, registration_date, registration_country, swift, iban, position_name1, position_owner1, position_name2, position_owner2, position_name3, position_owner3', 'safe'),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
 			array('id, name, inn, kpp', 'safe', 'on'=>'search'),
@@ -108,6 +108,8 @@ class Company extends CActiveRecord
 			'users' => array(self::HAS_MANY, 'User', array('user_id' => 'id'), 'through' => 'user2company'),
 			'admin_user' => array(self::BELONGS_TO, 'User', 'admin_user_id'),
 			'used_quote' => array(self::STAT, 'Files', 'company_id', 'select' => 'SUM(size)'),
+			'admin2company' => array(self::HAS_MANY, 'Admin2company', 'company_id'),
+			'admins' => array(self::HAS_MANY, 'User', array('user_id' => 'id'), 'through' => 'admin2company'),
 		);
 	}
 

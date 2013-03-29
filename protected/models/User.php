@@ -67,7 +67,8 @@ class User extends CActiveRecord
 		// will receive user inputs.
 		return array(
 			array('email, password', 'required', 'on' => 'login'),
-			array('email, name, surname, companies_ids, companies_ids_string', 'required', 'on' => 'insert,update,owner_update,owner_create'),
+			array('email, name, surname, companies_ids_string', 'required', 'on' => 'insert,update,owner_update,owner_create'),
+			array('companies_ids', 'required', 'on' => 'owner_update,owner_create'),
 			array('email, name, surname', 'required', 'on' => 'profile'),
 			array('companies_ids', 'safe', 'on' => 'owner_update,only_company,owner_create'),
 			array('email', 'unique', 'on' => 'insert,update,owner_update,owner_create,profile'),
