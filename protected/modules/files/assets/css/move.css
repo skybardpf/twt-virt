@@ -4,3 +4,4 @@
 .dir_expand.icon-folder-close { margin-right: 5px;}
 .dir_selected {font-weight: bold; text-decoration: underline;}
 .dir_target {cursor: pointer;}
+.file_link:hover, .link_delete:hover{text-decoration: none;}
