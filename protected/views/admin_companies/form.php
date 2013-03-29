@@ -30,21 +30,21 @@ Yii::app()->clientScript->registerScriptFile(CHtml::asset(Yii::app()->basePath.'
 
 
 		<div class="control-group">
-			<?=$form->labelEx($model, 'admin_user_id', array('class' => 'control-label'))?>
+			<?=$form->labelEx($model, 'admin_ids', array('class' => 'control-label'))?>
 			<div class="controls">
 				<?php
-				echo CHtml::hiddenField('User[admin_ids_string]', '');
-				$baseID = CHtml::getIdByName('User[admin_ids_string]');
+				echo CHtml::hiddenField('Company[admin_ids_string]', '');
+				$baseID = CHtml::getIdByName('Company[admin_ids_string]');
 
 				$data = array();
 				$preload_data = array();
 				foreach (User::model()->findAll() as $user) {
 					$tmp = array(
 						'id'        => $user->id,
-						'text'      => $user->name,
+						'text'      => $user->name.' '.$user->surname,
 						'locked'    => false,
 					);
-					if (in_array($user->id, $model->admin_ids)) {
+					if (in_array($user->id, $model->getAdminIds())) {
 						$preload_data[] = $user->id;
 					}
 					$data[] = $tmp;

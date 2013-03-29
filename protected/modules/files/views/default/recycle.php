@@ -36,7 +36,7 @@ $this->breadcrumbs = $breadcrumbs;
 		),
 	));?>
     </div>
-	<?php if (Yii::app()->user->id == $this->company->admin_user_id) :?>
+	<?php if ($this->company->isAdmin(Yii::app()->user->id)) :?>
 	<div class="span2"><div class="pull-right" style="margin-top: 25px;">
 		<i class="icon-remove-circle"></i>&nbsp;<a id="recycle_remove_all" data-recycle="<?=$this->createUrl('recycle', array('company_id' => $this->company->id))?>" href="<?=$this->createUrl('remove_all', array('company_id' => $this->company->id, 'user_dir' => false))?>">Очистить корзину</a></div><div class="clearfix">
 	</div></div>

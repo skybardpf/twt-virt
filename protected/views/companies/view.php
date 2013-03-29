@@ -9,7 +9,7 @@ $this->breadcrumbs=array(
 );
 $this->pageTitle = 'Компания '.$company->name;
 ?>
-<?php if ($company->admin_user_id == Yii::app()->user->id) : ?>
+<?php if ($company->isAdmin(Yii::app()->user->id)) : ?>
 	<?php if ($company->deleted) :?>
 		<div class="alert">
 			Компания помечена на удаление <?=Yii::app()->dateFormatter->formatDateTime($company->deleted_date)?>

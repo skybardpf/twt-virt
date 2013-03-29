@@ -52,7 +52,7 @@ $this->breadcrumbs = $breadcrumbs;
 		<th>Дата создания</th>
 		<th>Размер</th>
 		<th>Действия</th>
-		<th></th>
+		<th>Временные ссылки</th>
 	</tr>
 	<?php foreach ($files as $file) :?>
 	<tr>

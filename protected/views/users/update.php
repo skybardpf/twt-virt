@@ -51,7 +51,7 @@ $this->pageTitle = ($model->isNewRecord ? 'Добавление пользова
 					?>
 					<div class="checkbox">
 						<?php
-						$admin = $company->admin_user_id && $company->admin_user_id == $model->id;
+						$admin = $company->isAdmin($model->id);
 						if ($admin) {
 							echo CHtml::hiddenField('User[companies_ids][]', $company->id);
 						}

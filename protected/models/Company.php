@@ -29,14 +29,15 @@
  * @property string $position_name3
  * @property string $position_owner3
  *
- * @property integer $admin_user_id
  * @property integer $deleted
  * @property string $deleted_date
  *
  * The followings are the available model relations:
  * @property User[] $users
  * @property User2company[] $user2company
- * @property User $admin_user
+ * @property User[] $admins
+ * @property Admin2company[] $admin2company
+
  * @property CBankAccount[] $res_banks
  * @property CBankAccount[] $nonres_banks
  */
@@ -75,26 +76,13 @@ class Company extends CActiveRecord
 		// will receive user inputs.
 		return array(
 			array('name, f_quote', 'required'),
-			array('admin_user_id, deleted, admin_ids_string, admin_ids', 'safe', 'on' => 'update, insert'),
+			array('deleted, admin_ids_string, admin_ids', 'safe', 'on' => 'update, insert'),
 			array('admin_ids_string, admin_ids, legal_address, actual_address, phone, email, resident, inn, kpp, okopf, ogrn, account_number, bank, bik, correspondent_account, vat, registration_number, registration_date, registration_country, swift, iban, position_name1, position_owner1, position_name2, position_owner2, position_name3, position_owner3', 'safe'),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
 			array('id, name, inn, kpp', 'safe', 'on'=>'search'),
 		);
 	}
-
-	protected function beforeSave()
-	{
-		if (!$this->admin_user_id) {
-			$this->admin_user_id = NULL;
-		}
-
-		if ($this->deleted == 0) {
-			$this->deleted_date = NULL;
-		}
-		return parent::beforeSave();
-	}
-
 
 	/**
 	 * @return array relational rules.
@@ -106,36 +94,101 @@ class Company extends CActiveRecord
 		return array(
 			'user2company' => array(self::HAS_MANY, 'User2company', 'company_id'),
 			'users' => array(self::HAS_MANY, 'User', array('user_id' => 'id'), 'through' => 'user2company'),
-			'admin_user' => array(self::BELONGS_TO, 'User', 'admin_user_id'),
 			'used_quote' => array(self::STAT, 'Files', 'company_id', 'select' => 'SUM(size)'),
 			'admin2company' => array(self::HAS_MANY, 'Admin2company', 'company_id'),
 			'admins' => array(self::HAS_MANY, 'User', array('user_id' => 'id'), 'through' => 'admin2company'),
 		);
 	}
 
+	// вместо afterFind вызывается данная функция, так как в afterFind возникает бесконечный цикл
+	/**
+	 * Возвращает массив идентификаторов админов
+	 * @return array
+	 */
+	public function getAdminIds() {
+		$admins = Admin2company::model()->findAll(array(
+			'condition' => 'company_id = :company_id',
+			'params' => array(':company_id' => $this->id)
+		));
+		if ($admins) {
+			foreach ($admins as $a) {
+				$this->admin_ids[] = $a->user_id;
+			}
+			$this->admin_ids_string = implode(', ',$this->admin_ids);
+		}
+		return $this->admin_ids;
+	}
+
+	/**
+	 * Проверяет, является ли пользователь админом (для блокирования удаления)
+	 * @param $user_id
+	 */
+	public function isAdmin($user_id) {
+		return in_array($user_id, $this->getAdminIds());
+	}
+
+	public function beforeSave()
+	{
+		$temp = explode(',', $this->admin_ids_string);
+		$temp = array_unique($temp);
+		$this->admin_ids = $temp;
+
+		if ($this->deleted == 0) {
+			$this->deleted_date = NULL;
+		}
+		return parent::beforeSave();
+	}
 
 	protected function afterSave()
 	{
-		if ($this->admin_user) {
-			$has_link = false;
-			foreach ($this->admin_user->companies as $c) {
-				if (!$has_link && $c->id == $this->id) {
-					$has_link = true;
+		// удалим всех администраторов компанииб не входящих в новый список
+		foreach($this->admin2company as $ac) {
+			if (!in_array($ac->user_id, $this->admin_ids)) {
+				$ac->delete();
+			}
+		}
+		// сохранение администраторов в таблицу связей администратор-компания
+		foreach ($this->admin_ids as $admin_id) {
+			if ($admin_id) {
+				$criteria = new CDbCriteria;
+				$criteria->addCondition('user_id = :user_id');
+				$criteria->addCondition('company_id = :company_id');
+				$criteria->params = array(':user_id' => $admin_id, ':company_id' => $this->id);
+				$link = Admin2company::model()->find($criteria);
+				if(!$link) {
+					$ac = new Admin2company();
+					$ac->user_id = $admin_id;
+					$ac->company_id = $this->id;
+					$ac->save();
 				}
 			}
-			if (!$has_link) {
-				$u2c = new User2company();
-				$u2c->company_id = $this->id;
-				$u2c->user_id = $this->admin_user_id;
-				$u2c->save();
-			}
+		}
+		// сохранение администратора в таблицу связей с пользователями
+		foreach ($this->admins as $admin_user) {
+			if ($admin_user) {
+				$has_link = false;
+				foreach ($admin_user->companies as $c) {
+					if (!$has_link && $c->id == $this->id) {
+						$has_link = true;
+					}
+				}
+				if (!$has_link) {
+					$u2c = new User2company();
+					$u2c->company_id = $this->id;
+					$u2c->user_id = $admin_user->id;
+					$u2c->save();
+				}
 
+			}
 		}
 		parent::afterSave();
 	}
 
 	protected function beforeDelete()
 	{
+		foreach ($this->admin2company as $a2c) {
+			$a2c->delete();
+		}
 		foreach ($this->user2company as $u2c) {
 			$u2c->delete();
 		}
@@ -170,7 +223,8 @@ class Company extends CActiveRecord
 			'position_owner2' => 'ФИО',
 			'position_name3' => 'Должность',
 			'position_owner3' => 'ФИО',
-			'admin_user_id' => 'Администратор',
+			'admin_ids' => 'Администраторы',
+			'admin_ids_string' => 'Администраторы',
 			'deleted' => 'Помечено на удаление',
 			'deleted_date' => 'Дата отметки',
 			'f_quote' => 'Квота файлового хранилица в МБ',

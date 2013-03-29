@@ -474,7 +474,7 @@ class DefaultController extends Controller
 		$ret = array('ret' => 0);
 		$user_dir = (boolean)$user_dir;
 
-		if (!$user_dir && Yii::app()->user->id != $this->company->admin_user_id) {
+		if (!$user_dir && !$this->company->isAdmin(Yii::app()->user->id)) {
 			$ret['error'] = 'Вы не являетесь администратором данной компании и не можете удалять файлы из ее корзины.';
 			$ret['ret'] = 1;
 			return $this->ajaxReturn($ret);

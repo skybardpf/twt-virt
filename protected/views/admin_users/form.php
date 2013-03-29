@@ -81,7 +81,7 @@ Yii::app()->clientScript->registerCssFile($this->asset_static.'/css/select2.css'
 					$tmp = array(
 						'id'        => $company->id,
 						'text'      => $company->name,
-						'locked'    => $company->admin_user_id && $company->admin_user_id == $model->id,
+						'locked'    => $company->isAdmin($model->id),
 					);
 					if (in_array($company->id, $model->companies_ids)) {
 						$preload_data[] = $company->id;

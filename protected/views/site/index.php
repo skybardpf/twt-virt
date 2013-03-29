@@ -29,7 +29,7 @@ $this->pageTitle=Yii::app()->name;
 					<?php endif ?>
 				><?=$c->name?></a>
 			</td>
-			<td><?=$c->admin_user_id == Yii::app()->user->id ? 'Администратор' : 'Пользователь'?></td>
+			<td><?=$c->isAdmin(Yii::app()->user->id) ? 'Администратор' : 'Пользователь'?></td>
 			<td>3 /53</td>
 			<td>1 / 10</td>
 			<td>0 / 2</td>

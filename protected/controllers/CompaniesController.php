@@ -14,7 +14,7 @@ class CompaniesController extends Controller
 		/** @var $model Company */
 		$model = $this->company;
 		if (empty($model)) throw new CHttpException(404);
-		if ($model->admin_user_id != Yii::app()->user->id) {
+		if (!$model->isAdmin(Yii::app()->user->id)) {
 			throw new CHttpException(403, 'Вы не являетесь администратором компании');
 		}
 		$model->setScenario('admin_update');
@@ -49,7 +49,7 @@ class CompaniesController extends Controller
 		/** @var $company Company */
 		$company = $this->company;
 		if (empty($company)) throw new CHttpException(404);
-		if ($company->admin_user_id != Yii::app()->user->id) {
+		if (!$company->isAdmin(Yii::app()->user->id)) {
 			throw new CHttpException(403, 'Вы не являетесь администратором компании');
 		}
 

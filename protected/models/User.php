@@ -67,10 +67,14 @@ class User extends CActiveRecord
 		// will receive user inputs.
 		return array(
 			array('email, password', 'required', 'on' => 'login'),
-			array('email, name, surname, companies_ids_string', 'required', 'on' => 'insert,update,owner_update,owner_create'),
-			array('companies_ids', 'required', 'on' => 'owner_update,owner_create'),
+			array('email, name, surname', 'required', 'on' => 'insert,update,owner_update,owner_create'),
 			array('email, name, surname', 'required', 'on' => 'profile'),
+
+			array('companies_ids_string', 'required', 'on' => 'insert,update'),
+
+			array('companies_ids', 'required', 'on' => 'owner_update,owner_create'),
 			array('companies_ids', 'safe', 'on' => 'owner_update,only_company,owner_create'),
+
 			array('email', 'unique', 'on' => 'insert,update,owner_update,owner_create,profile'),
 			array('email', 'email', 'on' => 'insert,update,owner_update,owner_create,profile'),
 			array('active', 'numerical', 'integerOnly'=>true, 'on' => 'insert,update,owner_update,owner_create'),
@@ -95,6 +99,8 @@ class User extends CActiveRecord
 		return array(
 			'user2company' => array(self::HAS_MANY, 'User2company', 'user_id'),
 			'companies' => array(self::HAS_MANY, 'Company', array('company_id' => 'id'), 'through' => 'user2company'),
+			'admin2company' => array(self::HAS_MANY, 'Admin2company', 'user_id'),
+			'adminCompanies' => array(self::HAS_MANY, 'Company', array('company_id' => 'id'), 'through' => 'admin2company'),
 		);
 	}
 
@@ -124,9 +130,7 @@ class User extends CActiveRecord
 	{
 		foreach ($this->companies as $c) {
 			$this->companies_ids[] = $c->id;
-			if ($c->admin_user_id == $this->id) {
-				$this->isAdmin = true;
-			}
+			$this->isAdmin = $c->isAdmin($this->id);
 		}
 		$this->companies_ids_string = implode(', ',$this->companies_ids);
 
@@ -160,7 +164,7 @@ class User extends CActiveRecord
 				foreach ($this->user2company as $u2c) {
 					$companies_ids[] = $u2c->company_id;
 					//TODO костыль :(
-					if ($u2c->company->admin_user_id == Yii::app()->user->id) {
+					if ($u2c->company->isAdmin(Yii::app()->user->id)) {
 						$u2c->delete();
 					}
 				}
@@ -220,10 +224,10 @@ class User extends CActiveRecord
 		$model = Company::model();
 		$criteria = new CDbCriteria();
 		if ($user_id) {
-			$criteria->addCondition('admin_user_id = :admin_user_id');
+			$criteria->addCondition('admin2company.user_id = :admin_user_id');
 			$criteria->params[':admin_user_id'] = $user_id;
 		}
-		return $model->findAll($criteria);
+		return $model->with('admin2company')->findAll($criteria);
 	}
 
 	/**

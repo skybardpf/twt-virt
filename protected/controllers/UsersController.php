@@ -6,12 +6,17 @@ class UsersController extends Controller
 		if (!Yii::app()->user->data->isAdmin) {
 			throw new CHttpException(403);
 		}
+		$company_ids = array();
+		if (Yii::app()->user->data->adminCompanies) {
+			foreach (Yii::app()->user->data->adminCompanies as $company) {
+				$company_ids[] = $company->id;
+			}
+		}
 		$users = User::model()->findAll(array(
-			'condition'=>'companies.admin_user_id = :admin_user_id  AND t.id != :admin_user_id',
+			'condition'=>'companies.id IN(:company_ids) AND t.id != :admin_user_id',
 			'order' => 't.email',
-			'params'=>array(':admin_user_id' => Yii::app()->user->id),
+			'params'=>array(':company_ids' => implode(', ', $company_ids), ':admin_user_id' => Yii::app()->user->id),
 		));
-
 
 		$this->render('index', array('users' => $users));
 	}
@@ -19,9 +24,15 @@ class UsersController extends Controller
 	public function actionUpdate($id)
 	{
 		/** @var $model User */
+		$company_ids = array();
+		if (Yii::app()->user->data->adminCompanies) {
+			foreach (Yii::app()->user->data->adminCompanies as $company) {
+				$company_ids[] = $company->id;
+			}
+		}
 		$model = User::model()->find(array(
-			'condition'=>'t.id = :user_id AND companies.admin_user_id = :admin_user_id AND t.id != :admin_user_id',
-			'params'=>array(':user_id' => $id, ':admin_user_id' => Yii::app()->user->id),
+			'condition'=>'t.id = :user_id AND companies.id IN(:company_ids) AND t.id != :admin_user_id',
+			'params'=>array(':user_id' => $id, ':company_ids' => implode(', ', $company_ids), ':admin_user_id' => Yii::app()->user->id),
 		));
 		if ($model->create_user_id == Yii::app()->user->id) {
 			$model->setScenario('owner_update');
@@ -43,7 +54,6 @@ class UsersController extends Controller
 				$this->redirect($this->createUrl('index', array('id' => $model->id)));
 			}
 		}
-
 		$this->render('update', array('model' => $model));
 	}
 

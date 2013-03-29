@@ -11,7 +11,7 @@
 		array('label'=>'Сайт', 'url'=>'#', 'linkOptions' => array('class' => 'muted')),
 		array('label'=>'Файлы', 'url'=> $this->createUrl('/files/default/index', array('company_id' => $this->company->id)), 'active'=> ($this->module && $this->module->id == 'files')),
 		(
-			$this->company->admin_user_id == Yii::app()->user->id ? array(
+			$this->company->isAdmin(Yii::app()->user->id) ? array(
 				'label'=>'Администрирование', 'url'=>$this->createUrl('/companies/view', array('company_id' => $this->company->id)), 'active' => $this->id == 'companies'
 			) : array()
 		),
