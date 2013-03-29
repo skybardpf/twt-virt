@@ -46,6 +46,7 @@ class Company extends CActiveRecord
 	public $resident = 1;
 	public $f_quote = 50;
 	public $admin_ids = array(); // массив идентификаторов администраторов компании
+	public $admin_ids_string = '';
 
 	/**
 	 * Returns the static model of the specified AR class.
