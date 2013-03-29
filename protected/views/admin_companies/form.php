@@ -4,9 +4,8 @@
  * @var $model Company
  * @var $form TbActiveForm
  */
-
-Yii::app()->clientScript->registerScriptFile(CHtml::asset(Yii::app()->basePath.'/../static/js/select2.min.js'));
-Yii::app()->clientScript->registerCssFile(CHtml::asset(Yii::app()->basePath.'/../static/css/select2.css'));
+Yii::app()->clientScript->registerScriptFile($this->asset_static.'/js/select2.min.js');
+Yii::app()->clientScript->registerCssFile($this->asset_static.'/css/select2.css');
 Yii::app()->clientScript->registerScriptFile(CHtml::asset(Yii::app()->basePath.'/../static/js/company_form.js'));
 ?>
 
@@ -43,7 +42,7 @@ Yii::app()->clientScript->registerScriptFile(CHtml::asset(Yii::app()->basePath.'
 					$tmp = array(
 						'id'        => $user->id,
 						'text'      => $user->name,
-						'locked'    => 0,
+						'locked'    => false,
 					);
 					if (in_array($user->id, $model->admin_ids)) {
 						$preload_data[] = $user->id;

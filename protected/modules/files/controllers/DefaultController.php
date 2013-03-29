@@ -205,10 +205,20 @@ class DefaultController extends Controller
 			return $this->CreateLink($file);
 		} else{
 			$compare_date = date('Y-m-d H:i:s', time());
+			$actual_link = null;
 			foreach($file->links as $link) {
 				if ($link->user_id == Yii::app()->user->id && $link->edate > $compare_date) {
-					return $this->ShowLink($link);
+					if (!$actual_link) {
+						$actual_link = $link;
+					} elseif ($actual_link->edate > $link->edate) {
+						$link->delete();
+					}
+				} elseif ($link->user_id == Yii::app()->user->id) {
+					$link->delete();
 				}
+			}
+			if ($actual_link) {
+				return $this->ShowLink($actual_link);
 			}
 			$this->CreateLink($file);
 		}
@@ -218,6 +228,7 @@ class DefaultController extends Controller
 	/**
 	 * AJAX метод удаления временной ссылки
 	 * @param null $file_id
+	 * @return int
 	 */
 	public function actionDelete_link($file_id = NULL) {
 		$ret = array('ret' => 0);
@@ -239,6 +250,8 @@ class DefaultController extends Controller
 		} elseif ($link->edate < date('Y-m-d H:i:s')) {
 			$ret['ret'] = 3;
 			$ret['error'] = 'Срок действия ссылки на указанный файл истек.';
+			$ret['err_desc'] = array('edate' => $link->edate, 'now' => date('Y-m-d H:i:s'));
+			$link->delete();
 		} elseif ($link->delete()) {
 			$ret['message'] = 'Временная ссылка удалена.';
 		} else {

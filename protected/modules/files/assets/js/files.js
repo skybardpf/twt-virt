@@ -88,14 +88,14 @@ $(document).ready(function(){
             Loading.immidiate_hide();
             var a_cont = document.getElementById('alerts_container');
             if (data.ret) {
-                $(a_cont).append('<div class="alert alert-error"><button type="button" class="close" data-dismiss="alert">&times;</button><h4>Ошибка!</h4>'+data.error+'</div>');
+                $(a_cont).clear().append('<div class="alert alert-error"><button type="button" class="close" data-dismiss="alert">&times;</button><h4>Ошибка!</h4>'+data.error+'</div>');
             } else {
 	            // при удалении временной ссылки удаляется ссылка на удаление в выпадающем меню и ссылки просмотра/удаления в правом столбце таблицы
 	            $(action_link).parents('tr').find('[data-action="delete_link"]').each(function () {
 					$(this.parentNode).remove();
 	            });
                 //$(action_link.parentNode).remove();
-                $(a_cont).append('<div class="alert alert-success"><button type="button" class="close" data-dismiss="alert">&times;</button><h4>Готово!</h4>'+data.message+'</div>');
+                $(a_cont).clear().append('<div class="alert alert-success"><button type="button" class="close" data-dismiss="alert">&times;</button><h4>Готово!</h4>'+data.message+'</div>');
             }
         }, 'json');
         return false;
