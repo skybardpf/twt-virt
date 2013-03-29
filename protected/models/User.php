@@ -128,10 +128,14 @@ class User extends CActiveRecord
 
 	protected function afterFind()
 	{
+		$is_admin = false;
 		foreach ($this->companies as $c) {
 			$this->companies_ids[] = $c->id;
-			$this->isAdmin = $c->isAdmin($this->id);
+			if (!$is_admin) {
+				$is_admin = $c->isAdmin($this->id);
+			}
 		}
+		$this->isAdmin = $is_admin;
 		$this->companies_ids_string = implode(', ',$this->companies_ids);
 
 		parent::afterFind();
