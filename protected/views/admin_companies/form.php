@@ -46,7 +46,7 @@ Yii::app()->clientScript->registerScriptFile(CHtml::asset(Yii::app()->basePath.'
 						'locked'    => false,
 					);
 					if (in_array($user->id, $model->getAdminIds())) {
-						$preload_data[] = $user->id;
+						$preload_data[] = $tmp;
 					}
 					$data[] = $tmp;
 
@@ -60,8 +60,8 @@ Yii::app()->clientScript->registerScriptFile(CHtml::asset(Yii::app()->basePath.'
 							allowClear: true,
 							minimumInputLength: 1
 						});
-						$("#'.$baseID.'").select2("val", '.CJavaScript::encode($preload_data).');
-						//$("#'.$baseID.'").select2("data", '.CJavaScript::encode($preload_data).');
+						//$("#'.$baseID.'").select2("val", '.CJavaScript::encode($preload_data).');
+						$("#'.$baseID.'").select2("data", '.CJavaScript::encode($preload_data).');
 					});
 				'); ?>
 			</div>
