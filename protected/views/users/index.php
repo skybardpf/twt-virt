@@ -2,6 +2,7 @@
 /**
  * @var $this UsersController
  * @var $users User[]
+ * @var $company Company Компания, с которой перешли на страницу
  */
 
 $this->breadcrumbs=array(
@@ -10,6 +11,7 @@ $this->breadcrumbs=array(
 $this->pageTitle = 'Пользователи';
 ?>
 <h1><?=CHtml::encode($this->pageTitle)?></h1>
+<a href="<?=$this->createUrl('/companies/view', array('company_id' => $company->id))?>" class="btn">Вернуться к компании "<?=$company->name?>"</a>
 <?php
 $this->widget('ext.bootstrap.widgets.TbGridView', array(
 	'dataProvider' => new CArrayDataProvider($users),
@@ -22,6 +24,7 @@ $this->widget('ext.bootstrap.widgets.TbGridView', array(
 		array('name' => 'Активный', 'value' => '$data->active ? "Да" : "Нет"'),
 		array(
 			'class'=>'bootstrap.widgets.TbButtonColumn',
+			'updateButtonUrl' => 'Yii::app()->controller->createUrl("update",array("id"=>$data->primaryKey, "company_id"=>'.$company->id.'))',
 			'template' => '{update}',
 			'deleteConfirmation' => false,
 		),
@@ -29,4 +32,4 @@ $this->widget('ext.bootstrap.widgets.TbGridView', array(
 ));
 ?>
 
-<a href="<?=$this->createUrl('create')?>" class="btn btn-info">Добавить пользователя</a>
+<a href="<?=$this->createUrl('create', array('company_id' => $company->id))?>" class="btn btn-info">Добавить пользователя</a>

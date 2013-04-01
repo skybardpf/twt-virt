@@ -21,7 +21,7 @@ $this->pageTitle = 'Компания '.$company->name;
 		</div>
 
 		<div class="pull-right">
-			<a title="Пользователи" href="<?=$this->createUrl('/users/')?>" rel="tooltip" class="btn btn-link"><i class="icon-user"></i> Пользователи</a>
+			<a title="Пользователи" href="<?=$this->createUrl('/users/index', array('company_id' => $company->id))?>" rel="tooltip" class="btn btn-link"><i class="icon-user"></i> Пользователи</a>
 		</div>
 
 		<br><br>

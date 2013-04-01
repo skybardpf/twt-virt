@@ -90,6 +90,10 @@ return array(
 			'urlFormat'=>'path',
 			'showScriptName' => false,
 			'rules'=>array(
+				'<company_id:\d+>/users' => '/users/index',
+				'<company_id:\d+>/users/update' => '/users/update',
+				'<company_id:\d+>/users/create' => '/users/create',
+
 				'profile' => '/users/profile',
 				'profile/edit' => '/users/profile_edit',
 				'profile/change_pass' => '/users/change_pass',

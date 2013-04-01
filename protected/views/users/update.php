@@ -25,7 +25,7 @@ $this->pageTitle = ($model->isNewRecord ? 'Добавление пользова
 	<?php echo $form->errorSummary($model); ?>
 	<div class="form-actions">
 		<?php $buttons = $this->widget('bootstrap.widgets.TbButton', array('buttonType'=>'submit', 'type'=>'primary', 'label'=> ($model->isNewRecord ? 'Добавить' : 'Сохранить')), true).'&nbsp'.
-			$this->widget('bootstrap.widgets.TbButton', array('label'=> 'Отмена', 'url' => $this->createUrl('/users')), true); ?>
+			$this->widget('bootstrap.widgets.TbButton', array('label'=> 'Отмена', 'url' => $this->createUrl('/users/index', array('company_id' => $company_id))), true); ?>
 		<?=$buttons?>
 	</div>
 	<fieldset>

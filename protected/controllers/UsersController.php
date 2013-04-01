@@ -1,11 +1,21 @@
 <?php
 class UsersController extends Controller
 {
-	public function actionIndex()
+	/**
+	 * @param $company_id - Компания
+	 *
+	 * @throws CHttpException
+	 */
+	public function actionIndex($company_id)
 	{
 		// Не администраторы не могут делать что либо с пользователями.
 		if (!Yii::app()->user->data->isAdmin) {
 			throw new CHttpException(403);
+		}
+
+		$prev_company = Company::model()->findByPk($company_id);
+		if (!$prev_company) {
+			throw new CHttpException(404);
 		}
 
 		$company_ids = array();
@@ -21,10 +31,10 @@ class UsersController extends Controller
 			'params'    => array(':company_ids' => implode(', ', $company_ids), ':admin_user_id' => Yii::app()->user->id),
 		));
 
-		$this->render('index', array('users' => $users));
+		$this->render('index', array('users' => $users, 'company' => $prev_company));
 	}
 
-	public function actionUpdate($id)
+	public function actionUpdate($id, $company_id)
 	{
 		/** @var $model User */
 		$company_ids = array();
@@ -42,6 +52,7 @@ class UsersController extends Controller
 				':admin_user_id' => Yii::app()->user->id),
 			)
 		);
+
 		// Пользователь по данным критериям не найден - редирект на список пользователей
 		if (!$model) {
 			Yii::app()->request->redirect($this->createUrl('/users/index'));
@@ -64,13 +75,13 @@ class UsersController extends Controller
 				$model->companies_ids = array();
 			}
 			if ($model->save()) {
-				$this->redirect($this->createUrl('index', array('id' => $model->id)));
+				$this->redirect($this->createUrl('index'));
 			}
 		}
-		$this->render('update', array('model' => $model));
+		$this->render('update', array('model' => $model, 'company_id' => $company_id));
 	}
 
-	public function actionCreate()
+	public function actionCreate($company_id)
 	{
 		if (!Yii::app()->user->data->isAdmin) {
 			throw new CHttpException(403);
@@ -92,7 +103,7 @@ class UsersController extends Controller
 			}
 		}
 
-		$this->render('update', array('model' => $model));
+		$this->render('update', array('model' => $model, 'company_id' => $company_id));
 	}
 
 	public function actionProfile()
@@ -123,7 +134,7 @@ class UsersController extends Controller
 	public function actionChange_pass()
 	{
 		$model = clone Yii::app()->user->data;
-		$model->password = null;
+		$model->password = NULL;
 		$model->setScenario('change_pass');
 
 		if(isset($_POST['ajax']) && $_POST['ajax']==='model-form-form') {
