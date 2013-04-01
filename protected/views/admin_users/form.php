@@ -75,7 +75,6 @@ Yii::app()->clientScript->registerCssFile($select2_path.'/select2.css');
 				<?php
 				echo CHtml::hiddenField('User[companies_ids_string]', '');
 				$baseID = CHtml::getIdByName('User[companies_ids_string]');
-
 				$data = array();
 				$preload_data = array();
 				foreach ($model->getCompaniesList() as $company) {
@@ -85,7 +84,7 @@ Yii::app()->clientScript->registerCssFile($select2_path.'/select2.css');
 						'locked'    => $company->isAdmin($model->id),
 					);
 					if (in_array($company->id, $model->companies_ids)) {
-						$preload_data[] = $company->id;
+						$preload_data[] = $tmp;
 					}
 					$data[] = $tmp;
 
@@ -99,8 +98,8 @@ Yii::app()->clientScript->registerCssFile($select2_path.'/select2.css');
 							allowClear: true,
 							minimumInputLength: 1,
 						});
-						$("#'.$baseID.'").select2("val", '.CJavaScript::encode($preload_data).');
-						//$("#'.$baseID.'").select2("data", '.CJavaScript::encode($preload_data).');
+						//$("#'.$baseID.'").select2("val", '.CJavaScript::encode($preload_data).');
+						$("#'.$baseID.'").select2("data", '.CJavaScript::encode($preload_data).');
 					});
 				'); ?>
 			</div>
