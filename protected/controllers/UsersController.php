@@ -42,12 +42,11 @@ class UsersController extends Controller
 				':admin_user_id' => Yii::app()->user->id),
 			)
 		);
+		// Пользователь по данным критериям не найден - редирект на список пользователей
+		if (!$model) {
+			Yii::app()->request->redirect($this->createUrl('/users/index'));
+		}
 
-		/*CVarDumper::dump($model->companies_ids,3,1);
-		CVarDumper::dump($model->companies_ids_string,3,1);
-		CVarDumper::dump($model->companies,3,1);
-		exit;
-*/
 		if ($model->create_user_id == Yii::app()->user->id) {
 			$model->setScenario('owner_update');
 		} else {

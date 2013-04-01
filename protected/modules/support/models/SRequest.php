@@ -123,11 +123,17 @@ class SRequest extends CActiveRecord
 			$no_outer_transaction = false;
 		}
 		try {
+			// Очистим последние сообщения перед удалением
+			$this->updateAll(array('l_message_id' => null), $condition, $params);
+
+			// Соберем идентификаторы удаляемых запросов
 			$builder  = $this->getCommandBuilder();
 			$criteria = $builder->createCriteria($condition,$params);
 			$requests = $this->findAll($criteria);
 			$ids      = array();
 			if ($requests) { foreach ($requests as $request) { $ids[] = $request->id; } }
+
+			// Удалим сообщения полученных запросов
 			if ($ids) {
 				$criteria = new CDbCriteria();
 				$criteria->addInCondition('request_id', $ids);
@@ -138,6 +144,8 @@ class SRequest extends CActiveRecord
 			if ($no_outer_transaction) { $transaction->rollback(); }
 			throw $e;
 		}
+
+		// И удалим уже сами запросы
 		return parent::deleteAll($condition, $params);
 	}
 
