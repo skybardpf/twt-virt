@@ -55,7 +55,7 @@ class Admin_usersController extends CmsController
 		if (isset($_POST[get_class($model)])) {
 			$model->attributes=$_POST[get_class($model)];
 			if ($model->save()) {
-				//$this->redirect($this->createUrl('view', array('id' => $model->id)));
+				$this->redirect($this->createUrl('view', array('id' => $model->id)));
 			}
 		}
 		$this->render('update', array('model' => $model));
