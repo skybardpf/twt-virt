@@ -16,7 +16,12 @@ class TWTWebUser extends CWebUser
 	public function getData()
 	{
 		if (!$this->_data && $this->getId()) {
-			$this->_data = User::model()->findByPk($this->getId());
+			$data = User::model()->findByPk($this->getId());
+			if (!$data) {
+				$this->logout(true);
+				Yii::app()->request->redirect(Yii::app()->homeUrl);
+			}
+			$this->_data = $data;
 		}
 		return $this->_data;
 	}

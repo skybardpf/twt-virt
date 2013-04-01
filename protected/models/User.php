@@ -269,10 +269,16 @@ class User extends CActiveRecord
 			$no_outer_transaction = false;
 		}
 		try {
-			Yii::app()->getModule('files');
+			// Связи с компаниями
 			User2company::model()->deleteAll('user_id = :user', array(':user' => $this->id));
 			Admin2company::model()->deleteAll('user_id = :user', array(':user' => $this->id));
+
+			// Файлы пользователя
+			Yii::app()->getModule('files');
 			Files::model()->deleteAll('user_id = :user', array(':user' => $this->id));
+
+			// Техподдержка
+			Yii::app()->getModule('support');
 			SRequest::model()->deleteAll('uid = :user', array(':user' => $this->id));
 			if ($no_outer_transaction) { $transaction->commit(); }
 		} catch (Exception $e) {
