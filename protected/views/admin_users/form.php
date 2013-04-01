@@ -5,8 +5,9 @@
  * @var $form TbActiveForm
  */
 
-Yii::app()->clientScript->registerScriptFile($this->asset_static.'/js/select2.min.js');
-Yii::app()->clientScript->registerCssFile($this->asset_static.'/css/select2.css');
+$select2_path = CHtml::asset(Yii::app()->basePath.'/../static/select2');
+Yii::app()->clientScript->registerScriptFile($select2_path.'/select2.js');
+Yii::app()->clientScript->registerCssFile($select2_path.'/select2.css');
 ?>
 
 <div class="form">
@@ -99,9 +100,6 @@ Yii::app()->clientScript->registerCssFile($this->asset_static.'/css/select2.css'
 							minimumInputLength: 1,
 						});
 						$("#'.$baseID.'").select2("val", '.CJavaScript::encode($preload_data).');
-                        $(document.getElementById("'.$baseID.'").parentNode).on("blur", "input", function(event){
-                            $(document.getElementById("'.$baseID.'")).select2("close");
-                        });
 						//$("#'.$baseID.'").select2("data", '.CJavaScript::encode($preload_data).');
 					});
 				'); ?>
