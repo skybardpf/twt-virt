@@ -311,4 +311,4 @@ class Files extends CActiveRecord
 
 }
 
-class FilesExtension extends Exception {}
+class FilesException extends Exception {}

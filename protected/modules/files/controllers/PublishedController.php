@@ -137,10 +137,10 @@ class PublishedController extends Controller
 							if (!$file->is_dir && file_exists($file->file))
 								$archive->addFile(realpath($file->file), $file_name);
 							elseif ($file->is_dir) {
-								throw new FilesExtension('Произошла ошибка, попробуйте еще раз.');
+								throw new FilesException('Произошла ошибка, попробуйте еще раз.');
 							} else {
 								Yii::log('Запрошенного файла нет физически id:'.$file->id, CLogger::LEVEL_ERROR, 'files');
-								throw new FilesExtension('Приносим свои извинения, произошла ошибка. Ее исправлением уже занимаются.');
+								throw new FilesException('Приносим свои извинения, произошла ошибка. Ее исправлением уже занимаются.');
 							}
 						}
 					} catch (FilesException $e) {

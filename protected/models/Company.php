@@ -37,6 +37,7 @@
  * @property User2company[] $user2company
  * @property User[] $admins
  * @property Admin2company[] $admin2company
+ * @property Files[] $files
 
  * @property CBankAccount[] $res_banks
  * @property CBankAccount[] $nonres_banks
@@ -95,6 +96,7 @@ class Company extends CActiveRecord
 			'user2company' => array(self::HAS_MANY, 'User2company', 'company_id'),
 			'users' => array(self::HAS_MANY, 'User', array('user_id' => 'id'), 'through' => 'user2company'),
 			'used_quote' => array(self::STAT, 'Files', 'company_id', 'select' => 'SUM(size)'),
+			'files' => array(self::HAS_MANY, 'Files', 'company_id'),
 			'admin2company' => array(self::HAS_MANY, 'Admin2company', 'company_id'),
 			'admins' => array(self::HAS_MANY, 'User', array('user_id' => 'id'), 'through' => 'admin2company'),
 		);
@@ -122,6 +124,7 @@ class Company extends CActiveRecord
 	/**
 	 * Проверяет, является ли пользователь админом (для блокирования удаления)
 	 * @param $user_id
+	 * @return bool
 	 */
 	public function isAdmin($user_id) {
 		return in_array($user_id, $this->getAdminIds());
@@ -141,7 +144,7 @@ class Company extends CActiveRecord
 
 	protected function afterSave()
 	{
-		// удалим всех администраторов компанииб не входящих в новый список
+		// удалим всех администраторов компании, не входящих в новый список
 		foreach($this->admin2company as $ac) {
 			if (!in_array($ac->user_id, $this->admin_ids)) {
 				$ac->delete();
@@ -184,6 +187,10 @@ class Company extends CActiveRecord
 		parent::afterSave();
 	}
 
+	/**
+	 * Перед удалением компании надо удалить всех ее администраторов, пользователей и файлы.
+	 * @return bool
+	 */
 	protected function beforeDelete()
 	{
 		foreach ($this->admin2company as $a2c) {
@@ -192,6 +199,7 @@ class Company extends CActiveRecord
 		foreach ($this->user2company as $u2c) {
 			$u2c->delete();
 		}
+		Files::model()->deleteAll('company_id = :company', array(':company' => $this->id));
 		return parent::beforeDelete();
 	}
 

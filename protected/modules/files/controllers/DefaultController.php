@@ -321,7 +321,7 @@ class DefaultController extends Controller
 			}
 		} catch (Exception $e) {
 			$transaction->rollback();
-			if (get_class($e) == 'FilesExtension') {
+			if (get_class($e) == 'FilesException') {
 				$ret['ret'] = $e->getCode();
 				$ret['error'] = $e->getMessage();
 			} else {
@@ -401,7 +401,7 @@ class DefaultController extends Controller
 			}
 		} catch (Exception $e) {
 			$transaction->rollback();
-			if (get_class($e) == 'FilesExtension') {
+			if (get_class($e) == 'FilesException') {
 				$ret['ret'] = $e->getCode();
 				$ret['error'] = $e->getMessage();
 			} else {
