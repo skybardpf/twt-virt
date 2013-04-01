@@ -189,17 +189,31 @@ class Company extends CActiveRecord
 
 	/**
 	 * Перед удалением компании надо удалить всех ее администраторов, пользователей и файлы.
+	 * @throws Exception
 	 * @return bool
 	 */
 	protected function beforeDelete()
 	{
-		foreach ($this->admin2company as $a2c) {
-			$a2c->delete();
+		$no_outer_transaction = true;
+		$transaction = Yii::app()->db->getCurrentTransaction();
+		if ($transaction === NULL) {
+			$transaction = Yii::app()->db->beginTransaction();
+		} else {
+			$no_outer_transaction = false;
 		}
-		foreach ($this->user2company as $u2c) {
-			$u2c->delete();
+		try {
+			foreach ($this->admin2company as $a2c) {
+				$a2c->delete();
+			}
+			foreach ($this->user2company as $u2c) {
+				$u2c->delete();
+			}
+			Files::model()->deleteAll('company_id = :company', array(':company' => $this->id));
+			if ($no_outer_transaction) { $transaction->commit(); }
+		} catch (Exception $e) {
+			if ($no_outer_transaction) { $transaction->rollback(); }
+			throw $e;
 		}
-		Files::model()->deleteAll('company_id = :company', array(':company' => $this->id));
 		return parent::beforeDelete();
 	}
 

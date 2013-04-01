@@ -27,7 +27,7 @@ class User extends CActiveRecord
 	public $old_password;
 
 	public $rememberMe = false;
-	private $_identity = null;
+	private $_identity = NULL;
 
 	public $isAdmin = false;
 
@@ -223,7 +223,7 @@ class User extends CActiveRecord
 	 * @param integer $user_id
 	 * @return Company[]
 	 */
-	public function getCompaniesList($user_id = null)
+	public function getCompaniesList($user_id = NULL)
 	{
 		$model = Company::model();
 		$criteria = new CDbCriteria();
@@ -240,7 +240,7 @@ class User extends CActiveRecord
 	 */
 	public function login()
 	{
-		if($this->_identity===null) {
+		if($this->_identity===NULL) {
 			$this->_identity=new UserIdentity($this->email, $this->password);
 			$this->_identity->authenticate();
 		}
@@ -253,6 +253,34 @@ class User extends CActiveRecord
 			return false;
 		}
 	}
+
+	/**
+	 * Перед удалением пользователя нужно удалить его связи с компаниями и файлами.
+	 * @throws Exception
+	 * @return bool
+	 */
+	protected function beforeDelete()
+	{
+		$no_outer_transaction = true;
+		$transaction = Yii::app()->db->getCurrentTransaction();
+		if ($transaction === NULL) {
+			$transaction = Yii::app()->db->beginTransaction();
+		} else {
+			$no_outer_transaction = false;
+		}
+		try {
+			Yii::app()->getModule('files');
+			User2company::model()->deleteAll('user_id = :user', array(':user' => $this->id));
+			Admin2company::model()->deleteAll('user_id = :user', array(':user' => $this->id));
+			Files::model()->deleteAll('user_id = :user', array(':user' => $this->id));
+			if ($no_outer_transaction) { $transaction->commit(); }
+		} catch (Exception $e) {
+			if ($no_outer_transaction) { $transaction->rollback(); }
+			throw $e;
+		}
+		return parent::beforeDelete();
+	}
+
 
 	// Чтобы в массив companies_ids записать значиния из мултиселект2 инпута companies_ids_string
 	public function parse_companies_string() {
