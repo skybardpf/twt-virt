@@ -273,6 +273,7 @@ class User extends CActiveRecord
 			User2company::model()->deleteAll('user_id = :user', array(':user' => $this->id));
 			Admin2company::model()->deleteAll('user_id = :user', array(':user' => $this->id));
 			Files::model()->deleteAll('user_id = :user', array(':user' => $this->id));
+			SRequest::model()->deleteAll('uid = :user', array(':user' => $this->id));
 			if ($no_outer_transaction) { $transaction->commit(); }
 		} catch (Exception $e) {
 			if ($no_outer_transaction) { $transaction->rollback(); }

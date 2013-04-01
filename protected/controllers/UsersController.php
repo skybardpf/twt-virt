@@ -3,19 +3,22 @@ class UsersController extends Controller
 {
 	public function actionIndex()
 	{
+		// Не администраторы не могут делать что либо с пользователями.
 		if (!Yii::app()->user->data->isAdmin) {
 			throw new CHttpException(403);
 		}
+
 		$company_ids = array();
 		if (Yii::app()->user->data->adminCompanies) {
 			foreach (Yii::app()->user->data->adminCompanies as $company) {
 				$company_ids[] = $company->id;
 			}
 		}
+		// Пользователи, работающие в компаниях, администрируемых текущим пользователем в порядке возрастания Email
 		$users = User::model()->findAll(array(
-			'condition'=>'companies.id IN(:company_ids) AND t.id != :admin_user_id',
-			'order' => 't.email',
-			'params'=>array(':company_ids' => implode(', ', $company_ids), ':admin_user_id' => Yii::app()->user->id),
+			'condition' => 'companies.id IN(:company_ids) AND t.id != :admin_user_id',
+			'order'     => 't.email',
+			'params'    => array(':company_ids' => implode(', ', $company_ids), ':admin_user_id' => Yii::app()->user->id),
 		));
 
 		$this->render('index', array('users' => $users));
@@ -30,10 +33,21 @@ class UsersController extends Controller
 				$company_ids[] = $company->id;
 			}
 		}
+
 		$model = User::model()->find(array(
-			'condition'=>'t.id = :user_id AND companies.id IN(:company_ids) AND t.id != :admin_user_id',
-			'params'=>array(':user_id' => $id, ':company_ids' => implode(', ', $company_ids), ':admin_user_id' => Yii::app()->user->id),
-		));
+			'condition' => 't.id = :user_id AND companies.id IN (:company_ids) AND t.id != :admin_user_id',
+			'params'    => array(
+				':user_id'       => $id,
+				':company_ids'   => implode(', ', $company_ids),
+				':admin_user_id' => Yii::app()->user->id),
+			)
+		);
+
+		CVarDumper::dump($model->companies_ids,3,1);
+		CVarDumper::dump($model->companies_ids_string,3,1);
+		CVarDumper::dump($model->companies,3,1);
+		exit;
+
 		if ($model->create_user_id == Yii::app()->user->id) {
 			$model->setScenario('owner_update');
 		} else {

@@ -60,9 +60,9 @@ Yii::app()->clientScript->registerScriptFile(CHtml::asset(Yii::app()->basePath.'
 							minimumInputLength: 1,
 						});
 						$("#'.$baseID.'").select2("val", '.CJavaScript::encode($preload_data).');
-                        $(document.getElementById("'.$baseID.'").parentNode).on("blur", "input", function(event){
+                        /*$(document.getElementById("'.$baseID.'").parentNode).on("blur", "input", function(event){
                             $(document.getElementById("'.$baseID.'")).select2("close");
-                        });
+                        });*/
 						//$("#'.$baseID.'").select2("data", '.CJavaScript::encode($preload_data).');
 					});
 				'); ?>

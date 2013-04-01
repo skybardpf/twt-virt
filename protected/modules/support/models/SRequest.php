@@ -105,12 +105,48 @@ class SRequest extends CActiveRecord
 		));
 	}
 
+	/**
+	 * Действия перед удалением группы записей.
+	 * @param string $condition
+	 * @param array $params
+	 *
+	 * @throws Exception
+	 * @return int
+	 */
+	public function deleteAll($condition = '', $params = array())
+	{
+		$no_outer_transaction = true;
+		$transaction = Yii::app()->db->getCurrentTransaction();
+		if ($transaction === NULL) {
+			$transaction = Yii::app()->db->beginTransaction();
+		} else {
+			$no_outer_transaction = false;
+		}
+		try {
+			$builder  = $this->getCommandBuilder();
+			$criteria = $builder->createCriteria($condition,$params);
+			$requests = $this->findAll($criteria);
+			$ids      = array();
+			if ($requests) { foreach ($requests as $request) { $ids[] = $request->id; } }
+			if ($ids) {
+				$criteria = new CDbCriteria();
+				$criteria->addInCondition('request_id', $ids);
+				SMessage::model()->deleteAll($criteria);
+			}
+			if ($no_outer_transaction) { $transaction->commit(); }
+		} catch (Exception $e) {
+			if ($no_outer_transaction) { $transaction->rollback(); }
+			throw $e;
+		}
+		return parent::deleteAll($condition, $params);
+	}
+
 	public function behaviors(){
 		return array(
 			'CTimestampBehavior' => array(
 				'class' => 'zii.behaviors.CTimestampBehavior',
 				'createAttribute' => 'cdate',
-				'updateAttribute' => null,
+				'updateAttribute' => NULL,
 				'setUpdateOnCreate' => true
 			)
 		);
