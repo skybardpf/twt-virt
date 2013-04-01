@@ -158,8 +158,7 @@ class User extends CActiveRecord
 		return parent::beforeSave();
 	}
 
-	protected function afterSave()
-	{
+	protected function afterSave() {
 		if (!in_array($this->scenario, array('profile', 'change_pass'))) {
 			$companies_ids = array();
 			if (in_array($this->scenario, array('insert', 'update'))) {

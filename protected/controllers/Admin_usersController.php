@@ -13,16 +13,13 @@ class Admin_usersController extends CmsController
 				'class'=>'ext.admin_actions.CreateAction',
 				'model'=> $new,
 			),
-			'update'=>array(
-				'class'=>'ext.admin_actions.UpdateAction',
-				'model'=> $model,
-			),
 			'delete'=>array(
 				'class'=>'ext.admin_actions.DeleteAction',
 				'model'=> $model,
 			)
 		);
 	}
+
 	public function actionIndex($company = null)
 	{
 		$criteria = new CDbCriteria();
@@ -44,6 +41,25 @@ class Admin_usersController extends CmsController
 		$this->render('index', array('dataProvider' => $dataProvider, 'companies' => $companies, 'company' => $company));
 	}
 
+	public function actionUpdate($id) {
+		$model = User::model()->findByPk($id);
+		$model->admin_action = true;
+		if (empty($model)) throw new CHttpException(404);
+		$model->setScenario('update');
+
+		if(isset($_POST['ajax']) && $_POST['ajax']==='model-form-form') {
+			echo CActiveForm::validate($model);
+			Yii::app()->end();
+		}
+
+		if (isset($_POST[get_class($model)])) {
+			$model->attributes=$_POST[get_class($model)];
+			if ($model->save()) {
+				//$this->redirect($this->createUrl('view', array('id' => $model->id)));
+			}
+		}
+		$this->render('update', array('model' => $model));
+	}
 	public function actionView()
 	{
 		$this->redirect(array('index'));
