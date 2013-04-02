@@ -75,7 +75,7 @@ class UsersController extends Controller
 				$model->companies_ids = array();
 			}
 			if ($model->save()) {
-				$this->redirect($this->createUrl('index'));
+				$this->redirect($this->createUrl('index', array('company_id' => $company_id)));
 			}
 		}
 		$this->render('update', array('model' => $model, 'company_id' => $company_id));
