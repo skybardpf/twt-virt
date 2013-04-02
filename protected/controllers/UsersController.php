@@ -26,9 +26,9 @@ class UsersController extends Controller
 		}
 		// Пользователи, работающие в компаниях, администрируемых текущим пользователем в порядке возрастания Email
 		$users = User::model()->findAll(array(
-			'condition' => 'companies.id IN(:company_ids) AND t.id != :admin_user_id',
+			'condition' => 'companies.id IN('.implode(', ', $company_ids).') AND t.id != :admin_user_id',
 			'order'     => 't.email',
-			'params'    => array(':company_ids' => implode(', ', $company_ids), ':admin_user_id' => Yii::app()->user->id),
+			'params'    => array(':admin_user_id' => Yii::app()->user->id),
 		));
 
 		$this->render('index', array('users' => $users, 'company' => $prev_company));
@@ -45,10 +45,9 @@ class UsersController extends Controller
 		}
 
 		$model = User::model()->find(array(
-			'condition' => 't.id = :user_id AND companies.id IN (:company_ids) AND t.id != :admin_user_id',
+			'condition' => 't.id = :user_id AND companies.id IN ('.implode(', ', $company_ids).') AND t.id != :admin_user_id',
 			'params'    => array(
 				':user_id'       => $id,
-				':company_ids'   => implode(', ', $company_ids),
 				':admin_user_id' => Yii::app()->user->id),
 			)
 		);
