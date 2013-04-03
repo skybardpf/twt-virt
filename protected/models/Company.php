@@ -166,8 +166,9 @@ class Company extends CActiveRecord
 				}
 			}
 		}
+
 		// сохранение администратора в таблицу связей с пользователями
-		foreach ($this->admins as $admin_user) {
+		foreach ($this->getRelated('admins', true) as $admin_user) {
 			if ($admin_user) {
 				$has_link = false;
 				foreach ($admin_user->companies as $c) {

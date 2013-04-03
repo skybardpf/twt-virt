@@ -28,6 +28,7 @@ $this->pageTitle = 'Компания '.$company->name;
 	<?php endif ?>
 <?php endif ?>
 <?php foreach ($company->attributes as $key => $attr) {
+	// Чтобы в таблице у полей не выводилась надпись "Не задано"
 	if ($attr === null) {
 		$company->$key = '';
 	}

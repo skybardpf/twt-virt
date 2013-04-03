@@ -53,8 +53,15 @@ class Admin_usersController extends CmsController
 		}
 
 		if (isset($_POST[get_class($model)])) {
+			$old_user2company = $model->user2company;
 			$model->attributes=$_POST[get_class($model)];
 			if ($model->save()) {
+				// удалим пользователя из админов компании, если у него удалили данную компанию
+				foreach($old_user2company as $u2c) {
+					if (!in_array($u2c->company_id, $model->companies_ids)) {
+						Admin2company::model()->deleteAllByAttributes(array('user_id' => $model->id, 'company_id' => $u2c->company_id));
+					}
+				}
 				$this->redirect($this->createUrl('view', array('id' => $model->id)));
 			}
 		}
