@@ -11,7 +11,7 @@ $this->breadcrumbs=array(
 $this->pageTitle = 'Пользователи';
 ?>
 <h1><?=CHtml::encode($this->pageTitle)?></h1>
-<a href="<?=$this->createUrl('/companies/view', array('company_id' => $company->id))?>" class="btn">Вернуться к компании "<?=$company->name?>"</a>
+<a href="<?=$this->createUrl('/companies/view', array('company_id' => $company->id))?>">Вернуться к компании "<?=$company->name?>"</a>
 <?php
 $this->widget('ext.bootstrap.widgets.TbGridView', array(
 	'dataProvider' => new CArrayDataProvider($users),
