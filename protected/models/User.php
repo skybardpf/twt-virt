@@ -254,7 +254,8 @@ class User extends CActiveRecord
 	}
 
 	/**
-	 * Перед удалением пользователя нужно удалить его связи с компаниями и файлами.
+	 * Перед удалением пользователя нужно удалить его связи с компаниями и файлами,
+	 * а так же удалить себя у всех пользователей, которых мы создали (где create_user_id совпадает с идентификатором пользователя)
 	 * @throws Exception
 	 * @return bool
 	 */
@@ -279,6 +280,16 @@ class User extends CActiveRecord
 			// Техподдержка
 			Yii::app()->getModule('support');
 			SRequest::model()->deleteAll('uid = :user', array(':user' => $this->id));
+
+			// удаление себя у всех пользователей, которых мы создали (где create_user_id совпадает с идентификатором данного пользователя)
+			$created_users = User::model()->findAllByAttributes(array('create_user_id' => $this->id));
+			if ($created_users) {
+				foreach ($created_users as $user) {
+					$user->create_user_id = null;
+					$user->save();
+				}
+			}
+
 			if ($no_outer_transaction) { $transaction->commit(); }
 		} catch (Exception $e) {
 			if ($no_outer_transaction) { $transaction->rollback(); }
