@@ -102,7 +102,7 @@ Yii::app()->clientScript->registerScriptFile(CHtml::asset(Yii::app()->basePath.'
 				<?=$form->textFieldRow($model,'iban', array('class' => 'input-xxlarge', 'disabled' => $model->resident)); ?>
             </fieldset>
 		</fieldset>
-		<fieldset>
+		<fieldset data-resident-edit="0">
             <legend>Данные о руководстве</legend>
 			<?=$form->textFieldRow($model,'position_name1', array('class' => 'input-xxlarge', 'disabled' => $model->resident)); ?>
 			<?=$form->textFieldRow($model,'position_owner1', array('class' => 'input-xxlarge', 'disabled' => $model->resident)); ?>
