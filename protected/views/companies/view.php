@@ -27,6 +27,11 @@ $this->pageTitle = 'Компания '.$company->name;
 		<br><br>
 	<?php endif ?>
 <?php endif ?>
+<?php foreach ($company->attributes as $key => $attr) {
+	if ($attr === null) {
+		$company->$key = '';
+	}
+}?>
 <?php $this->widget('bootstrap.widgets.TbDetailView', array(
 	'data'=>$company,
 	'attributes'=>$company->resident ? array(
