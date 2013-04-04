@@ -4,6 +4,9 @@
  * @var $model Company
  * @var $form TbActiveForm
  */
+$select2_path = CHtml::asset(Yii::app()->basePath.'/../static/select2');
+Yii::app()->clientScript->registerScriptFile($select2_path.'/select2.js');
+Yii::app()->clientScript->registerCssFile($select2_path.'/select2.css');
 Yii::app()->clientScript->registerScriptFile(CHtml::asset(Yii::app()->basePath.'/../static/js/company_form.js'));
 
 $this->breadcrumbs=array(
@@ -53,14 +56,14 @@ $this->pageTitle = 'Редактирование компании «' . $model->
         </fieldset>
         <fieldset>
 			<legend>Данные о руководстве</legend>
-			<?=$form->textFieldRow($model,'position_name1', array('class' => 'input-xxlarge', 'disabled' => $model->resident)); ?>
-			<?=$form->textFieldRow($model,'position_owner1', array('class' => 'input-xxlarge', 'disabled' => $model->resident)); ?>
+			<?=$form->textFieldRow($model,'position_name1', array('class' => 'input-xxlarge')); ?>
+			<?=$form->textFieldRow($model,'position_owner1', array('class' => 'input-xxlarge')); ?>
 			<hr>
-			<?=$form->textFieldRow($model,'position_name2', array('class' => 'input-xxlarge', 'disabled' => $model->resident)); ?>
-			<?=$form->textFieldRow($model,'position_owner2', array('class' => 'input-xxlarge', 'disabled' => $model->resident)); ?>
+			<?=$form->textFieldRow($model,'position_name2', array('class' => 'input-xxlarge')); ?>
+			<?=$form->textFieldRow($model,'position_owner2', array('class' => 'input-xxlarge')); ?>
 			<hr>
-			<?=$form->textFieldRow($model,'position_name3', array('class' => 'input-xxlarge', 'disabled' => $model->resident)); ?>
-			<?=$form->textFieldRow($model,'position_owner3', array('class' => 'input-xxlarge', 'disabled' => $model->resident)); ?>
+			<?=$form->textFieldRow($model,'position_name3', array('class' => 'input-xxlarge')); ?>
+			<?=$form->textFieldRow($model,'position_owner3', array('class' => 'input-xxlarge')); ?>
 		</fieldset>
 
 	</fieldset>
