@@ -21,7 +21,7 @@ class PublishedController extends Controller
 				$criteria->condition = 'is_dir = 1';
 				$criteria->addCondition('id = :id');
 				$criteria->params = array(':id' => $dir_id);
-				$dir = $root_dir->children()->find($criteria);
+				$dir = $root_dir->descendants()->find($criteria);
 				if ($dir) {
 					return $dir;
 				} else {
@@ -77,7 +77,7 @@ class PublishedController extends Controller
 		} else {
 			if (empty($_POST['Files']) && $file_id) {
 				// Запросили конкретный файл из опубликованной директории.
-				$file = $dir->children()->findByPk($file_id);
+				$file = $dir->descendants()->findByPk($file_id);
 				if (!$file) {
 					$this->render('error', array('message' => 'Извините, запрошенный файл был удален.'));
 				}
@@ -92,7 +92,7 @@ class PublishedController extends Controller
 				// Запросили архив файлов из опубликованной директории.
 				$criteria = new CDbCriteria();
 				$criteria->addInCondition('id', $_POST['Files']['id']);
-				$files = $dir->children()->findAll($criteria);
+				$files = $dir->descendants()->findAll($criteria);
 				if (!$files) {
 					$this->render('error', array('message' => 'Извините, один из запрошенных файлов был удален, попробуйте еще раз.'));
 					return;
