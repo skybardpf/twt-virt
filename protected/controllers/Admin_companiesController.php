@@ -74,7 +74,7 @@ class Admin_companiesController extends CmsController
 				'code'      => 'form_show',
 				'title'     => ($is_new) ? 'Добавление банковского счета': 'Редактирование банковского счета',
 				'html'      => $this->renderPartial('/accounts/form', array('bank_account' => $account), 1),
-				'footer'    => $this->renderPartial('/accounts/footer', array('company_id' => $account->company_id, 'resident' => $account->resident, 'account_id' => $account->id), 1),
+				'footer'    => $this->renderPartial('/accounts/footer', array('company_id' => $company_id, 'resident' => $resident, 'account_id' => $account->id), 1),
 			);
 		}
 		return $this->ajaxReturn($ret);

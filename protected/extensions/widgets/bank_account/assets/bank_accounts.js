@@ -22,10 +22,14 @@ $(document).ready(function(){
 	});
 
 	$(document).on('click', '[data-save_button="account"]', function(){
-		var $this = $(this);
-		var form = document.getElementById('bank-account-form');
-		var formdata = $(form).serialize();
-		$.post(form.action, formdata, function(data){
+		var url = $(this).data('link');
+		var formdata = {'CBankAccount[account_number]' : $('#CBankAccount_account_number').val(),
+						'CBankAccount[bank]' : $('#CBankAccount_bank').val(),
+						'CBankAccount[swift]' : $('#CBankAccount_swift').val(),
+						'CBankAccount[iban]' : $('#CBankAccount_iban').val(),
+						'CBankAccount[bik]' : $('#CBankAccount_bik').val(),
+						'CBankAccount[correspondent]' : $('#CBankAccount_correspondent').val()};
+		$.post(url, formdata, function(data){
 			if (data.code == 'error') {
 				alert(data.message);
 			} else if (data.code == 'Ok') {

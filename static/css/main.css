@@ -34,3 +34,32 @@ a.a-brand:hover {
 .navbar {
 	margin-top: 18px;
 }
+
+.bordered {
+	border: 1px solid #DDDDDD;
+	border-radius: 5px 5px 5px 5px;
+	padding: 20px 40px;
+	width: 463px;
+}
+
+.bank_account {
+	margin: 10px 0;
+	border-bottom: 1px solid #ddd;
+}
+
+.righter {
+	float: right;
+}
+
+.text-center {
+	text-align: center;
+}
+
+.lefter {
+	width: 130px;
+	margin: 5px 30px 5px 0;
+}
+
+.margin {
+	margin: 5px 0;
+}
