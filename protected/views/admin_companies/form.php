@@ -85,10 +85,15 @@ Yii::app()->clientScript->registerScriptFile(CHtml::asset(Yii::app()->basePath.'
 			<?=$form->textFieldRow($model,'kpp', array('class' => 'input-xxlarge', 'disabled' => !$model->resident)); ?>
 			<?=$form->textFieldRow($model,'okopf', array('class' => 'input-xxlarge', 'disabled' => !$model->resident)); ?>
 			<?=$form->textFieldRow($model,'ogrn', array('class' => 'input-xxlarge', 'disabled' => !$model->resident)); ?>
-
-
 		</fieldset>
-		<fieldset data-resident="0" <?=$model->resident ? 'style="display: none;"' : ''?>>
+		<fieldset>
+			<?php $this->widget('ext.widgets.bank_account.BankAccountsWidget', array(
+				'bank_accounts'  => $model->bankAccounts,
+				'company_id' => $model->id,
+				'company_resident' => $model->resident
+			)); ?>
+		</fieldset>
+		<!--<fieldset data-resident="0" <?=$model->resident ? 'style="display: none;"' : ''?>>
 			<?=$form->textFieldRow($model,'vat', array('class' => 'input-xxlarge', 'disabled' => $model->resident)); ?>
 			<?=$form->textFieldRow($model,'registration_number', array('class' => 'input-xxlarge', 'disabled' => $model->resident)); ?>
 			<?=$form->textFieldRow($model,'registration_date', array('class' => 'input-xxlarge', 'disabled' => $model->resident)); ?>
@@ -101,7 +106,7 @@ Yii::app()->clientScript->registerScriptFile(CHtml::asset(Yii::app()->basePath.'
 				<?=$form->textFieldRow($model,'swift', array('class' => 'input-xxlarge', 'disabled' => $model->resident)); ?>
 				<?=$form->textFieldRow($model,'iban', array('class' => 'input-xxlarge', 'disabled' => $model->resident)); ?>
             </fieldset>
-		</fieldset>
+		</fieldset>-->
 		<fieldset>
             <legend>Данные о руководстве</legend>
 			<?=$form->textFieldRow($model,'position_name1', array('class' => 'input-xxlarge')); ?>

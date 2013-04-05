@@ -10,7 +10,7 @@
  * The followings are the available columns in table 'cbank_account':
  * @property integer $id
  * @property integer $company_id     // Компания
- * @property integer $resident     // Компания
+ * @property integer $resident       // Компания
  * @property string  $account_number // Номер счета
  * @property string  $bank           // Название банка
  * @property string  $swift          // SWIFT код
@@ -80,8 +80,8 @@ class CBankAccount extends CActiveRecord
 			'company_id' => 'Company',
 			'account_number' => 'Номер счета',
 			'bank' => 'Банк',
-			'swift' => 'Swift',
-			'iban' => 'Iban',
+			'swift' => 'SWIFT',
+			'iban' => 'IBAN',
 			'bik' => 'БИК',
 			'correspondent' => 'КоррСчет',
 		);

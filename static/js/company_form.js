@@ -1,9 +1,10 @@
 $(function() {
     $('#Company_admin_user_id').select2({allowClear: true});
     $('#Company_resident').on('change', function () {
-		$('fieldset[data-resident]').hide().find('input,select').attr('disabled', 'disabled');
-		$('fieldset[data-resident='+$(this).val()+']').show().find('input,select').removeAttr('disabled');
+		$('[data-account_resident]').hide();
+		$('[data-account_resident='+$(this).val()+']').show();
 	});
+
     $('.bank_account_add_button').click(function(){
         var template = document.getElementById(this.dataset.resident);
         var account = template.cloneNode();

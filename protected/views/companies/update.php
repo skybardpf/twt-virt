@@ -42,7 +42,7 @@ $this->pageTitle = 'Редактирование компании «' . $model->
 		<?=$form->textFieldRow($model,'phone', array('class' => 'input-xxlarge')); ?>
 		<?=$form->textFieldRow($model,'email', array('class' => 'input-xxlarge')); ?>
 		<?=$form->dropDownListRow($model,'resident', array(0 => 'Не резидент РФ', 1 => 'Резидент РФ'), array('class' => 'input-xxlarge')); ?>
-		<fieldset data-resident="1" <?=$model->resident? '' : 'style="display: none;"'?>>
+		<!--<fieldset data-resident="1" <?=$model->resident? '' : 'style="display: none;"'?>>
 			<?=$form->textFieldRow($model,'inn', array('class' => 'input-xxlarge', 'disabled' => !$model->resident)); ?>
 			<?=$form->textFieldRow($model,'kpp', array('class' => 'input-xxlarge', 'disabled' => !$model->resident)); ?>
 			<?=$form->textFieldRow($model,'okopf', array('class' => 'input-xxlarge', 'disabled' => !$model->resident)); ?>
@@ -53,7 +53,14 @@ $this->pageTitle = 'Редактирование компании «' . $model->
 			<?=$form->textFieldRow($model,'registration_number', array('class' => 'input-xxlarge', 'disabled' => $model->resident)); ?>
 			<?=$form->textFieldRow($model,'registration_date', array('class' => 'input-xxlarge', 'disabled' => $model->resident)); ?>
 			<?=$form->textFieldRow($model,'registration_country', array('class' => 'input-xxlarge', 'disabled' => $model->resident)); ?>
-        </fieldset>
+        </fieldset>-->
+		<fieldset>
+			<?php $this->widget('ext.widgets.bank_account.BankAccountsWidget', array(
+					'bank_accounts'  => $model->bankAccounts,
+					'company_id' => $model->id,
+					'company_resident' => $model->resident
+				)); ?>
+		</fieldset>
         <fieldset>
 			<legend>Данные о руководстве</legend>
 			<?=$form->textFieldRow($model,'position_name1', array('class' => 'input-xxlarge')); ?>
@@ -65,7 +72,6 @@ $this->pageTitle = 'Редактирование компании «' . $model->
 			<?=$form->textFieldRow($model,'position_name3', array('class' => 'input-xxlarge')); ?>
 			<?=$form->textFieldRow($model,'position_owner3', array('class' => 'input-xxlarge')); ?>
 		</fieldset>
-
 	</fieldset>
 	<div class="form-actions">
 		<?=$buttons?>
@@ -74,3 +80,4 @@ $this->pageTitle = 'Редактирование компании «' . $model->
 	<?php $this->endWidget(); ?>
 
 </div>
+

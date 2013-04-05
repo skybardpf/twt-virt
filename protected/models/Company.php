@@ -49,6 +49,7 @@ class Company extends CActiveRecord
 	public $f_quote = 50;
 	public $admin_ids = array(); // массив идентификаторов администраторов компании
 	public $admin_ids_string = '';
+	public $bank_accounts2show = '';
 
 	/**
 	 * Returns the static model of the specified AR class.
@@ -99,6 +100,7 @@ class Company extends CActiveRecord
 			'files' => array(self::HAS_MANY, 'Files', 'company_id'),
 			'admin2company' => array(self::HAS_MANY, 'Admin2company', 'company_id'),
 			'admins' => array(self::HAS_MANY, 'User', array('user_id' => 'id'), 'through' => 'admin2company'),
+			'bankAccounts' => array(self::HAS_MANY, 'CBankAccount', 'company_id'),
 		);
 	}
 
@@ -209,6 +211,9 @@ class Company extends CActiveRecord
 			foreach ($this->user2company as $u2c) {
 				$u2c->delete();
 			}
+			foreach ($this->bankAccounts as $ba) {
+				$ba->delete();
+			}
 			Files::model()->deleteAll('company_id = :company', array(':company' => $this->id));
 			if ($no_outer_transaction) { $transaction->commit(); }
 		} catch (Exception $e) {
@@ -251,7 +256,8 @@ class Company extends CActiveRecord
 			'deleted' => 'Помечено на удаление',
 			'deleted_date' => 'Дата отметки',
 			'f_quote' => 'Квота файлового хранилица в МБ',
-			'f_qoute_view' => 'Файлы'
+			'f_qoute_view' => 'Файлы',
+			'bank_accounts2show' => 'Банковские счета',
 		);
 	}
 

@@ -33,6 +33,7 @@ $this->pageTitle = 'Компания '.$company->name;
 		$company->$key = '';
 	}
 }?>
+<?php $company->bank_accounts2show = $this->renderPartial('/accounts/bank_accounts2show', array('bank_accounts' => $company->bankAccounts, 'company_resident' => $company->resident), 1);?>
 <?php $this->widget('bootstrap.widgets.TbDetailView', array(
 	'data'=>$company,
 	'attributes'=>$company->resident ? array(
@@ -45,10 +46,7 @@ $this->pageTitle = 'Компания '.$company->name;
 		'kpp',
 		'okopf',
 		'ogrn',
-		'account_number',
-		'bank',
-		'bik',
-		'correspondent_account',
+		'bank_accounts2show:html',
 		'position_name1',
 		'position_owner1',
 		'position_name2',
@@ -65,10 +63,7 @@ $this->pageTitle = 'Компания '.$company->name;
 		'registration_number',
 		'registration_date',
 		'registration_country',
-		'account_number',
-		'bank',
-		'swift',
-		'iban',
+		'bank_accounts2show:html',
 		'position_name1',
 		'position_owner1',
 		'position_name2',
