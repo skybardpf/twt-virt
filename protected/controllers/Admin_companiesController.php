@@ -73,7 +73,7 @@ class Admin_companiesController extends CmsController
 			$ret = array(
 				'code'      => 'form_show',
 				'title'     => ($is_new) ? 'Добавление банковского счета': 'Редактирование банковского счета',
-				'html'      => $this->renderPartial('/accounts/form', array('bank_account' => $account), 1),
+				'html'      => $this->renderPartial('/accounts/form', array('bank_account' => $account, 'resident' => $resident), 1),
 				'footer'    => $this->renderPartial('/accounts/footer', array('company_id' => $company_id, 'resident' => $resident, 'account_id' => $account->id), 1),
 			);
 		}

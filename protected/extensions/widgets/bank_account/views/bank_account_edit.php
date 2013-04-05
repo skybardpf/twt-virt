@@ -6,7 +6,7 @@
 ?>
 <div class="form">
 	<fieldset>
-		<?php if ($bank_account->resident) { ?>
+		<?php if ($resident) { ?>
 			<?=CHtml::activeLabelEx($bank_account, 'account_number', array('class' => 'control-label lefter'));?>
 			<?=CHtml::activeTextField($bank_account, 'account_number' , array('class' => 'input-xlarge margin'));?>
 			<?=CHtml::activeLabelEx($bank_account, 'bank', array('class' => 'control-label lefter'));?>
