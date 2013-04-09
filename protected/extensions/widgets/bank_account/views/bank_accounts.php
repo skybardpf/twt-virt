@@ -19,16 +19,16 @@ Yii::app()->clientScript->registerCssFile(CHtml::asset(Yii::app()->basePath.'/..
 	</div>
 
 	<div>
-		<a class="btn btn-primary" href="<?=$this->controller->createUrl('update_account', array('company_id' => $company_id, 'resident' => ($company_resident) ? 1: 0))?>"
-		   data-account_resident="<?=($company_resident) ? 1: 0?>"
+		<a class="btn btn-primary" href="<?=$this->controller->createUrl('update_account', array('company_id' => $company_id, 'resident' => 1))?>"
+		   data-account_resident="1"
 		   data-bank_account_link=""
-		   style="display:<?=$company_resident ? 'inline': 'none'?>;">
+		   style="display:<?=$company_resident ? 'inline' :'none'?>;">
 			Добавить
 		</a>
-		<a class="btn btn-primary" href="<?=$this->controller->createUrl('update_account', array('company_id' => $company_id, 'resident' => ($company_resident) ? 0: 1))?>"
-		   data-account_resident="<?=($company_resident) ? 0: 1?>"
+		<a class="btn btn-primary" href="<?=$this->controller->createUrl('update_account', array('company_id' => $company_id, 'resident' => 0))?>"
+		   data-account_resident="0"
 		   data-bank_account_link=""
-		   style="display:<?=!$company_resident ? 'inline': 'none'?>;">
+		   style="display:<?=$company_resident ? 'none': 'inline'?>;">
 			Добавить
 		</a>
 	</div>

@@ -24,6 +24,16 @@ class CreateAction extends CAction
 		if (isset($_POST[get_class($model)])) {
 			$model->attributes=$_POST[get_class($model)];
 			if ($model->save()) {
+				// Сохранение банковских счетов, при создании новой компании
+				if ($_POST['CBankAccount']) {
+					foreach ($_POST['CBankAccount']['account'] as $k => $v) {
+						$account = new CBankAccount();
+						$account->attributes = $v;
+						$account->resident = $model->resident;
+						$account->company_id = $model->id;
+						$account->save();
+					}
+				}
 				$this->controller->redirect($this->controller->createUrl('view', array('id' => $model->id)));
 			}
 		}
