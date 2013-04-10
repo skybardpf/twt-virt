@@ -24,6 +24,9 @@ class UpdateAction extends CAction
 		if (isset($_POST[get_class($model)])) {
 			$model->attributes=$_POST[get_class($model)];
 			if ($model->save()) {
+				if (get_class($model) == 'Company') {
+					$model->saveBankAccount($_POST);
+				}
 				$this->controller->redirect($this->controller->createUrl('view', array('id' => $model->id)));
 			}
 		}

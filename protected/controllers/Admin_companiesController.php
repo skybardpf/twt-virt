@@ -53,7 +53,7 @@ class Admin_companiesController extends CmsController
 			$account->attributes = $_POST['CBankAccount'];
 			$account->resident = $resident;
 			$account->company_id = $company_id;
-			if ($company_id) {
+			/*if ($company_id) {
 				if( $account->save()) {
 					$ret = array(
 						'code' => 'Ok',
@@ -70,14 +70,14 @@ class Admin_companiesController extends CmsController
 						'message' => $error_text,
 					);
 				}
-			} else {
-				$ret = array(
-					'code' => 'Ok',
-					'account_id' => $account->id,
-					'hidden_fields' => $this->renderPartial('/accounts/hidden_fields', array('bank_account' => $account, 'company_id' => $company_id , 'company_resident' => $resident), 1),
-					'new_link' => $this->renderPartial('/accounts/new_link', array('bank_account' => $account, 'company_id' => $company_id , 'company_resident' => $resident), 1),
-				);
-			}
+			} else {*/
+			$ret = array(
+				'code' => 'Ok',
+				'account_id' => $account->id,
+				'hidden_fields' => $this->renderPartial('/accounts/hidden_fields', array('bank_account' => $account, 'company_id' => $company_id , 'company_resident' => $resident), 1),
+				'new_link' => $this->renderPartial('/accounts/new_link', array('bank_account' => $account, 'company_id' => $company_id , 'company_resident' => $resident), 1),
+			);
+			//}
 		} else {
 			$ret = array(
 				'code'      => 'form_show',

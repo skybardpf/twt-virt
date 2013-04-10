@@ -37,6 +37,9 @@ $(document).ready(function(){
 				var link = $('[data-bank_accounts="1"]').find('[data-bank_account_link="'+data.account_id+'"]');
 				if (link.length) {
 					link.parent().replaceWith(data.new_link);
+					if (data.hidden_fields) {
+						$('[data-bank_accounts="1"]').append(data.hidden_fields);
+					}
 				} else {
 					$('[data-bank_accounts="1"]').append(data.new_link);
 					if (data.hidden_fields) {

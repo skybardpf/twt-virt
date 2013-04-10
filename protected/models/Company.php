@@ -190,6 +190,32 @@ class Company extends CActiveRecord
 		parent::afterSave();
 	}
 
+	public function saveBankAccount($data) {
+
+		// Сохранение банковских счетов, при создании новой компании
+		if (isset($data['CBankAccount'])) {
+			foreach ($data['CBankAccount'] as $key => $val) {
+				if ($key == 'new') {
+					foreach($val as $k => $v) {
+						$account = new CBankAccount();
+						$account->attributes = $v;
+						$account->resident = $this->resident;
+						$account->company_id = $this->id;
+						$account->save();
+					}
+				} elseif ($key == 'account') {
+					foreach($val as $k => $v) {
+						$account = CBankAccount::model()->findByPk($k);
+						$account->attributes = $v;
+						$account->resident = $this->resident;
+						$account->company_id = $this->id;
+						$account->save();
+					}
+				}
+			}
+		}
+	}
+
 	/**
 	 * Перед удалением компании надо удалить всех ее администраторов, пользователей и файлы.
 	 * @throws Exception
