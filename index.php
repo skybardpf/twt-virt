@@ -16,7 +16,7 @@ if ($_SERVER['HTTP_HOST'] == 'twt-virt-office.local') {
 
 	defined('YII_DEBUG') or define('YII_DEBUG',true);
 } else if ($_SERVER['HTTP_HOST'] == 'ioffice-on.com') {
-	$yii    = 'yii-1.1.13/yii.php';
+	$yii    = dirname(__FILE__).'/yii/yii.php';
 	$config = dirname(__FILE__).'/protected/config/production.php';
 
 	defined('YII_DEBUG') or define('YII_DEBUG',false);
