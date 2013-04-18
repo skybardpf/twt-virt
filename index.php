@@ -15,6 +15,11 @@ if ($_SERVER['HTTP_HOST'] == 'twt-virt-office.local') {
 	$config = dirname(__FILE__).'/protected/config/local.php';
 
 	defined('YII_DEBUG') or define('YII_DEBUG',true);
+} else if ($_SERVER['HTTP_HOST'] == 'ioffice-on.com') {
+	$yii    = 'yii-1.1.13/yii.php';
+	$config = dirname(__FILE__).'/protected/config/production.php';
+
+	defined('YII_DEBUG') or define('YII_DEBUG',false);
 }
 
 // specify how many levels of call stack should be shown in each log message
