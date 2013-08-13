@@ -154,4 +154,5 @@ class UsersController extends Controller
 
 		$this->render('change_pass', array('model' => $model));
 	}
+
 }
