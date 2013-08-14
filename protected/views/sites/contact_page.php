@@ -12,18 +12,47 @@
 <a href="/sites/page/company_id/<?= $company_id; ?>/site_id/<?= $site_id; ?>/kind/contacts" style='color: black;'>Контакты</a>
 <br />
 <br />
-<form method='post' action='/sites/page_save'>
+
+<?php /** @var BootActiveForm $form */
+$form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
+	'type'=>'horizontal',
+	'action'=>'/sites/page_save'
+)); ?>
+
 	<input type='hidden' name='company_id' value='<?= $company_id; ?>' />
 	<input type='hidden' name='site_id' value='<?= $site_id; ?>' />
 	<input type='hidden' name='kind' value='<?= $kind; ?>' />
-	<input type='text' name='title_window' style='width: 450px;' value='<?= $page['title_window']; ?>' /> - заголовок окна.<br />
-	<input type='text' name='title_page' style='width: 450px;' value='<?= $page['title_page']; ?>' /> - заголовок страницы.<br /><br />
-		<select name='map'>
-		<option <? if($page['map'] == "google") echo "selected"; ?> value='google'>Google</option>
-		<option <? if($page['map'] == "yandex") echo "selected"; ?> value='yandex'>Yandex</option>
-	</select><br />
-	<input type='text' name='address' style='width: 450px;' value='<?= $page['address']; ?>' /> - адрес.<br /><br />
+
+	<div class="control-group ">
+		<label for="title_window" class="control-label required">Заголовок окна <span class="required">*</span></label>
+		<div class="controls">
+			<input type='text' name='title_window' id='title_window' value='<?= $page['title_window']; ?>'>
+		</div>
+	</div>
+	<div class="control-group ">
+		<label for="title_page" class="control-label required">Заголовок страницы <span class="required">*</span></label>
+		<div class="controls">
+			<input type='text' name='title_page' id='title_page' value='<?= $page['title_page']; ?>'>
+		</div>
+	</div>
+	<div class="control-group ">
+		<label for="map" class="control-label required">Карты <span class="required">*</span></label>
+		<div class="controls">
+			<select name='map' id='map'>
+				<option <? if($page['map'] == "google") echo "selected"; ?> value='google'>Google</option>
+				<option <? if($page['map'] == "yandex") echo "selected"; ?> value='yandex'>Yandex</option>
+			</select>
+		</div>
+	</div>
+	<div class="control-group ">
+		<label for="address" class="control-label required">Адрес <span class="required">*</span></label>
+		<div class="controls">
+			<input type='text' name='address' id='address' value='<?= $page['address']; ?>'>
+		</div>
+	</div>
+
 	<textarea name='content' style='height: 300px;'><?= $page['content']; ?></textarea>
-	<br />
-	<input type='submit' value='Сохранить' />
-</form>
+	<br>
+	<?php $this->widget('bootstrap.widgets.TbButton', array('buttonType'=>'submit', 'type'=>'primary', 'label'=> 'Сохранить'))?>
+
+<?php $this->endWidget(); ?>
