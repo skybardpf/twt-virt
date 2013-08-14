@@ -92,6 +92,8 @@ class m130814_105205_create_db extends CDbMigration
 							  `template` int(11) DEFAULT NULL,
 							  PRIMARY KEY (`id`)
 							) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8");
+		
+		
 	}
 
 	public function down()
