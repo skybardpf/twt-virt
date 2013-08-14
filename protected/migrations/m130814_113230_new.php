@@ -4,6 +4,7 @@ class m130814_113230_new extends CDbMigration
 {
 	public function up()
 	{
+		//
 		$this->execute("/*
 Navicat MySQL Data Transfer
 
