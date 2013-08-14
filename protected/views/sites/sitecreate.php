@@ -18,12 +18,22 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
 	<input type='hidden' name='company_id' value='<?= $company_id; ?>'>
 
 	<div class="control-group ">
+	<? if($errors['sitename']):?>
+	<div style='color: red; margin-left: 190px; font-size: 12px;'>
+		<i>Название не должно быть пустым.</i>
+	</div>
+	<? endif; ?>
 		<label for="sitename" class="control-label required">Название сайта <span class="required">*</span></label>
 		<div class="controls">
 			<input type='text' name='sitename' id='sitename' value='<?= $page['sitename']; ?>'>
 		</div>
 	</div>
 	<div class="control-group ">
+	<? if($errors['domain']):?>
+	<div style='color: red; margin-left: 190px; font-size: 12px;'>
+		<i>Доменное имя не корректно.</i>
+	</div>
+	<? endif; ?>
 		<label for="domain" class="control-label required">Домен <span class="required">*</span></label>
 		<div class="controls">
 			<input type='text' name='domain' id='domain' value='<?= $page['domain']; ?>'>
@@ -42,25 +52,25 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
 	<div class="control-group ">
 		<label for="about" class="control-label">О компании</label>
 		<div class="controls">
-			<input type='checkbox' name='about' id='about' <? if($page['about'] == "yes") echo "checked"; ?>>
+			<input type='checkbox' name='about' id='about' <? if(isset($page['about'])) echo "checked"; ?>>
 		</div>
 	</div>
 	<div class="control-group ">
 		<label for="services" class="control-label">Услуги</label>
 		<div class="controls">
-			<input type='checkbox' name='services' id='services' <? if($page['services'] == "yes") echo "checked"; ?>>
+			<input type='checkbox' name='services' id='services' <? if(isset($page['services'])) echo "checked"; ?>>
 		</div>
 	</div>
 	<div class="control-group ">
 		<label for="partners" class="control-label">Партнёры</label>
 		<div class="controls">
-			<input type='checkbox' name='partners' id='partners' <? if($page['partners'] == "yes") echo "checked"; ?>>
+			<input type='checkbox' name='partners' id='partners' <? if(isset($page['partners'])) echo "checked"; ?>>
 		</div>
 	</div>
 	<div class="control-group ">
 		<label for="contacts" class="control-label">Контакты</label>
 		<div class="controls">
-			<input type='checkbox' name='contacts' id='contacts' <? if($page['contacts'] == "yes") echo "checked"; ?>>
+			<input type='checkbox' name='contacts' id='contacts' <? if(isset($page['contacts'])) echo "checked"; ?>>
 		</div>
 	</div>
 	<?php $this->widget('bootstrap.widgets.TbButton', array('buttonType'=>'submit', 'type'=>'primary', 'label'=> 'Сохранить'))?>

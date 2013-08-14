@@ -21,7 +21,7 @@ $this->pageTitle=Yii::app()->name;
 				<a href="/sites/settings/company_id/<?= $company_id; ?>/site_id/<?= $_site['site_id'] ?>"><?= $_site['name']; ?></a>
 			</td>
 			<td><?= $_site['domain']; ?></td>
-			<td><?= $_site['template']; ?></td>
+			<td><?= $_site['external_name']; ?></td>
 		</tr>
 	<?php endforeach ?>
 </table>

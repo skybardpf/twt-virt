@@ -16,7 +16,8 @@
 <?php /** @var BootActiveForm $form */
 $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
 	'type'=>'horizontal',
-	'action'=>'/sites/page_save'
+	'action'=>'/sites/page_save',
+	'htmlOptions'=>array('enctype'=>'multipart/form-data')
 )); ?>
 
 	<input type='hidden' name='company_id' value='<?= $company_id; ?>' />
@@ -24,19 +25,19 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
 	<input type='hidden' name='kind' value='<?= $kind; ?>' />
 
 	<div class="control-group ">
-		<label for="title_window" class="control-label required">Заголовок окна <span class="required">*</span></label>
+		<label for="title_window" class="control-label required">Заголовок окна <span class="required"></span></label>
 		<div class="controls">
 			<input type='text' name='title_window' id='title_window' value='<?= $page['title_window']; ?>'>
 		</div>
 	</div>
 	<div class="control-group ">
-		<label for="title_page" class="control-label required">Заголовок страницы <span class="required">*</span></label>
+		<label for="title_page" class="control-label required">Заголовок страницы <span class="required"></span></label>
 		<div class="controls">
 			<input type='text' name='title_page' id='title_page' value='<?= $page['title_page']; ?>'>
 		</div>
 	</div>
 	<div class="control-group ">
-		<label for="map" class="control-label required">Карты <span class="required">*</span></label>
+		<label for="map" class="control-label required">Карты <span class="required"></span></label>
 		<div class="controls">
 			<select name='map' id='map'>
 				<option <? if($page['map'] == "google") echo "selected"; ?> value='google'>Google</option>
@@ -45,9 +46,15 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
 		</div>
 	</div>
 	<div class="control-group ">
-		<label for="address" class="control-label required">Адрес <span class="required">*</span></label>
+		<label for="address" class="control-label required">Адрес <span class="required"></span></label>
 		<div class="controls">
 			<input type='text' name='address' id='address' value='<?= $page['address']; ?>'>
+		</div>
+	</div>
+	<div class="control-group ">
+		<label for="email" class="control-label required">Email <span class="required"></span></label>
+		<div class="controls">
+			<input type='text' name='email' id='email' value='<?= $page['email']; ?>'>
 		</div>
 	</div>
 

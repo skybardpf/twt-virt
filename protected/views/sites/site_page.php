@@ -27,7 +27,8 @@ function addFile() {
 <?php /** @var BootActiveForm $form */
 $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
 	'type'=>'horizontal',
-	'action'=>'/sites/page_save'
+	'action'=>'/sites/page_save',
+	'htmlOptions'=>array('enctype'=>'multipart/form-data')
 )); ?>
 
 	<input type='hidden' name='company_id' value='<?= $company_id; ?>' />

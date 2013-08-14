@@ -20,20 +20,25 @@ class SitesController extends Controller
 		$this->render('sitelist', array('sites' => $sites, 'company_id' => $company_id));
 	}
 	
-	public function actionCreateform($company_id = null, $page = null, $error = false) {
+	public function actionCreateform($company_id = null, $page = null, $errors = false) {
 		$templates = Sites::model()->getTemplatesList();
-		$this->render('sitecreate', array('company_id' => $company_id, 'templates' => $templates, 'page' => $page, 'error' => $error));
+		$this->render('sitecreate', array('company_id' => $company_id, 'templates' => $templates, 'page' => $page, 'errors' => $errors));
 	}
 	
 	public function actionCreate() {
+		$errors = array('sitename' => false, 'domain' => false);
 		$company_id = $_POST['company_id'];
-		$res = Sites::model()->createSite($_POST);
-		if($res) {
+		if($res = Sites::model()->createSite($_POST)) {
 			$this->actionList($company_id);
+			exit();
 		}
 		else {
-			$this->actionCreateform($company_id, $_POST, true);
+			$errors['domain'] = true;
 		}
+		if(strlen($_POST['sitename']) == 0) {
+			$errors['sitename'] = true;
+		}
+		$this->actionCreateform($company_id, $_POST, $errors);
 	}
 	
 	public function actionSettings($company_id = null, $site_id = null) {

@@ -31,9 +31,10 @@ class Sites extends CActiveRecord
 
 	public function getSites($company_id) {
 		$sites = Yii::app()->db->createCommand()
-						  ->select('site_id, sites.name, sites.domain, sites.template')
+						  ->select('site_id, sites.name, sites.domain, sites.template, templates.external_name')
 						  ->from('company2sites')
 						  ->join('sites', 'sites.id=company2sites.site_id')
+						  ->join('templates', 'templates.id=template')
 						  ->where('company_id=:id', array(':id'=>$company_id))
 						  ->queryAll();
 
@@ -191,6 +192,7 @@ class Sites extends CActiveRecord
 				$table = "page_contacts";
 				$columns['map'] = $post['map'];
 				$columns['address'] = $post['address'];
+				$columns['email'] = $post['email'];
 				$bunner = false;
 				break;
 		}

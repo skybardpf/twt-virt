@@ -42,10 +42,10 @@
 	<div class="wrapper-inner">
 		<div class="header">
 			<div class="inner-cont">
-				<? if($kind != 'contacts'):?>
+				<? if(($kind != 'contacts') && ($page['file'] != null)):?>
 				<div class="logo">
 					<a href="/">
-						<img src="<?= $page['file']; ?>" alt="some title">
+						<img src="<?= $page['file']; ?>">
 					</a>
 				</div>
 				<? endif; ?>
