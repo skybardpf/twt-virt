@@ -10,7 +10,7 @@ $(document).ready(function(){
 });
 
 function addFile() {
-	$('#add_file').before("<input type='file' name='files[]' /><br />");
+	$('#add_file').before("<input type='file' name='files[]'><br><br>");
 }
 
 </script>
@@ -23,22 +23,47 @@ function addFile() {
 <a href="/sites/page/company_id/<?= $company_id; ?>/site_id/<?= $site_id; ?>/kind/contacts" <? if($kind == "contacts") echo " style='color: black;'" ?>>Контакты</a>
 <br />
 <br />
-<form method='post' action='/sites/page_save' enctype="multipart/form-data">
+
+<?php /** @var BootActiveForm $form */
+$form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
+	'type'=>'horizontal',
+	'action'=>'/sites/page_save'
+)); ?>
+
 	<input type='hidden' name='company_id' value='<?= $company_id; ?>' />
 	<input type='hidden' name='site_id' value='<?= $site_id; ?>' />
 	<input type='hidden' name='kind' value='<?= $kind; ?>' />
-	<input type='text' name='title_window' style='width: 450px;' value='<?= $page['title_window']; ?>' /> - заголовок окна.<br />
-	<input type='text' name='title_page' style='width: 450px;' value='<?= $page['title_page']; ?>' /> - заголовок страницы.<br />
-	Баннер: <input type='file' name='userfile' /><br /><br />
-	<textarea name='content' style='height: 300px;'><?= $page['content']; ?></textarea>
-	<br /><br />
-	<? if($kind == 'main'):?>
-	<div>Загрузка файлов:</div><br />
-	<div> 
-		<input type='file' name='files[]' /><br />
-		<input id='add_file' type='button' value='+'>
+
+	<div class="control-group ">
+		<label for="title_window" class="control-label required">Заголовок окна <span class="required">*</span></label>
+		<div class="controls">
+			<input type='text' name='title_window' id='title_window' value='<?= $page['title_window']; ?>'>
+		</div>
 	</div>
+	<div class="control-group ">
+		<label for="title_page" class="control-label required">Заголовок страницы <span class="required">*</span></label>
+		<div class="controls">
+			<input type='text' name='title_page' id='title_page' value='<?= $page['title_page']; ?>'>
+		</div>
+	</div>
+	<div class="control-group ">
+		<label for="userfile" class="control-label">Баннер</label>
+		<div class="controls">
+			<input type='file' name='userfile' id='userfile'>
+		</div>
+	</div>
+	<? if($kind == 'main'):?>
+		<div class="control-group ">
+			<label for="userfile" class="control-label">Загрузка файлов</label>
+			<div class="controls">
+				<input type='file' name='files[]'><br><br>
+				<?php $this->widget('bootstrap.widgets.TbButton', array('buttonType'=>'button', 'htmlOptions'=>array('id'=>'add_file'), 'type'=>'primary', 'label'=> 'Добавить ещё файл'))?>
+			</div>
+		</div>
 	<? endif; ?>
-	<br /><br />
-	<input type='submit' value='Сохранить' />
-</form>
+
+	<textarea name='content' style='height: 300px;'><?= $page['content']; ?></textarea>
+	<br>
+	<?php $this->widget('bootstrap.widgets.TbButton', array('buttonType'=>'submit', 'type'=>'primary', 'label'=> 'Сохранить'))?>
+
+<?php $this->endWidget(); ?>

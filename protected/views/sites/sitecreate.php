@@ -2,31 +2,67 @@
 /**
  * @var $this SitesController
  * @var $companies Company[]
- */
+*/
 
 $this->pageTitle=Yii::app()->name;
 ?>
 
 <h1>Создание сайта</h1>
-<br />
-<form method='post' action='/sites/create'>
-<? if($error):?>
-	<div style='color: red;'>
-	Доменное имя не соответствует стандарту.
+
+<?php /** @var BootActiveForm $form */
+$form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
+	'type'=>'horizontal',
+	'action'=>'/sites/create'
+)); ?>
+
+	<input type='hidden' name='company_id' value='<?= $company_id; ?>'>
+
+	<div class="control-group ">
+		<label for="sitename" class="control-label required">Название сайта <span class="required">*</span></label>
+		<div class="controls">
+			<input type='text' name='sitename' id='sitename' value='<?= $page['sitename']; ?>'>
+		</div>
 	</div>
-<? endif; ?>
-	<input type='hidden' name='company_id' value='<?= $company_id; ?>' />
-	<input type='text' name='sitename' value='<?= $page['sitename']; ?>'/> - название сайта.<br />
-	<input type='text' name='domain' value='<?= $page['domain']; ?>' /> - домен.<br />
-	<select name='template'>
-<?php foreach ($templates as $_templ) : ?>
-	<option <? if($page['template'] == $_templ['id']) echo "selected"; ?> value='<?= $_templ['id']; ?>'><?= $_templ['external_name']; ?></option>
-<?php endforeach ?>
-	</select><br />
-	<input type='checkbox' name='about' <? if(isset($page['about'])) echo "checked"; ?> /> - О компании<br />
-	<input type='checkbox' name='services' <? if(isset($page['services'])) echo "checked"; ?> /> - Услуги<br />
-	<input type='checkbox' name='partners' <? if(isset($page['partners'])) echo "checked"; ?> /> - Партнёры<br />
-	<input type='checkbox' name='contacts' <? if(isset($page['contacts'])) echo "checked"; ?> /> - Контакты<br />
-	<br />
-	<input type='submit' value='Сохранить'>
-</form>
+	<div class="control-group ">
+		<label for="domain" class="control-label required">Домен <span class="required">*</span></label>
+		<div class="controls">
+			<input type='text' name='domain' id='domain' value='<?= $page['domain']; ?>'>
+		</div>
+	</div>
+	<div class="control-group ">
+		<label for="template" class="control-label required">Шаблон <span class="required">*</span></label>
+		<div class="controls">
+			<select name='template' id="template">
+				<?php foreach ($templates as $_templ) : ?>
+					<option <? if($page['template'] == $_templ['id']) echo "selected"; ?> value='<?= $_templ['id']; ?>'><?= $_templ['external_name']; ?></option>
+				<?php endforeach ?>
+			</select>
+		</div>
+	</div>
+	<div class="control-group ">
+		<label for="about" class="control-label">О компании</label>
+		<div class="controls">
+			<input type='checkbox' name='about' id='about' <? if($page['about'] == "yes") echo "checked"; ?>>
+		</div>
+	</div>
+	<div class="control-group ">
+		<label for="services" class="control-label">Услуги</label>
+		<div class="controls">
+			<input type='checkbox' name='services' id='services' <? if($page['services'] == "yes") echo "checked"; ?>>
+		</div>
+	</div>
+	<div class="control-group ">
+		<label for="partners" class="control-label">Партнёры</label>
+		<div class="controls">
+			<input type='checkbox' name='partners' id='partners' <? if($page['partners'] == "yes") echo "checked"; ?>>
+		</div>
+	</div>
+	<div class="control-group ">
+		<label for="contacts" class="control-label">Контакты</label>
+		<div class="controls">
+			<input type='checkbox' name='contacts' id='contacts' <? if($page['contacts'] == "yes") echo "checked"; ?>>
+		</div>
+	</div>
+	<?php $this->widget('bootstrap.widgets.TbButton', array('buttonType'=>'submit', 'type'=>'primary', 'label'=> 'Сохранить'))?>
+
+<?php $this->endWidget(); ?>
