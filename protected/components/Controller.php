@@ -27,6 +27,7 @@ class Controller extends CController
 	/** @var string Static asset path*/
 	public $asset_static = '';
 
+	
 	public function init()
 	{
 		$this->asset_static = CHtml::asset(Yii::app()->basePath.'/../static/');
@@ -54,6 +55,16 @@ class Controller extends CController
 		if ($id = Yii::app()->request->getParam('company_id')) {
 			$this->company = Company::model()->with()->findByPk($id);
 		}
+/*		
+		if (!$this->asset_static) {
+			$this->asset_static = Yii::app()->assetManager->publish(
+					Yii::getPathOfAlias('static'),
+					false,
+					-1,
+					YII_DEBUG
+			);
+		}
+*/		
 		return parent::beforeAction($action);
 	}
 

@@ -2,13 +2,14 @@
 /* @var $this Controller */
 ?>
 <?php $this->beginContent('//layouts/column1'); ?>
+
 <?php $this->widget('bootstrap.widgets.TbMenu', array(
 	'type'=>'tabs', // '', 'tabs', 'pills' (or 'list')
 	'stacked'=>false, // whether this is a stacked menu
 	'items'=>array(
 		array('label'=>'Почта', 'url'=>'#', 'linkOptions' => array('class' => 'muted')),
 		array('label'=>'Телефония', 'url'=>'#', 'linkOptions' => array('class' => 'muted')),
-		array('label'=>'Сайт', 'url'=>'#', 'linkOptions' => array('class' => 'muted')),
+		array('label'=>'Сайт', 'url'=> $this->createUrl('/sites/list', array('company_id' => $this->company->id)), 'active'=> ($this->getId() == 'sites')),
 		array('label'=>'Файлы', 'url'=> $this->createUrl('/files/default/index', array('company_id' => $this->company->id)), 'active'=> ($this->module && $this->module->id == 'files')),
 		(
 			$this->company->isAdmin(Yii::app()->user->id) ? array(

@@ -19,6 +19,7 @@ foreach ($ancestors as $ancestor) {
 		$breadcrumbs[' '.$ancestor->name] = $this->createUrl('index',array('company_id' => $this->company->id, 'dir_id' => $ancestor->id));
 	}
 }
+
 if ($dir->lvl != 1) $breadcrumbs[] = $dir->name;
 $this->breadcrumbs = $breadcrumbs;
 ?>
