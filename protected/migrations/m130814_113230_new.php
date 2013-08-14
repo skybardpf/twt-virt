@@ -4,7 +4,7 @@ class m130814_113230_new extends CDbMigration
 {
 	public function up()
 	{
-		$command = $this->createCommand("/*
+		$this->execute("/*
 Navicat MySQL Data Transfer
 
 Source Server         : luxgen
@@ -647,8 +647,6 @@ INSERT INTO `user2company` VALUES ('16', '2');
 INSERT INTO `user2company` VALUES ('1', '9');
 INSERT INTO `user2company` VALUES ('10', '9');
 				");
-		
-		$command->execute();
 	}
 
 	public function down()
