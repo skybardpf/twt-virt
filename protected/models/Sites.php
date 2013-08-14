@@ -57,7 +57,7 @@ class Sites extends CActiveRecord
 	
 	public function createSite($post) {
 		//проверить пост
-		if(!preg_match("/^[a-z0-1]{1}[a-z0-1\-]{1,9}[a-z0-1]{1}$/", $post['domain'])) {
+		if(!preg_match("/^[a-z0-1]{1}[a-z0-1\-]{1,9}[a-z0-1]{1}$/", $post['domain']) || (strlen($post['domain']) < 3)) {
 			return false;
 		}
 		$create_pages = array();
