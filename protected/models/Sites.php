@@ -297,6 +297,7 @@ class Sites extends CActiveRecord
 	public function domainExist($site) {
 		$res = $sites = Yii::app()->db->createCommand("select count(*) from sites where domain = '$site'")
 								  ->queryRow();
+		return $res;
 	}
 	
 	public function getTemplate($site) {
