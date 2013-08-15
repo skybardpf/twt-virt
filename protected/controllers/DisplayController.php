@@ -32,9 +32,9 @@ class DisplayController extends Controller
 		
 		if($res['count(*)'] == 0) {
 			$this->render('error', array());
-			
+			exit();
 		}
-		exit();
+		
 		$res = Sites::model()->getTemplate($site);
 		$page = Sites::model()->pageGet($res['id'], $kind);
 		$menu = Sites::model()->getMenu($res['id']);
