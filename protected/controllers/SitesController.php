@@ -28,16 +28,22 @@ class SitesController extends Controller
 	public function actionCreate() {
 		$errors = array('sitename' => false, 'domain' => false);
 		$company_id = $_POST['company_id'];
-		if($res = Sites::model()->createSite($_POST)) {
-			$this->actionList($company_id);
-			exit();
-		}
-		else {
-			$errors['domain'] = true;
-		}
 		if(strlen($_POST['sitename']) == 0) {
 			$errors['sitename'] = true;
 		}
+		if(strpos($_POST['domain'], ".")) {
+			$errors['domain'] = "Функционал по подключению внешних доменов не реализован.";
+		}
+		if(($errors['sitename'] === false) && ($errors['domain'] === false)) {
+			if($res = Sites::model()->createSite($_POST)) {
+				$this->actionList($company_id);
+				exit();
+			}
+			else {
+				$errors['domain'] = "Доменное имя некорректно.";
+			}			
+		}
+		
 		$this->actionCreateform($company_id, $_POST, $errors);
 	}
 	

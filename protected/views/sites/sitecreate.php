@@ -31,7 +31,7 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
 	<div class="control-group ">
 	<? if($errors['domain']):?>
 	<div style='color: red; margin-left: 190px; font-size: 12px;'>
-		<i>Доменное имя не корректно.</i>
+		<i><?= $errors['domain']; ?></i>
 	</div>
 	<? endif; ?>
 		<label for="domain" class="control-label required">Домен <span class="required">*</span></label>
