@@ -15,6 +15,10 @@ class SitesController extends Controller
 		$this->actionList();
 	}
 
+	public function actionTest() {
+		echo $_SERVER['HTTP_HOST'];
+	}
+	
 	public function actionList($company_id = null) {
 		$sites = Sites::model()->getSites($company_id);
 		$this->render('sitelist', array('sites' => $sites, 'company_id' => $company_id));

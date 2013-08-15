@@ -46,7 +46,7 @@
 			<? if(($kind != 'contacts') && ($page['file'] != null)):?>
 				<div class="logo">
 					<a href="/">
-						<img src="<?= $page['file']; ?>">
+						<img src="http://<?= $_SERVER['HTTP_HOST'].$page['file']; ?>">
 					</a>
 				</div>
 			<? endif; ?>
