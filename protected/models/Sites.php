@@ -172,7 +172,7 @@ class Sites extends CActiveRecord
 	
 	public function pageSave($post, $files) {
 		$bunner = true;
-		$files_save = true;
+		$files_save = false;
 		$columns = array('title_window' => $post['title_window'], 'title_page' => $post['title_page'], 'content' => $post['content']);
 		switch($post['kind']) {
 			case 'main':
@@ -198,7 +198,8 @@ class Sites extends CActiveRecord
 		}
 		
 		if($bunner) {
-			if(isset($files['userfile']['name'])) {
+			if(!empty($files['userfile']['name'])) {
+				echo "in not empty";
 				$res = Yii::app()->db->createCommand("select `banner` from $table where site_id = {$post['site_id']}")->queryRow();
 				$dir_path = "upload/banners/";
 				$file_name = $post['site_id']."_".$table;
@@ -209,14 +210,18 @@ class Sites extends CActiveRecord
 		}
 		
 		if($files_save) {
-			if(isset($files['files']['name'])) {
-				$dir_path = "upload/";
-				foreach($files['files']['name'] as $_key => $_name) {
-					$file_name = $_name;
-					move_uploaded_file($files['files']['tmp_name'][$_key], $dir_path.$file_name);
+//			$dir_path = "upload/";
+			$dir_path = "upload/files";
+			foreach($files['files']['name'] as $_key => $_name) {
+				if(empty($_name)) continue;
+				$file_name = $_name;
+				move_uploaded_file($files['files']['tmp_name'][$_key], $dir_path.$file_name);
+				Yii::app()->db->createCommand()
+						  ->insert("files", array('file' => "/upload/files/".$file_name, 'site_id' => $post['site_id']));
+/*					
 					Yii::app()->db->createCommand()
 							  ->insert("files", array('file' => "/upload/".$file_name, 'site_id' => $post['site_id']));
-				}
+*/							  
 			}
 		}
 		
