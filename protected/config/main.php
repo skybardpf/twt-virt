@@ -118,8 +118,12 @@ return array(
 
 	// application-level parameters that can be accessed
 	// using Yii::app()->params['paramName']
+	// application-level parameters that can be accessed
+	// using Yii::app()->params['paramName']
 	'params'=>array(
-		// this is used in contact page
-		'adminEmail'=>'webmaster@example.com',
+			// this is used in contact page
+			'adminEmail'=>'webmaster@example.com',
+			'sites'=>array('1'=>3,
+						   '2'=>3)
 	),
 );

@@ -49,6 +49,9 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
 	</div>
 	<div class="control-group ">
 		<label for="userfile" class="control-label">Баннер</label>
+		<? if(!empty($page['file'])):?>
+			<img style='margin-left: 20px;' src="http://<?= $_SERVER['HTTP_HOST'].$page['file']; ?>">
+		<? endif; ?>
 		<div class="controls">
 			<input type='file' name='userfile' id='userfile'>
 		</div>
@@ -56,6 +59,9 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
 	<? if($kind == 'main'):?>
 		<div class="control-group ">
 			<label for="userfile" class="control-label">Загрузка файлов</label>
+			<?php foreach ($page['files'] as $_file) : ?>
+				<a style='margin-left: 20px;' href='<?= $_file['file']; ?>'><?= $_file['file']; ?></a><br />
+			<?php endforeach ?>
 			<div class="controls">
 				<input type='file' name='files[]'><br><br>
 				<?php $this->widget('bootstrap.widgets.TbButton', array('buttonType'=>'button', 'htmlOptions'=>array('id'=>'add_file'), 'type'=>'primary', 'label'=> 'Добавить ещё файл'))?>

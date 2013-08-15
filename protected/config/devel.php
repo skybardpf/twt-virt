@@ -8,7 +8,7 @@ return CMap::mergeArray(
 				'connectionString' => 'mysql:host=mysql-01.artektiv.local;dbname=twt-virt-office',
 				'username' => 'twt',
 				'password' => 'twt',
-			)
+			),
 		)
 	)
 );

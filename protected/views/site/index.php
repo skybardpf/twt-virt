@@ -18,6 +18,7 @@ $this->pageTitle=Yii::app()->name;
 		<th>Файлы</th>
 	</tr>
 	<?php foreach ($companies as $c) : ?>
+		<?php $nums = Sites::model()->getSitesNumber($c->id); ?>
 		<tr class="<?=$c->deleted ? 'muted' : ''?>">
 			<td>
 				<a
@@ -32,7 +33,7 @@ $this->pageTitle=Yii::app()->name;
 			<td><?=$c->isAdmin(Yii::app()->user->id) ? 'Администратор' : 'Пользователь'?></td>
 			<td>3 /53</td>
 			<td>1 / 10</td>
-			<td>0 / 2</td>
+			<td><?= $nums['have']." / ".$nums['max']; ?></td>
 			<td><?=$c->getF_qoute_view()?></td>
 		</tr>
 	<?php endforeach ?>

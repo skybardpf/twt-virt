@@ -18,9 +18,9 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
 	<input type='hidden' name='company_id' value='<?= $company_id; ?>'>
 
 	<div class="control-group ">
-	<? if($errors['sitename']):?>
+	<? if(isset($errors['sitename'])):?>
 	<div style='color: red; margin-left: 190px; font-size: 12px;'>
-		<i>Название не должно быть пустым.</i>
+		<i><?= $errors['sitename']; ?></i>
 	</div>
 	<? endif; ?>
 		<label for="sitename" class="control-label required">Название сайта <span class="required">*</span></label>
@@ -29,7 +29,7 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
 		</div>
 	</div>
 	<div class="control-group ">
-	<? if($errors['domain']):?>
+	<? if(isset($errors['domain'])):?>
 	<div style='color: red; margin-left: 190px; font-size: 12px;'>
 		<i><?= $errors['domain']; ?></i>
 	</div>

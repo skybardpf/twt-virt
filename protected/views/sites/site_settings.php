@@ -20,12 +20,22 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
 
 
 	<div class="control-group ">
+		<? if(isset($errors['sitename'])):?>
+		<div style='color: red; margin-left: 190px; font-size: 12px;'>
+			<i><?= $errors['sitename']; ?></i>
+		</div>
+		<? endif; ?>
 		<label for="sitename" class="control-label required">Название сайта <span class="required">*</span></label>
 		<div class="controls">
 			<input type='text' name='sitename' id='sitename' value='<?= $site['name']; ?>'>
 		</div>
 	</div>
 	<div class="control-group ">
+		<? if(isset($errors['domain'])):?>
+		<div style='color: red; margin-left: 190px; font-size: 12px;'>
+			<i><?= $errors['domain']; ?></i>
+		</div>
+		<? endif; ?>
 		<label for="domain" class="control-label required">Домен <span class="required">*</span></label>
 		<div class="controls">
 			<input type='text' name='domain' id='domain' value='<?= $site['domain']; ?>'>

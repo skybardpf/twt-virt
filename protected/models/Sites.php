@@ -29,6 +29,20 @@ class Sites extends CActiveRecord
 		return 'sites';
 	}
 
+	public function getSitesNumber($company_id) {
+		if(isset(Yii::app()->params['sites'][$company_id])) {
+			$sites_max = Yii::app()->params['sites'][$company_id];
+		}
+		else {
+			$sites_max = 3;
+		}
+		
+		$res = Yii::app()->db->createCommand("select count(*) from company2sites where  company_id = $company_id")
+						   ->queryRow();
+		
+		return array('max' => $sites_max, 'have' => $res['count(*)']);
+	}
+	
 	public function getSites($company_id) {
 		$sites = Yii::app()->db->createCommand()
 						  ->select('site_id, sites.name, sites.domain, sites.template, templates.external_name')
@@ -58,8 +72,29 @@ class Sites extends CActiveRecord
 	
 	public function createSite($post) {
 		//проверить пост
-		if(!preg_match("/^[a-z0-1]{1}[a-z0-1\-]{1,9}[a-z0-1]{1}$/", $post['domain']) || (strlen($post['domain']) < 3)) {
-			return false;
+		$errors = false;
+		$company_id = $_POST['company_id'];
+		if(strlen($post['sitename']) == 0) {
+			$errors['sitename'] = "Название не может быть пустым.";
+		}
+		if(strlen($post['domain']) < 3) {
+			$errors['domain'] = "Слишком короткое доменное имя.";
+		}
+		elseif(strpos($post['domain'], ".")) {
+			$errors['domain'] = "Функционал по подключению внешних доменов не реализован.";
+		}
+		elseif(!preg_match("/^[a-z]{1}[a-z0-9\-_]{1,15}$/", $post['domain']) || (strlen($post['domain']) < 3)) {
+			$errors['domain'] = "Доменное имя некорректно.";
+		}
+		else {
+			$res = Yii::app()->db->createCommand("select count(*) from sites where domain = '{$post['domain']}'")->queryRow();
+			if($res['count(*)'] > 0) {
+				$errors['domain'] = "Такой домен уже существует.";
+			}
+		}
+		if($errors) {
+			$errors['error'] = true;
+			return $errors;
 		}
 		$create_pages = array();
 		$pages = array('about', 'services', 'partners', 'contacts');
@@ -91,8 +126,8 @@ class Sites extends CActiveRecord
 		$this->createPage($site_id, 'page_partners', $create_pages['partners']);
 		//у страницы контактов баннера нет
 		Yii::app()->db->createCommand()->insert('page_contacts', array('site_id' => $site_id, 'show' => $create_pages['contacts']));
-					  
-		return true;
+				  
+		return array('error' => false);
 	}
 	
 	private function createPage($site_id, $page_kind, $show = "yes") {
@@ -103,6 +138,31 @@ class Sites extends CActiveRecord
 	
 	public function updateSite($post) {
 		//проверить пост
+		$errors = false;
+		$company_id = $_POST['company_id'];
+		if(strlen($post['sitename']) == 0) {
+			$errors['sitename'] = "Название не может быть пустым.";
+		}
+		if(strlen($post['domain']) < 3) {
+			$errors['domain'] = "Слишком короткое доменное имя.";
+		}
+		elseif(strpos($post['domain'], ".")) {
+			$errors['domain'] = "Функционал по подключению внешних доменов не реализован.";
+		}
+		elseif(!preg_match("/^[a-z]{1}[a-z0-9\-_]{1,15}$/", $post['domain']) || (strlen($post['domain']) < 3)) {
+			$errors['domain'] = "Доменное имя некорректно.";
+		}
+		else {
+			$res = Yii::app()->db->createCommand("select count(*), domain from sites where domain = '{$post['domain']}'")->queryRow();
+			if(($res['domain'] != $post['domain']) && ($res['count(*)'] > 0)) { 
+				$errors['domain'] = "Такой домен уже существует.";
+			}
+		}
+		if($errors) {
+			$errors['error'] = true;
+			return $errors;
+		}
+		
 		$create_pages = array();
 		$pages = array('about', 'services', 'partners', 'contacts');
 		$site_id = $post['site_id'];
@@ -158,7 +218,7 @@ class Sites extends CActiveRecord
 			$page = Yii::app()->db->createCommand()
 							  ->select('title_window, title_page, content, images.file')
 							  ->from($table)
-							  ->join('images', $table.'.banner = images.id')
+							  ->leftJoin('images', $table.'.banner = images.id')
 							  ->where($table.'.site_id=:id', array(':id'=>$site_id))
 							  ->queryRow();
 		}
@@ -199,29 +259,33 @@ class Sites extends CActiveRecord
 		
 		if($bunner) {
 			if(!empty($files['userfile']['name'])) {
-				echo "in not empty";
 				$res = Yii::app()->db->createCommand("select `banner` from $table where site_id = {$post['site_id']}")->queryRow();
-				$dir_path = "upload/banners/";
+//				$dir_path = "upload/banners/";
+				$dir_path = "upload/";
 				$file_name = $post['site_id']."_".$table;
 				move_uploaded_file($files['userfile']['tmp_name'], $dir_path.$file_name);
 				Yii::app()->db->createCommand()
+							  ->update("images", array('file' => "/upload/".$file_name), 'id=:id', array(':id'=> $res['banner']));
+/*				
+				Yii::app()->db->createCommand()
 							  ->update("images", array('file' => "/upload/banners/".$file_name), 'id=:id', array(':id'=> $res['banner']));
+*/							  
 			}
 		}
 		
 		if($files_save) {
-//			$dir_path = "upload/";
-			$dir_path = "upload/files";
+			$dir_path = "upload/";
+//			$dir_path = "upload/files";
 			foreach($files['files']['name'] as $_key => $_name) {
 				if(empty($_name)) continue;
 				$file_name = $_name;
 				move_uploaded_file($files['files']['tmp_name'][$_key], $dir_path.$file_name);
+/*				
 				Yii::app()->db->createCommand()
 						  ->insert("files", array('file' => "/upload/files/".$file_name, 'site_id' => $post['site_id']));
-/*					
+*/						  
 					Yii::app()->db->createCommand()
 							  ->insert("files", array('file' => "/upload/".$file_name, 'site_id' => $post['site_id']));
-*/							  
 			}
 		}
 		
@@ -251,7 +315,7 @@ class Sites extends CActiveRecord
 		$res = Yii::app()->db->createCommand("select domain from sites where id = $site_id")->queryRow();
 		$domain = $res['domain'];
 		
-		$menu[] = array('page' => "http://".$domain.".".$server_name."/main", 'text' => 'Главная');
+		$menu[] = array('page' => "http://".$domain.".".$server_name."/", 'text' => 'Главная');
 		foreach($this->pages as $_page => $_text) {
 			$res = Yii::app()->db->createCommand("select page_$_page.show from page_$_page where site_id = $site_id")->queryRow();
 			if($res['show'] == "yes") {
@@ -260,6 +324,16 @@ class Sites extends CActiveRecord
 		}
 		
 		return $menu;
+	}
+
+	public function mail($self_email, $fio, $email, $text) {
+		$headers = "Content-type: text/html; charset=utf-8\r\n";
+		$headers .= "From: no_reply@twt-virt.ru";
+		
+		$message = "Сообщение от $fio ($email): <br />";
+		$message .= $text;
+		
+		$res = mail($self_email, "Сообщение от пользователя с сайта twt-virt.artektiv.ru", $message, $headers);
 	}
 	
 	/**

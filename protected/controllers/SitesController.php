@@ -16,12 +16,24 @@ class SitesController extends Controller
 	}
 
 	public function actionTest() {
-		echo $_SERVER['HTTP_HOST'];
+		$headers = "Content-type: text/html; charset=utf-8\r\n";
+		$headers .= "From: no_reply@stetra.ru";
+		
+		$res = mail("tetrarh@mail.ru", "tema", "ssdfsd", $headers);
+		echo "res: ".$res."!";
 	}
 	
 	public function actionList($company_id = null) {
 		$sites = Sites::model()->getSites($company_id);
-		$this->render('sitelist', array('sites' => $sites, 'company_id' => $company_id));
+		$sites_num = Sites::model()->getSitesNumber($company_id);
+		$sign['disabled'] = false;
+		$sign['type'] = "link";
+		if($sites_num['have'] == $sites_num['max']) {
+			$sign['disabled'] = true;
+			$sign['type'] = "button";
+			$sign['text'] = "Вы уже создали максимальное для этой компании количество сайтов. Чтобы создать новый сайт – требуется удалить один из уже существующих.";
+		}
+		$this->render('sitelist', array('sites' => $sites, 'company_id' => $company_id, 'sign' => $sign));
 	}
 	
 	public function actionCreateform($company_id = null, $page = null, $errors = false) {
@@ -30,36 +42,24 @@ class SitesController extends Controller
 	}
 	
 	public function actionCreate() {
-		$errors = array('sitename' => false, 'domain' => false);
-		$company_id = $_POST['company_id'];
-		if(strlen($_POST['sitename']) == 0) {
-			$errors['sitename'] = true;
-		}
-		if(strpos($_POST['domain'], ".")) {
-			$errors['domain'] = "Функционал по подключению внешних доменов не реализован.";
-		}
-		if(($errors['sitename'] === false) && ($errors['domain'] === false)) {
-			if($res = Sites::model()->createSite($_POST)) {
-				$this->actionList($company_id);
-				exit();
-			}
-			else {
-				$errors['domain'] = "Доменное имя некорректно.";
-			}			
-		}
+		$errors = Sites::model()->createSite($_POST);
 		
-		$this->actionCreateform($company_id, $_POST, $errors);
+		if($errors['error']) {
+			$this->actionCreateform($_POST['company_id'], $_POST, $errors);
+			exit();
+		}
+		$this->actionList($_POST['company_id']);
 	}
 	
-	public function actionSettings($company_id = null, $site_id = null) {
+	public function actionSettings($company_id = null, $site_id = null, $errors = false) {
 		$templates = Sites::model()->getTemplatesList();
 		$site = Sites::model()->getSite($site_id);
-		$this->render('site_settings', array('site_id' => $site_id, 'site' => $site, 'company_id' => $company_id, 'templates' => $templates));
+		$this->render('site_settings', array('site_id' => $site_id, 'site' => $site, 'company_id' => $company_id, 'templates' => $templates, 'errors' => $errors));
 	}
 	
 	public function actionSettings_save() {
-		$res = Sites::model()->updateSite($_POST);
-		$this->actionSettings($_POST['company_id'], $_POST['site_id']);
+		$errors = Sites::model()->updateSite($_POST);
+		$this->actionSettings($_POST['company_id'], $_POST['site_id'], $errors);
 	}
 	
 	public function actionPage($company_id, $site_id, $kind) {
@@ -122,5 +122,10 @@ class SitesController extends Controller
 			else
 				$this->render('error', $error);
 		}
+	}
+	
+	public function actionMail() {
+		Sites::model()->mail($_POST['self_email'], $_POST['fio'], $_POST['email'], $_POST['text']);
+
 	}
 }

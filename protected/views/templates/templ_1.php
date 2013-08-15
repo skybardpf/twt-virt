@@ -6,6 +6,26 @@
 	<title><?= $page['title_window']; ?></title>
 	<link rel="stylesheet" type="text/css" href="<?= $this->asset_static; ?>/css/template1.css">
 	<? if($kind == 'contacts'):?>
+		<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+		<script>
+			function mail() {
+				var url = '/sites/mail';
+			    var id = this.id;
+			    $.ajax({
+			        type: "POST",
+			        url: url,
+			        data: {
+			        	self_email: '<?= $page['email']; ?>',
+			        	fio: $('#fio').val(),
+			        	email: $('#email').val(),
+			        	text: $('#text').val()
+			        },
+			        success: function(data){
+			        	alert("Ваше сообщение успешно отправлено.");
+			        }
+			    });
+			}
+		    </script>
 		<? if($page['map'] == 'yandex'):?>
 			<script src="http://api-maps.yandex.ru/2.0-stable/?load=package.full&lang=RU" type="text/javascript"></script>
 			<script type="text/javascript">
@@ -36,7 +56,6 @@
 		<? endif; ?>
 		<? if($page['map'] == 'google'):?>
 			<script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false&libraries=places"></script>
-		    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
 		    <script>
 		    var url = 'http://maps.googleapis.com/maps/api/geocode/json?address=<?= $page['address']; ?>&sensor=true';
 		    var id = this.id;
@@ -103,7 +122,16 @@
 					<?= $page['content']; ?>
 					<br /><br />
 					<? if($kind == 'contacts'):?>
-						<div id="map" style="width:400px; height:300px"></div>
+						<? if(($page['address'] != "")):?>
+							<div id="map" style="width:400px; height:300px"></div>
+						<? endif; ?>
+						<br /><br />
+						<form method="post" action="/sites/mail">
+							<input id="fio" placeholder="ФИО" /><br />
+							<input id="email" placeholder="email" /><br />
+							<textarea id="text" placeholder="Введите текст сообщения здесь" style='height: 150px; width: 500px;'></textarea><br />
+							<input type='button' onclick='mail();' value=' Отправить сообщение ' />
+						</form>
 					<? endif; ?>
 				</div>
 				<div class="clearfix"></div>
