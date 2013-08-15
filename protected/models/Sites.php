@@ -200,11 +200,11 @@ class Sites extends CActiveRecord
 		if($bunner) {
 			if(isset($files['userfile']['name'])) {
 				$res = Yii::app()->db->createCommand("select `banner` from $table where site_id = {$post['site_id']}")->queryRow();
-				$dir_path = "banners/";
+				$dir_path = "upload/banners/";
 				$file_name = $post['site_id']."_".$table;
 				move_uploaded_file($files['userfile']['tmp_name'], $dir_path.$file_name);
 				Yii::app()->db->createCommand()
-							  ->update("images", array('file' => "/banners/".$file_name), 'id=:id', array(':id'=> $res['banner']));
+							  ->update("images", array('file' => "/upload/banners/".$file_name), 'id=:id', array(':id'=> $res['banner']));
 			}
 		}
 		

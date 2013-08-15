@@ -68,6 +68,7 @@
 					
 				</div>
 				<div class="content">
+					<h1><?= $page['title_page']; ?></h1>
 					<?= $page['content']; ?>
 					<br /><br />
 					<? if($kind == 'contacts'):?>
