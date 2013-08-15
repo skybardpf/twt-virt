@@ -16,11 +16,7 @@ class SitesController extends Controller
 	}
 
 	public function actionTest() {
-		$headers = "Content-type: text/html; charset=utf-8\r\n";
-		$headers .= "From: no_reply@stetra.ru";
-		
-		$res = mail("tetrarh@mail.ru", "tema", "ssdfsd", $headers);
-		echo "res: ".$res."!";
+		$this->actionList(2);
 	}
 	
 	public function actionList($company_id = null) {

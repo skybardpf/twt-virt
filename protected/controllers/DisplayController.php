@@ -3,7 +3,7 @@
 class DisplayController extends Controller
 {
 	public $company_id;
-	public $layout = '/layouts/owner';
+	public $layout = '/layouts/main';
 	public $controller_name = "sites";
 	
 	/**
@@ -18,12 +18,23 @@ class DisplayController extends Controller
 	public function actionIndex($site, $kind = null) {
 	}
 
+	public function actionTest() {
+		$this->render('error', array());
+	}
+	
 	public function actionView($site, $kind = null) {
 		$server_name = $_SERVER['HTTP_HOST'];
 		
 		if($kind == null) {
 			$kind = 'main';
 		}
+		$res = Sites::model()->domainExist($site);
+		
+		if($res['count(*)'] == 0) {
+			$this->render('error', array());
+			
+		}
+		exit();
 		$res = Sites::model()->getTemplate($site);
 		$page = Sites::model()->pageGet($res['id'], $kind);
 		$menu = Sites::model()->getMenu($res['id']);
