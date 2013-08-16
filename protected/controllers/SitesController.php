@@ -54,7 +54,7 @@ class SitesController extends Controller
 	}
 	
 	public function actionSettings_save() {
-		$errors = Sites::model()->updateSite($_POST);
+		$errors = Sites::model()->updateSite($_POST, $_FILES);
 		$this->actionSettings($_POST['company_id'], $_POST['site_id'], $errors);
 	}
 	

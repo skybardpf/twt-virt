@@ -93,13 +93,11 @@
 	<div class="wrapper-inner">
 		<div class="header">
 			<div class="inner-cont">
-				<? if(($kind != 'contacts') && ($page['file'] != null)):?>
 				<div class="logo">
 					<a href="/">
-						<img src="http://<?= $_SERVER['HTTP_HOST'].$page['file']; ?>">
+						<img src="http://<?= $_SERVER['HTTP_HOST'].$page['logo']; ?>">
 					</a>
 				</div>
-				<? endif; ?>
 				<div class="menu">
 					<ul>
 					<?php foreach ($menu as $_menu_item) : ?>
@@ -115,7 +113,11 @@
 		<div class="inner-cont">
 			<div class="main-content">
 				<div class="visual">
-					
+					<? if(($kind != 'contacts') && ($page['file'] != null)):?>
+						<a href="/">
+							<img src="http://<?= $_SERVER['HTTP_HOST'].$page['file']; ?>">
+						</a>
+					<? endif; ?>
 				</div>
 				<div class="content">
 					<h1><?= $page['title_page']; ?></h1>

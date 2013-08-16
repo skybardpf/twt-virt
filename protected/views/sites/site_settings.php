@@ -12,7 +12,8 @@
 <?php /** @var BootActiveForm $form */
 $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
 	'type'=>'horizontal',
-	'action'=>'/sites/settings_save'
+	'action'=>'/sites/settings_save',
+	'htmlOptions'=>array('enctype'=>'multipart/form-data')
 )); ?>
 
 	<input type='hidden' name='company_id' value='<?= $company_id; ?>'>
@@ -49,6 +50,18 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
 					<option <? if($site['template'] == $_templ['id']) echo "selected"; ?> value='<?= $_templ['id']; ?>'><?= $_templ['external_name']; ?></option>
 				<?php endforeach ?>
 			</select>
+		</div>
+	</div>
+	<div class="control-group ">
+		<label for="logo" class="control-label">Логотип</label>
+		<? if(!empty($site['logo'])):?>
+			<div style='margin: 5px 0 0 180px; font-size: 12px; font-style: italic;'>
+				<div>Размеры логотипа: <br /> Ширина - не больше 350px<br /> Высота - не больше 50px</div>
+				<img src="http://<?= $_SERVER['HTTP_HOST'].$site['logo']; ?>">
+			</div>
+		<? endif; ?>
+		<div class="controls">
+			<input type='file' name='logo' id='logo'>
 		</div>
 	</div>
 	<div class="control-group ">

@@ -50,7 +50,10 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
 	<div class="control-group ">
 		<label for="userfile" class="control-label">Баннер</label>
 		<? if(!empty($page['file'])):?>
-			<img style='margin-left: 20px;' src="http://<?= $_SERVER['HTTP_HOST'].$page['file']; ?>">
+			<div style='margin: 5px 0 0 180px; font-size: 12px; font-style: italic;'>
+				<div>Размеры логотипа: <br /> Ширина - не больше 840px</div>
+				<img src="http://<?= $_SERVER['HTTP_HOST'].$page['file']; ?>">
+			</div>
 		<? endif; ?>
 		<div class="controls">
 			<input type='file' name='userfile' id='userfile'>

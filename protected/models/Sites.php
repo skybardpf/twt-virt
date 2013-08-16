@@ -66,7 +66,9 @@ class Sites extends CActiveRecord
 						  ->join('page_contacts', 'page_contacts.site_id = sites.id')
 						  ->where('sites.id=:id', array(':id'=>$site_id))
 						  ->queryRow();
-	
+
+		$site['logo'] = "/upload/".$site_id."_logo";
+		
 		return $site;
 	}
 	
@@ -136,7 +138,7 @@ class Sites extends CActiveRecord
 		Yii::app()->db->createCommand()->insert($page_kind, array('site_id' => $site_id, 'show' => $show, 'banner' => $banner_id));
 	}
 	
-	public function updateSite($post) {
+	public function updateSite($post, $files) {
 		//проверить пост
 		$errors = false;
 		$company_id = $_POST['company_id'];
@@ -178,6 +180,12 @@ class Sites extends CActiveRecord
 			else {
 				$create_pages[$_page] = "no";
 			}
+		}
+		
+		if(!empty($files['logo']['name'])) {
+			$dir_path = "upload/";
+			$file_name = $post['site_id']."_logo";
+			$res = move_uploaded_file($files['logo']['tmp_name'], $dir_path.$file_name);
 		}
 		
 		$columns = array('name' => $post['sitename'], 'domain' => $post['domain'], 'template' => $post['template']);
@@ -227,11 +235,14 @@ class Sites extends CActiveRecord
 			$page['files'] = $files;
 		}
 		
+		$page['logo'] = "/upload/".$site_id."_logo";
+		
 		return $page;
 	}
 	
 	public function pageSave($post, $files) {
 		$bunner = true;
+		$logo = true;
 		$files_save = false;
 		$columns = array('title_window' => $post['title_window'], 'title_page' => $post['title_page'], 'content' => $post['content']);
 		switch($post['kind']) {
@@ -254,9 +265,18 @@ class Sites extends CActiveRecord
 				$columns['address'] = $post['address'];
 				$columns['email'] = $post['email'];
 				$bunner = false;
+				$logo = false;
 				break;
 		}
-		
+/*
+		if($logo) {
+			if(!empty($files['logo']['name'])) {
+				$dir_path = "upload/";
+				$file_name = $post['site_id']."_".$table."_logo";
+				move_uploaded_file($files['userfile']['tmp_name'], $dir_path.$file_name);
+			}
+		}
+*/		
 		if($bunner) {
 			if(!empty($files['userfile']['name'])) {
 				$res = Yii::app()->db->createCommand("select `banner` from $table where site_id = {$post['site_id']}")->queryRow();
