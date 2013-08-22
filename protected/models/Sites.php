@@ -204,8 +204,6 @@ class Sites extends CActiveRecord
 		switch($kind) {
 			case 'main':
 				$table = "page_main";
-				$files = $page = Yii::app()->db->createCommand("select * from files where site_id = $site_id")
-											   ->queryAll();
 				break;
 			case 'about':
 				$table = "page_about";
@@ -220,6 +218,13 @@ class Sites extends CActiveRecord
 				$table = "page_contacts";
 				$page = Yii::app()->db->createCommand("select * from $table where site_id = '$site_id'")->queryRow();
 				break;
+		}
+
+		$files = Yii::app()->db->createCommand("select * from files where site_id = $site_id and page_kind = 'page_$kind'")
+											   ->queryAll();
+		
+		foreach($files as $_key => $_value) {
+			$files[$_key]['filename'] = substr($_value['file'], (strrpos($_value['file'], "/") + 1));
 		}
 		
 		if($kind != 'contacts') {
@@ -248,7 +253,6 @@ class Sites extends CActiveRecord
 		switch($post['kind']) {
 			case 'main':
 				$table = "page_main";
-				$files_save = true;
 				break;
 			case 'about':
 				$table = "page_about";
@@ -292,22 +296,17 @@ class Sites extends CActiveRecord
 */							  
 			}
 		}
-		
-		if($files_save) {
+
+//-------------------------------- загрузка файлов begin		
 			$dir_path = "upload/";
-//			$dir_path = "upload/files";
 			foreach($files['files']['name'] as $_key => $_name) {
 				if(empty($_name)) continue;
 				$file_name = $_name;
 				move_uploaded_file($files['files']['tmp_name'][$_key], $dir_path.$file_name);
-/*				
 				Yii::app()->db->createCommand()
-						  ->insert("files", array('file' => "/upload/files/".$file_name, 'site_id' => $post['site_id']));
-*/						  
-					Yii::app()->db->createCommand()
-							  ->insert("files", array('file' => "/upload/".$file_name, 'site_id' => $post['site_id']));
+							  ->insert("files", array('file' => "/upload/".$file_name, 'site_id' => $post['site_id'], 'page_kind' => $table));
 			}
-		}
+//-------------------------------- загрузка файлов end
 		
 		$res = Yii::app()->db->createCommand()
 						 ->update($table, $columns, 'site_id=:id', array(':id'=>$post['site_id']));

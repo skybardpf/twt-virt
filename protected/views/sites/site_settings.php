@@ -42,14 +42,31 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
 			<input type='text' name='domain' id='domain' value='<?= $site['domain']; ?>'>
 		</div>
 	</div>
+	<script>
+		function t_ch() {
+			var el = document.getElementById('template');
+			var img = document.getElementById('t_img');
+
+			if(el.value == '1') {
+				img.src = '/upload/templates_preview/templ_1.png';
+			}
+			if(el.value == '2') {
+				img.src = '/upload/templates_preview/templ_2.png';
+			}
+		}
+	</script>
 	<div class="control-group ">
 		<label for="template" class="control-label required">Шаблон <span class="required">*</span></label>
 		<div class="controls">
-			<select name='template' id="template">
+			<select name='template' id="template" onchange='t_ch();'>
 				<?php foreach ($templates as $_templ) : ?>
 					<option <? if($site['template'] == $_templ['id']) echo "selected"; ?> value='<?= $_templ['id']; ?>'><?= $_templ['external_name']; ?></option>
 				<?php endforeach ?>
 			</select>
+			<img src='asdad' id='t_img' width='70' />
+			<script>
+				t_ch();
+			</script>
 		</div>
 	</div>
 	<div class="control-group ">

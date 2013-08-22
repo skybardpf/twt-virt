@@ -143,11 +143,9 @@
 </div>
 <div class="footer">
 	<div class="inner-cont">
-	<? if($kind == 'main'):?>
 		<?php foreach ($page['files'] as $_file) : ?>
-		<a href='<?= $_file['file']; ?>'><?= $_file['file']; ?></a><br />
+		<span><?= $_file['filename']; ?> </span><a href='<?= $_file['file']; ?>'>Скачать</a><br />
 		<?php endforeach ?>
-	<? endif; ?>
 		Тут какая-то информация<br>
 		Возможно, контакты и/или копирайт
 	</div>

@@ -111,16 +111,17 @@
 				</div>
 				<div class="clearfix"></div>
 			</div>
+			<div>
+			<?php foreach ($page['files'] as $_file) : ?>
+			<span><?= $_file['filename']; ?>&nbsp;&nbsp;&nbsp;</span><a href='<?= $_file['file']; ?>'>Скачать</a><br />
+			<?php endforeach ?>
+			<br />
+			</div>
 		</div>
 	</div>
 </div>
 <div class="footer">
 	<div class="inner-cont">
-		<? if($kind == 'main'):?>
-			<?php foreach ($page['files'] as $_file) : ?>
-			<a href='<?= $_file['file']; ?>'><?= $_file['file']; ?></a><br />
-			<?php endforeach ?>
-		<? endif; ?>
 		Тут какая-то информация<br>
 		Возможно, контакты и/или копирайт
 	</div>
