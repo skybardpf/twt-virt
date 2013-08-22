@@ -48,7 +48,7 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
 			var img = document.getElementById('t_img');
 
 			if(el.value == '1') {
-				img.src = '/upload/templates_preview/templ_1.png';
+				img.src = 'upload/templates_preview/templ_1.png';
 			}
 			if(el.value == '2') {
 				img.src = '/upload/templates_preview/templ_2.png';
