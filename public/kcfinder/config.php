@@ -30,7 +30,8 @@ $_CONFIG = array(
 
     'theme' => "oxygen",
 
-    'uploadURL' => "../upload/kcf".$dir,
+//	'uploadURL' => "../upload/kcf".$dir,
+	'uploadURL' => "upload".$dir,
     'uploadDir' => "",
 
     'dirPerms' => 0755,
