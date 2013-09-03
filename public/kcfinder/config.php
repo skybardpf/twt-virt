@@ -31,7 +31,8 @@ $_CONFIG = array(
     'theme' => "oxygen",
 
 //	'uploadURL' => "../upload/kcf".$dir,
-	'uploadURL' => "upload".$dir,
+	'uploadURL' => "../upload".$dir,
+	'uploadURL' => "upload",
     'uploadDir' => "",
 
     'dirPerms' => 0755,
@@ -106,5 +107,4 @@ $_CONFIG = array(
     //'_sessionDomain' => ".mysite.com",
     //'_sessionPath' => "/my/path",
 );
-
 ?>
