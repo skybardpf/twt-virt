@@ -39,6 +39,8 @@ class UserIdentity extends CUserIdentity
 		}
 		else {
 			$this->_id = $record->id;
+			$_SESSION['kcf_upload'] = $this->username;
+			//Yii::app()->user->setState('kcf_upload', $this->username);
 			$this->errorCode = self::ERROR_NONE;
 		}
 		return !$this->errorCode;
