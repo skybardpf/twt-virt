@@ -16,7 +16,7 @@
 // you are using session configuration.
 // See http://kcfinder.sunhater.com/install for setting descriptions
 
-$dir = "";
+$dir = "/";
 if(isset($_SESSION)) {
 	$dir = "/".$_SESSION['kcf_upload'];
 }
@@ -30,10 +30,8 @@ $_CONFIG = array(
 
     'theme' => "oxygen",
 
-//	'uploadURL' => "../upload/kcf".$dir,
-	'uploadURL' => "../upload".$dir,
-	'uploadURL' => "upload",
-    'uploadDir' => "",
+	'uploadURL' => "/upload/kcf".$dir,
+    'uploadDir' => dirname(__FILE__)."/../upload/kcf".$dir,
 
     'dirPerms' => 0755,
     'filePerms' => 0644,
