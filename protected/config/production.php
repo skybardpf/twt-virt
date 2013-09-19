@@ -1,8 +1,5 @@
 <?php
-/**
- * User: Forgon
- * Date: 18.04.13
- */
+
 return CMap::mergeArray(
 	require(dirname(__FILE__).'/main.php'),
 	array('components'=>
