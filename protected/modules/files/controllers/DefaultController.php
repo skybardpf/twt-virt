@@ -10,6 +10,7 @@ class DefaultController extends Controller
 	 * @param null $dir_id
 	 */
 	public function actionIndex($dir_id = NULL) {
+		
 		/** @var $dir Files */
 		$dir = NULL;
 		$this->get_cur_dir($dir, $dir_id);

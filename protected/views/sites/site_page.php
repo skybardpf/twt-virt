@@ -14,11 +14,11 @@ function addFile() {
 </script>
 <br />
 <a href="/sites/settings/company_id/<?= $company_id; ?>/site_id/<?= $site_id; ?>">Настройки сайта</a> | 
-<a href="/sites/page/company_id/<?= $company_id; ?>/site_id/<?= $site_id; ?>/kind/main" <? if($kind == "main") echo " style='color: black;'" ?>>Главная</a> | 
-<a href="/sites/page/company_id/<?= $company_id; ?>/site_id/<?= $site_id; ?>/kind/about" <? if($kind == "about") echo " style='color: black;'" ?>>О компании</a> | 
-<a href="/sites/page/company_id/<?= $company_id; ?>/site_id/<?= $site_id; ?>/kind/partners" <? if($kind == "partners") echo " style='color: black;'" ?>>Партнёры</a> |
-<a href="/sites/page/company_id/<?= $company_id; ?>/site_id/<?= $site_id; ?>/kind/services" <? if($kind == "services") echo " style='color: black;'" ?>>Услуги</a> | 
-<a href="/sites/page/company_id/<?= $company_id; ?>/site_id/<?= $site_id; ?>/kind/contacts" <? if($kind == "contacts") echo " style='color: black;'" ?>>Контакты</a>
+<a href="/sites/page/company_id/<?= $company_id; ?>/site_id/<?= $site_id; ?>/kind/main" <?php if($kind == "main") echo " style='color: black;'" ?>>Главная</a> | 
+<a href="/sites/page/company_id/<?= $company_id; ?>/site_id/<?= $site_id; ?>/kind/about" <?php if($kind == "about") echo " style='color: black;'" ?>>О компании</a> | 
+<a href="/sites/page/company_id/<?= $company_id; ?>/site_id/<?= $site_id; ?>/kind/partners" <?php if($kind == "partners") echo " style='color: black;'" ?>>Партнёры</a> |
+<a href="/sites/page/company_id/<?= $company_id; ?>/site_id/<?= $site_id; ?>/kind/services" <?php if($kind == "services") echo " style='color: black;'" ?>>Услуги</a> | 
+<a href="/sites/page/company_id/<?= $company_id; ?>/site_id/<?= $site_id; ?>/kind/contacts" <?php if($kind == "contacts") echo " style='color: black;'" ?>>Контакты</a>
 <br />
 <br />
 
@@ -47,12 +47,12 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
 	</div>
 	<div class="control-group ">
 		<label for="userfile" class="control-label">Баннер</label>
-		<? if(!empty($page['file'])):?>
+		<?php if(!empty($page['file'])):?>
 			<div style='margin: 5px 0 0 180px; font-size: 12px; font-style: italic;'>
 				<div>Размеры логотипа: <br /> Ширина - не больше 840px</div>
 				<img src="http://<?= $_SERVER['HTTP_HOST'].$page['file']; ?>">
 			</div>
-		<? endif; ?>
+		<?php endif; ?>
 		<div class="controls">
 			<input type='file' name='userfile' id='userfile'>
 		</div>
