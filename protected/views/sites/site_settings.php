@@ -21,22 +21,22 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
 
 
 	<div class="control-group ">
-		<? if(isset($errors['sitename'])):?>
+		<?php if(isset($errors['sitename'])):?>
 		<div style='color: red; margin-left: 190px; font-size: 12px;'>
 			<i><?= $errors['sitename']; ?></i>
 		</div>
-		<? endif; ?>
+		<?php endif; ?>
 		<label for="sitename" class="control-label required">Название сайта <span class="required">*</span></label>
 		<div class="controls">
 			<input type='text' name='sitename' id='sitename' value='<?= $site['name']; ?>'>
 		</div>
 	</div>
 	<div class="control-group ">
-		<? if(isset($errors['domain'])):?>
+		<?php if(isset($errors['domain'])):?>
 		<div style='color: red; margin-left: 190px; font-size: 12px;'>
 			<i><?= $errors['domain']; ?></i>
 		</div>
-		<? endif; ?>
+		<?php endif; ?>
 		<label for="domain" class="control-label required">Домен <span class="required">*</span></label>
 		<div class="controls">
 			<input type='text' name='domain' id='domain' value='<?= $site['domain']; ?>'>
@@ -60,7 +60,7 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
 		<div class="controls">
 			<select name='template' id="template" onchange='t_ch();'>
 				<?php foreach ($templates as $_templ) : ?>
-					<option <? if($site['template'] == $_templ['id']) echo "selected"; ?> value='<?= $_templ['id']; ?>'><?= $_templ['external_name']; ?></option>
+					<option <?php if($site['template'] == $_templ['id']) echo "selected"; ?> value='<?= $_templ['id']; ?>'><?= $_templ['external_name']; ?></option>
 				<?php endforeach ?>
 			</select>
 			<img src='asdad' id='t_img' width='70' />
@@ -71,12 +71,12 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
 	</div>
 	<div class="control-group ">
 		<label for="logo" class="control-label">Логотип</label>
-		<? if(!empty($site['logo'])):?>
+		<?php if(!empty($site['logo'])):?>
 			<div style='margin: 5px 0 0 180px; font-size: 12px; font-style: italic;'>
 				<div>Размеры логотипа: <br /> Ширина - не больше 350px<br /> Высота - не больше 50px</div>
 				<img src="http://<?= $_SERVER['HTTP_HOST'].$site['logo']; ?>">
 			</div>
-		<? endif; ?>
+		<?php endif; ?>
 		<div class="controls">
 			<input type='file' name='logo' id='logo'>
 		</div>
@@ -84,25 +84,25 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
 	<div class="control-group ">
 		<label for="about" class="control-label">О компании</label>
 		<div class="controls">
-			<input type='checkbox' name='about' id='about' <? if($site['about'] == "yes") echo "checked"; ?>>
+			<input type='checkbox' name='about' id='about' <?php if($site['about'] == "yes") echo "checked"; ?>>
 		</div>
 	</div>
 	<div class="control-group ">
 		<label for="services" class="control-label">Услуги</label>
 		<div class="controls">
-			<input type='checkbox' name='services' id='services' <? if($site['services'] == "yes") echo "checked"; ?>>
+			<input type='checkbox' name='services' id='services' <?php if($site['services'] == "yes") echo "checked"; ?>>
 		</div>
 	</div>
 	<div class="control-group ">
 		<label for="partners" class="control-label">Партнёры</label>
 		<div class="controls">
-			<input type='checkbox' name='partners' id='partners' <? if($site['partners'] == "yes") echo "checked"; ?>>
+			<input type='checkbox' name='partners' id='partners' <?php if($site['partners'] == "yes") echo "checked"; ?>>
 		</div>
 	</div>
 	<div class="control-group ">
 		<label for="contacts" class="control-label">Контакты</label>
 		<div class="controls">
-			<input type='checkbox' name='contacts' id='contacts' <? if($site['contacts'] == "yes") echo "checked"; ?>>
+			<input type='checkbox' name='contacts' id='contacts' <?php if($site['contacts'] == "yes") echo "checked"; ?>>
 		</div>
 	</div>
 	<?php $this->widget('bootstrap.widgets.TbButton', array('buttonType'=>'submit', 'type'=>'primary', 'label'=> 'Сохранить'))?>
