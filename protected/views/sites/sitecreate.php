@@ -70,7 +70,7 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
 	<div class="control-group ">
 		<label for="contacts" class="control-label">Контакты</label>
 		<div class="controls">
-			<input type='checkbox' name='contacts' id='contacts' <? if(isset($page['contacts'])) echo "checked"; ?>>
+			<input type='checkbox' name='contacts' id='contacts' <?php if(isset($page['contacts'])) echo "checked"; ?>>
 		</div>
 	</div>
 	<?php $this->widget('bootstrap.widgets.TbButton', array('buttonType'=>'submit', 'type'=>'primary', 'label'=> 'Сохранить'))?>
