@@ -37,8 +37,8 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
 		<label for="map" class="control-label required">Карты <span class="required"></span></label>
 		<div class="controls">
 			<select name='map' id='map'>
-				<option <? if($page['map'] == "google") echo "selected"; ?> value='google'>Google</option>
-				<option <? if($page['map'] == "yandex") echo "selected"; ?> value='yandex'>Yandex</option>
+				<option <?php if($page['map'] == "google") echo "selected"; ?> value='google'>Google</option>
+				<option <?php if($page['map'] == "yandex") echo "selected"; ?> value='yandex'>Yandex</option>
 			</select>
 		</div>
 	</div>
