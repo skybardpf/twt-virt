@@ -26,7 +26,7 @@ $this->pageTitle=Yii::app()->name;
 	<?php endforeach ?>
 </table>
 <?php $this->widget('bootstrap.widgets.TbButton', array('buttonType'=>$sign['type'], 'url'=>'/sites/createform/company_id/'.$company_id, 'type'=>'primary', 'label'=> 'Создать сайт', 'disabled' => $sign['disabled']))?>
-<? if(isset($sign['text'])):?>
+<?php if(isset($sign['text'])):?>
 	<br /><br />
 	<div style='font-size: 13px;'><i><?= $sign['text']; ?></i></div>
-<? endif; ?>
+<?php endif; ?>

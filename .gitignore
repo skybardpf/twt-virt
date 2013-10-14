@@ -1,4 +1,7 @@
 .idea
+.buildpath
+.project
+.settings/*
 runtime
 assets
 public/upload

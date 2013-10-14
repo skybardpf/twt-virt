@@ -18,22 +18,22 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
 	<input type='hidden' name='company_id' value='<?= $company_id; ?>'>
 
 	<div class="control-group ">
-	<? if(isset($errors['sitename'])):?>
+	<?php if(isset($errors['sitename'])):?>
 	<div style='color: red; margin-left: 190px; font-size: 12px;'>
 		<i><?= $errors['sitename']; ?></i>
 	</div>
-	<? endif; ?>
+	<?php endif; ?>
 		<label for="sitename" class="control-label required">Название сайта <span class="required">*</span></label>
 		<div class="controls">
 			<input type='text' name='sitename' id='sitename' value='<?= $page['sitename']; ?>'>
 		</div>
 	</div>
 	<div class="control-group ">
-	<? if(isset($errors['domain'])):?>
+	<?php if(isset($errors['domain'])):?>
 	<div style='color: red; margin-left: 190px; font-size: 12px;'>
 		<i><?= $errors['domain']; ?></i>
 	</div>
-	<? endif; ?>
+	<?php endif; ?>
 		<label for="domain" class="control-label required">Домен <span class="required">*</span></label>
 		<div class="controls">
 			<input type='text' name='domain' id='domain' value='<?= $page['domain']; ?>'>
@@ -44,7 +44,7 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
 		<div class="controls">
 			<select name='template' id="template">
 				<?php foreach ($templates as $_templ) : ?>
-					<option <? if($page['template'] == $_templ['id']) echo "selected"; ?> value='<?= $_templ['id']; ?>'><?= $_templ['external_name']; ?></option>
+					<option <?php if($page['template'] == $_templ['id']) echo "selected"; ?> value='<?= $_templ['id']; ?>'><?= $_templ['external_name']; ?></option>
 				<?php endforeach ?>
 			</select>
 		</div>
@@ -52,19 +52,19 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
 	<div class="control-group ">
 		<label for="about" class="control-label">О компании</label>
 		<div class="controls">
-			<input type='checkbox' name='about' id='about' <? if(isset($page['about'])) echo "checked"; ?>>
+			<input type='checkbox' name='about' id='about' <?php if(isset($page['about'])) echo "checked"; ?>>
 		</div>
 	</div>
 	<div class="control-group ">
 		<label for="services" class="control-label">Услуги</label>
 		<div class="controls">
-			<input type='checkbox' name='services' id='services' <? if(isset($page['services'])) echo "checked"; ?>>
+			<input type='checkbox' name='services' id='services' <?php if(isset($page['services'])) echo "checked"; ?>>
 		</div>
 	</div>
 	<div class="control-group ">
 		<label for="partners" class="control-label">Партнёры</label>
 		<div class="controls">
-			<input type='checkbox' name='partners' id='partners' <? if(isset($page['partners'])) echo "checked"; ?>>
+			<input type='checkbox' name='partners' id='partners' <?php if(isset($page['partners'])) echo "checked"; ?>>
 		</div>
 	</div>
 	<div class="control-group ">
