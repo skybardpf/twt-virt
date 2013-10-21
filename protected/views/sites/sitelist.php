@@ -4,7 +4,11 @@
  * @var $companies Company[]
  */
 
+Yii::import('bootstrap.widgets.TbButton');
+
 $this->pageTitle=Yii::app()->name;
+
+Yii::app()->clientScript->registerScriptFile($this->asset_static.'/js/sites/list.js');
 ?>
 
 <h1>Список сайтов</h1>
@@ -14,6 +18,7 @@ $this->pageTitle=Yii::app()->name;
 		<th>Название сайта</th>
 		<th>Домен</th>
 		<th>Шаблон</th>
+		<th>Действие</th>
 	</tr>
 	<?php foreach ($sites as $_site) : ?>
 		<tr>
@@ -22,6 +27,24 @@ $this->pageTitle=Yii::app()->name;
 			</td>
 			<td><?= $_site['domain']; ?></td>
 			<td><?= $_site['external_name']; ?></td>
+			<td>
+                <?php
+                $this->widget('bootstrap.widgets.TbButton',
+                    array(
+                        'buttonType' => TbButton::BUTTON_LINK,
+                        'type' => TbButton::TYPE_LINK,
+                        'url'=>'#',
+                        'label'=> 'Удалить',
+                        'htmlOptions' => array(
+                            'class' => 'del-site',
+                            'data-url' => $this->createUrl('delete', array('id' => $_site['site_id'])),
+                            'data-redirect-url' => $this->createUrl('list', array('company_id' => $company_id)),
+                            'data-site-name' => $_site['name'],
+                        ),
+                    )
+                );
+                ?>
+            </td>
 		</tr>
 	<?php endforeach ?>
 </table>

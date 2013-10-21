@@ -18,6 +18,9 @@ elseif ($_SERVER['HTTP_HOST'] == 'twt-virt.artektiv.ru') {
     defined('YII_DEBUG') or define('YII_DEBUG',false);
     defined('YII_TRACE_LEVEL') or define('YII_TRACE_LEVEL',0);
     $config = dirname(__FILE__).'/../protected/config/demo_twt-virt.php';
+} elseif ($_SERVER['HTTP_HOST'] == 'twt-virt.skybardpf.devel') {
+    defined('YII_DEBUG') or define('YII_DEBUG',true);
+    $config = dirname(__FILE__).'/../protected/config/devel.php';
 }
 
 defined('YII_TRACE_LEVEL') or define('YII_TRACE_LEVEL',3);

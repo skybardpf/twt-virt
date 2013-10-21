@@ -14,7 +14,7 @@ class Sites extends CActiveRecord
 	/**
 	 * Returns the static model of the specified AR class.
 	 * @param string $className active record class name.
-	 * @return Company the static model class
+	 * @return Sites the static model class
 	 */
 	public static function model($className=__CLASS__)
 	{
