@@ -75,7 +75,7 @@ class Sites extends CActiveRecord
 	public function createSite($post) {
 		//проверить пост
 		$errors = false;
-		$company_id = $_POST['company_id'];
+//		$company_id = $_POST['company_id'];
 		if(strlen($post['sitename']) == 0) {
 			$errors['sitename'] = "Название не может быть пустым.";
 		}
@@ -128,8 +128,16 @@ class Sites extends CActiveRecord
 		$this->createPage($site_id, 'page_partners', $create_pages['partners']);
 		//у страницы контактов баннера нет
 		Yii::app()->db->createCommand()->insert('page_contacts', array('site_id' => $site_id, 'show' => $create_pages['contacts']));
-				  
-		return array('error' => false);
+
+        /**
+         * Добавляем почтовый домен
+         */
+        Yii::import('application.models.Mail.Domain');
+        $domain  = new Domain();
+        $domain->domain = $post['domain'].'.'.$_SERVER['HTTP_HOST'];
+        $domain->insert();
+
+        return array('error' => false);
 	}
 	
 	private function createPage($site_id, $page_kind, $show = "yes") {

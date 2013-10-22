@@ -1,7 +1,8 @@
 <?php
 /**
- * @var $this SiteController
- * @var $companies Company[]
+ * @var SiteController $this
+ * @var Company[] $companies
+ * @var array $mails
  */
 
 $this->pageTitle=Yii::app()->name;
@@ -31,7 +32,7 @@ $this->pageTitle=Yii::app()->name;
 				><?=$c->name?></a>
 			</td>
 			<td><?=$c->isAdmin(Yii::app()->user->id) ? 'Администратор' : 'Пользователь'?></td>
-			<td>3 /53</td>
+			<td><?= $mails['unseen'] .' / '. $mails['all']; ?></td>
 			<td>1 / 10</td>
 			<td><?= $nums['have']." / ".$nums['max']; ?></td>
 			<td><?=$c->getF_qoute_view()?></td>

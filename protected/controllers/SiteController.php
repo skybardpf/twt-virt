@@ -9,7 +9,13 @@ class SiteController extends Controller
 	public function actionIndex()
 	{
 		Yii::app()->getModule('files');
-		$this->render('index', array('companies' => Yii::app()->user->data->companies));
+		$this->render(
+            'index',
+            array(
+                'companies' => Yii::app()->user->data->companies,
+                'mails' => $this->countMails(),
+            )
+        );
 	}
 
 	public function actionFiles($company_id)
@@ -69,5 +75,29 @@ class SiteController extends Controller
 	{
 		Yii::app()->user->logout();
 		$this->redirect(Yii::app()->homeUrl);
+	}
+
+    /**
+     * @return array
+     */
+    public function countMails()
+	{
+        $ret = array(
+            'unseen' => 0,
+            'all' => 0,
+        );
+        Yii::import('ext.EImap.EIMap', true);
+        $imap_inbox = '{'.Yii::app()->params->IMAPHost.':'.Yii::app()->params->IMAPPort.'/imap/novalidate-cert}INBOX';
+        $imap = new EIMap($imap_inbox, 'lirik@this.com.ua', 'qazwsxedcrfv');
+
+        if($imap->connect()){
+            $all = $imap->searchmails( EIMap::SEARCH_ALL);
+            $unseen = $imap->searchmails( EIMap::SEARCH_UNSEEN);
+            $ret['unseen'] = count($unseen);
+            $ret['all'] = count($all);
+
+            $imap->close();
+        }
+        return $ret;
 	}
 }

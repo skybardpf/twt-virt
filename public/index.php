@@ -1,5 +1,4 @@
 <?php
-
 $yii    = 'yii.php';
 $config = dirname(__FILE__).'/../protected/config/devel.php';
 
