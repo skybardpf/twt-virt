@@ -141,7 +141,8 @@ return array(
             '2' => 3
         ),
 
-        'webMailUrl' => 'http://this.com.ua/',
+        'urlWebMail' => 'http://this.com.ua',
+//        'urlWebMail' => 'this.com.ua',
         'IMAPHost' => 'this.com.ua',
         'IMAPPort' => '143',
     ),

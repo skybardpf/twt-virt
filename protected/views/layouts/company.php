@@ -9,11 +9,6 @@
     'items' => array(
         array(
             'label' => 'Почта',
-            'url' => Yii::app()->params->webMailUrl,
-            'linkOptions' => array("target"=>"_blank")
-        ),
-        array(
-            'label' => 'Почта (Макет)',
             'url' => $this->createUrl('/mail/layout',
                 array(
                     'company_id' => $this->company->id
