@@ -9,7 +9,7 @@
     'items' => array(
         array(
             'label' => 'Почта',
-            'url' => $this->createUrl('/mail/layout',
+            'url' => $this->createUrl('/mail/change_auth',
                 array(
                     'company_id' => $this->company->id
                 )

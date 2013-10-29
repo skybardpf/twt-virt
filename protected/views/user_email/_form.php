@@ -26,7 +26,7 @@ if ($model->hasErrors()) {
     <fieldset>
         <?php
         $sites = CHtml::listData($company->sites, 'id', 'domain');
-        $sites[0] = Yii::t('app', '--- Выберите площадку ---');
+        $sites[0] = Yii::t('app', '--- Выберите домен ---');
 
         echo $form->textFieldRow($model, 'login_email');
         echo $form->dropDownListRow($model, 'site_id', $sites);

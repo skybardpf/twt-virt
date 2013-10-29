@@ -78,7 +78,7 @@ class UserEmail extends CActiveRecord
         return array(
             'id' => '#',
             'login_email' => 'Логин E-mail',
-            'site_id' => 'Площадка',
+            'site_id' => 'Домен',
             'password' => 'Пароль',
             'repeat_password' => 'Повтор пароля',
             'old_password' => 'Старый пароль',
@@ -122,7 +122,7 @@ class UserEmail extends CActiveRecord
         }
         $model = $this->find($condition, $params);
         if ($model){
-            $this->addError($attribute, Yii::t('app', 'Для данной площадки уже существует такой логин'));
+            $this->addError($attribute, Yii::t('app', 'Для данного домена уже существует такой логин'));
         }
     }
 
