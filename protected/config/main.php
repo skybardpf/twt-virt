@@ -143,6 +143,7 @@ return array(
 
         'urlWebMail' => 'http://this.com.ua',
         'maxEmailLoginPerAccounts' => 3,  // Макс. кол-во email аккаунтов для юзера
+        'httpHostName' => 'twtconsult.ru',
         'IMAPHost' => 'this.com.ua',
         'IMAPPort' => '143',
     ),

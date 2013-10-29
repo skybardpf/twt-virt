@@ -1,12 +1,14 @@
 <?php
+
 namespace application\models\Mail;
 
 /**
- * БД mail. Для управления доменными именами почтового сервера.
+ * БД mail. Для управления аккаунтами юзеров почтового сервера.
  *
- * @property string $domain
+ * @property string $email
+ * @property string $password
  */
-class Domain extends \CActiveRecord
+class User extends \CActiveRecord
 {
     /**
      * @return \CDbConnection
@@ -16,10 +18,15 @@ class Domain extends \CActiveRecord
         return \Yii::app()->db_mail;
     }
 
+    public function primaryKey()
+    {
+        return 'email';
+    }
+
     /**
      * Returns the static model of the specified AR class.
      * @param string $className active record class name.
-     * @return Domain the static model class
+     * @return User the static model class
      */
     public static function model($className=__CLASS__)
     {
@@ -31,6 +38,6 @@ class Domain extends \CActiveRecord
      */
     public function tableName()
     {
-        return 'domains';
+        return 'users';
     }
 }

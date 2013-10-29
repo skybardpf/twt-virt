@@ -11,8 +11,6 @@
 Yii::app()->clientScript->registerScriptFile($this->asset_static . '/js/users/login_emails.js');
 $this->widget('ext.widgets.loading.LoadingWidget');
 
-;
-
 $this->widget('bootstrap.widgets.TbGridView', array(
     'id' => 'grid-login-emails',
     'type' => 'striped bordered condensed',
@@ -27,14 +25,10 @@ $this->widget('bootstrap.widgets.TbGridView', array(
             'name' => 'login_email',
             'header' => 'Email компании',
             'type' => 'raw',
-            'value' => 'CHtml::link($data["login_email"], "#", array(
+            'value' => 'CHtml::link($data->getFullDomain(), "#", array(
                 "class" => "update-login-email",
                 "data-url" => Yii::app()->controller->createUrl("user_email/update", array("id" => $data["id"])),
             ));',
-        ),
-        array(
-            'name' => 'site_id',
-            'header' => 'Сайт',
         ),
         array(
             'name' => 'action',

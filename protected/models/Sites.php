@@ -154,8 +154,7 @@ class Sites extends CActiveRecord
         /**
          * Добавляем почтовый домен
          */
-        Yii::import('application.models.Mail.Domain');
-        $domain  = new Domain();
+        $domain  = new \application\models\Mail\Domain();
         $domain->domain = $post['domain'].'.'.$_SERVER['HTTP_HOST'];
         $domain->insert();
 

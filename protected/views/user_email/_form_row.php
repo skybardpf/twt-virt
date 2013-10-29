@@ -7,12 +7,11 @@
  */
 ?>
 <td><?= $model->primaryKey; ?></td>
-<td><?= CHtml::link( $model->login_email, "#", array(
+<td><?= CHtml::link($model->getFullDomain(), "#", array(
         "class" => "update-login-email",
         "data-url" => Yii::app()->controller->createUrl("user_email/update", array("id" => $model->primaryKey)),
     ));
     ?>
-<td><?= $model->site_id; ?></td>
 <td>
     <?php
     echo Yii::app()->controller->widget("bootstrap.widgets.TbButton",

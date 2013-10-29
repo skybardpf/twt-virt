@@ -66,7 +66,7 @@ class UserEmail extends CActiveRecord
         // class name for the relations automatically generated below.
         return array(
             'user' => array(self::HAS_ONE, 'User', 'user_id'),
-            'site' => array(self::HAS_ONE, 'Sites', array('site_id')),
+            'site' => array(self::HAS_ONE, 'Sites', array('id' => 'site_id')),
         );
     }
 
@@ -95,6 +95,16 @@ class UserEmail extends CActiveRecord
         }
         return parent::beforeSave();
     }
+
+
+    public function afterDelete()
+    {
+        parent::afterDelete();
+
+        \application\models\Mail\User::model()->deleteByPk(
+            $this->login_email.'@'.$this->site->domain.'.'.Yii::app()->params->httpHostName
+        );
+    }
     /**
      * @param $attribute
      */
@@ -114,5 +124,17 @@ class UserEmail extends CActiveRecord
         if ($model){
             $this->addError($attribute, Yii::t('app', 'Для данной площадки уже существует такой логин'));
         }
+    }
+
+    /**
+     * @return string
+     */
+    public function getFullDomain()
+    {
+        $ret = '';
+        if (!$this->isNewRecord){
+            $ret = $this->login_email.'@'.$this->site->domain.'.'.Yii::app()->params->httpHostName;
+        }
+        return $ret;
     }
 }

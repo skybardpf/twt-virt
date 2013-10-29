@@ -39,6 +39,15 @@ class CreateAction extends CAction
             if($data) {
                 $model->attributes = $data;
                 if($model->save()){
+                    $user = new \application\models\Mail\User();
+                    $cmd = $user->getDbConnection()->createCommand('
+                        INSERT INTO '.$user->tableName().' (email, password) VALUES (:email, ENCRYPT(:password))
+                    ');
+                    $cmd->execute(array(
+                        ':email' => $model->login_email.'@'.$model->site->domain.'.'.Yii::app()->params->httpHostName,
+                        ':password' => $model->password,
+                    ));
+
                     echo CJSON::encode(array(
                         'result' => 'added',
                         'html' => $this->controller->renderPartial(
