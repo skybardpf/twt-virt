@@ -1,6 +1,13 @@
 <?php
 class UsersController extends Controller
 {
+    public function actions()
+    {
+        return array(
+            'create_login_email' => 'application.controllers.Users.CreateLoginEmailAction',
+        );
+    }
+
 	/**
 	 * @param $company_id - Компания
 	 *

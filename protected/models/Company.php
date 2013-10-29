@@ -41,6 +41,9 @@
 
  * @property CBankAccount[] $res_banks
  * @property CBankAccount[] $nonres_banks
+ *
+ * @property CompanySites[] $company2sites
+ * @property Sites[] $sites
  */
 class Company extends CActiveRecord
 {
@@ -101,6 +104,12 @@ class Company extends CActiveRecord
 			'admin2company' => array(self::HAS_MANY, 'Admin2company', 'company_id'),
 			'admins' => array(self::HAS_MANY, 'User', array('user_id' => 'id'), 'through' => 'admin2company'),
 			'bankAccounts' => array(self::HAS_MANY, 'CBankAccount', 'company_id'),
+
+            /**
+             * Площадки компании.
+             */
+            'company2sites' => array(self::HAS_MANY, 'CompanySites', 'company_id'),
+            'sites' => array(self::HAS_MANY, 'Sites', array('site_id' => 'id'), 'through' => 'company2sites'),
 		);
 	}
 

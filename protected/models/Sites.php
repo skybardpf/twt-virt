@@ -1,5 +1,11 @@
 <?php
-
+/**
+ * Class Sites
+ *
+ * Relations:
+ * @property CompanySites[] $company2sites
+ * @property Company $company
+ */
 class Sites extends CActiveRecord
 {
 	private $pages = array('about' => "О компании", 'services' => "Услуги", 'partners' => "Партнёры", 'contacts' => "Контакты");
@@ -28,6 +34,22 @@ class Sites extends CActiveRecord
 	{
 		return 'sites';
 	}
+
+    /**
+     * @return array relational rules.
+     */
+    public function relations()
+    {
+        // NOTE: you may need to adjust the relation name and the related
+        // class name for the relations automatically generated below.
+        return array(
+            /**
+             * Компания для площадки.
+             */
+            'company2sites' => array(self::HAS_MANY, 'CompanySites', 'site_id'),
+            'company' => array(self::HAS_ONE, 'Company', array('company_id' => 'id'), 'through' => 'company2sites'),
+        );
+    }
 
 	public function getSitesNumber($company_id) {
 		if(isset(Yii::app()->params['sites'][$company_id])) {

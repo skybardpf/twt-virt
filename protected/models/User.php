@@ -19,6 +19,7 @@
  * The followings are the available model relations:
  * @property Company[] $companies
  * @property User2company[] $user2company
+ * @property UserEmail[] $userEmails
  */
 class User extends CActiveRecord
 {
@@ -101,6 +102,8 @@ class User extends CActiveRecord
 			'companies' => array(self::HAS_MANY, 'Company', array('company_id' => 'id'), 'through' => 'user2company'),
 			'admin2company' => array(self::HAS_MANY, 'Admin2company', 'user_id'),
 			'adminCompanies' => array(self::HAS_MANY, 'Company', array('company_id' => 'id'), 'through' => 'admin2company'),
+
+            'userEmails' => array(self::HAS_MANY, 'UserEmail', array('user_id' => 'id')),
 		);
 	}
 

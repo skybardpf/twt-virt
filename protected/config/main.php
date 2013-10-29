@@ -11,7 +11,7 @@ return array(
     'language' => 'ru',
 
     // preloading 'log' component
-    'preload' => array('log'),
+    'preload' => array('log', 'bootstrap'),
 
     // autoloading model and component classes
     'import' => array(
@@ -142,7 +142,7 @@ return array(
         ),
 
         'urlWebMail' => 'http://this.com.ua',
-//        'urlWebMail' => 'this.com.ua',
+        'maxEmailLoginPerAccounts' => 3,  // Макс. кол-во email аккаунтов для юзера
         'IMAPHost' => 'this.com.ua',
         'IMAPPort' => '143',
     ),

@@ -5,6 +5,11 @@
  * @var $form TbActiveForm
  */
 
+Yii::app()->getClientScript()->registerCoreScript( 'jquery.ui' );
+Yii::app()->clientScript->registerCssFile(
+    Yii::app()->clientScript->getCoreScriptUrl().'/jui/css/base/jquery-ui.css'
+);
+
 $this->breadcrumbs=array(
 	'Пользователи'=>array('index'),
 	$model->isNewRecord ? 'Добавление' : 'Редактирование',
@@ -70,6 +75,21 @@ $this->pageTitle = ($model->isNewRecord ? 'Добавление пользова
 					<?php endforeach ?>
 			</div>
 		</div>
+
+        <div class="control-group">
+            <?= CHtml::label('Email логины', '', array('class' => 'control-label')); ?>
+            <div class="controls">
+                <?php
+                    $this->renderPartial(
+                        'login_emails',
+                        array(
+                            'user' => $model
+                        )
+                    );
+                ?>
+            </div>
+        </div>
+
 	</fieldset>
 	<div class="form-actions">
 		<?=$buttons?>
@@ -78,3 +98,31 @@ $this->pageTitle = ($model->isNewRecord ? 'Добавление пользова
 	<?php $this->endWidget(); ?>
 
 </div>
+
+<?php
+   /**
+    * Модальное окошко для подписанта
+    */
+    $this->beginWidget('bootstrap.widgets.TbModal', array('id' => 'dataModal'));
+    ?>
+    <div class="modal-header">
+        <a class="close" data-dismiss="modal">×</a>
+        <h4><?= Yii::t("menu", "Email аккаунт") ?></h4>
+    </div>
+    <div class="modal-body"></div>
+    <div class="modal-footer">
+        <?php
+        $this->widget('bootstrap.widgets.TbButton', array(
+            'label' => Yii::t("menu", "Сохранить"),
+            'url' => '#',
+            'htmlOptions' => array('class' => 'button_save', 'data-dismiss' => 'modal'),
+        ));
+
+        $this->widget('bootstrap.widgets.TbButton', array(
+            'label' => Yii::t("menu", "Отмена"),
+            'url' => '#',
+            'htmlOptions' => array('data-dismiss' => 'modal'),
+        ));
+        ?>
+    </div>
+<?php $this->endWidget(); ?>
