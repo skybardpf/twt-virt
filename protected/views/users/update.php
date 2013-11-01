@@ -76,6 +76,7 @@ $this->pageTitle = ($model->isNewRecord ? 'Добавление пользова
 			</div>
 		</div>
 
+        <?php if (!$model->isNewRecord) { ?>
         <div class="control-group">
             <?= CHtml::label('Email логины', '', array('class' => 'control-label')); ?>
             <div class="controls">
@@ -89,6 +90,7 @@ $this->pageTitle = ($model->isNewRecord ? 'Добавление пользова
                 ?>
             </div>
         </div>
+        <?php } ?>
 
 	</fieldset>
 	<div class="form-actions">
@@ -100,29 +102,33 @@ $this->pageTitle = ($model->isNewRecord ? 'Добавление пользова
 </div>
 
 <?php
-   /**
-    * Модальное окошко для подписанта
-    */
-    $this->beginWidget('bootstrap.widgets.TbModal', array('id' => 'dataModal'));
-    ?>
-    <div class="modal-header">
-        <a class="close" data-dismiss="modal">×</a>
-        <h4><?= Yii::t("menu", "Email аккаунт") ?></h4>
-    </div>
-    <div class="modal-body"></div>
-    <div class="modal-footer">
-        <?php
-        $this->widget('bootstrap.widgets.TbButton', array(
-            'label' => Yii::t("menu", "Сохранить"),
-            'url' => '#',
-            'htmlOptions' => array('class' => 'button_save', 'data-dismiss' => 'modal'),
-        ));
-
-        $this->widget('bootstrap.widgets.TbButton', array(
-            'label' => Yii::t("menu", "Отмена"),
-            'url' => '#',
-            'htmlOptions' => array('data-dismiss' => 'modal'),
-        ));
+    if (!$model->isNewRecord) {
+       /**
+        * Модальное окошко для добавления/редактирования Email аккаунта
+        */
+        $this->beginWidget('bootstrap.widgets.TbModal', array('id' => 'dataModal'));
         ?>
-    </div>
-<?php $this->endWidget(); ?>
+        <div class="modal-header">
+            <a class="close" data-dismiss="modal">×</a>
+            <h4><?= Yii::t("menu", "Email аккаунт") ?></h4>
+        </div>
+        <div class="modal-body"></div>
+        <div class="modal-footer">
+            <?php
+            $this->widget('bootstrap.widgets.TbButton', array(
+                'label' => Yii::t("menu", "Сохранить"),
+                'url' => '#',
+                'htmlOptions' => array('class' => 'button_save', 'data-dismiss' => 'modal'),
+            ));
+
+            $this->widget('bootstrap.widgets.TbButton', array(
+                'label' => Yii::t("menu", "Отмена"),
+                'url' => '#',
+                'htmlOptions' => array('data-dismiss' => 'modal'),
+            ));
+            ?>
+        </div>
+    <?php
+        $this->endWidget();
+    }
+    ?>

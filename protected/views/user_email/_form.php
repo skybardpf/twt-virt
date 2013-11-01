@@ -25,11 +25,11 @@ if ($model->hasErrors()) {
 
     <fieldset>
         <?php
-        $sites = CHtml::listData($company->sites, 'id', 'domain');
-        $sites[0] = Yii::t('app', '--- Выберите домен ---');
+        $domains = $company->listDomains();
+        $domains[0] = Yii::t('app', '--- Выберите домен ---');
 
         echo $form->textFieldRow($model, 'login_email');
-        echo $form->dropDownListRow($model, 'site_id', $sites);
+        echo $form->dropDownListRow($model, 'site_id', $domains);
 //        if (!$model->isNewRecord){
 //            echo $form->passwordFieldRow($model, 'old_password');
 //        }

@@ -355,4 +355,17 @@ class Company extends CActiveRecord
 		if (!isset($labels[$lvl])) return 'Очень много.';
 		else return number_format($bytes, 2).' '.$labels[$lvl];
 	}
+
+    /**
+     * @return array Список доменов для данной компании.
+     * Формат [id] => domain + host_name
+     */
+    public function listDomains()
+    {
+        $domains = CHtml::listData($this->sites, 'id', 'domain');
+        foreach ($domains as $k=>$v){
+            $domains[$k] = $v . '.' . Yii::app()->params->httpHostName;
+        }
+        return $domains;
+    }
 }
