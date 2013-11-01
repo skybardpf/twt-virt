@@ -2,8 +2,7 @@
 $yii    = 'yii.php';
 $config = dirname(__FILE__).'/../protected/config/web/devel.php';
 
-
-if ($_SERVER['HTTP_HOST'] == 'ioffice-on.com') {
+if (strpos($_SERVER['HTTP_HOST'], 'ioffice-on.com') !== FALSE) {
         $yii    = 'yii.php';
         $config = dirname(__FILE__).'/../protected/config/web/production.php';
         defined('YII_DEBUG') or define('YII_DEBUG',false);
