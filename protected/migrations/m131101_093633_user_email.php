@@ -5,7 +5,7 @@ class m131101_093633_user_email extends CDbMigration
 	public function up()
 	{
         $this->execute('
-            CREATE TABLE `user_emails_1` (
+            CREATE TABLE `user_emails` (
               `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
               `user_id` int(11) unsigned NOT NULL,
               `site_id` int(11) unsigned NOT NULL,
@@ -22,7 +22,7 @@ class m131101_093633_user_email extends CDbMigration
 
 	public function down()
 	{
-		$this->dropTable('user_emails_1');
+		$this->dropTable('user_emails');
 	}
 
 	/*
