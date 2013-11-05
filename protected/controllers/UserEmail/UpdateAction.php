@@ -1,4 +1,6 @@
 <?php
+use application\models\Mail as M;
+
 /**
  * Редактирование Email аккаунта.
  *
@@ -44,10 +46,18 @@ class UpdateAction extends CAction
                 if($model->validate()){
                     $model->save(false);
 
+                    if ($model->site_id != $site->primaryKey){
+                        $site = Sites::model()->findByPk($model->site_id);
+                        if ($site === null){
+                            throw new CException('Не найдена площадка.');
+                        }
+                        $model->site = $site;
+                    }
+
                     /**
                      * Изменяем email и/или пароль на Devecot.
                      */
-                    $user = new \application\models\Mail\User();
+                    $user = new M\User();
                     $new_email = $model->login_email.'@'.$model->site->domain.'.'.Yii::app()->params->httpHostName;
                     $condition = array();
                     $params = array();

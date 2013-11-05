@@ -9,7 +9,12 @@
 <td><?= $model->primaryKey; ?></td>
 <td><?= CHtml::link($model->getFullDomain(), "#", array(
         "class" => "update-login-email",
-        "data-url" => Yii::app()->controller->createUrl("user_email/update", array("id" => $model->primaryKey)),
+        "data-url" => $this->createUrl(
+            "user_email/update",
+            array(
+                "id" => $model->primaryKey
+            )
+        ),
     ));
     ?>
 <td>

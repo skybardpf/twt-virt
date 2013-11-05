@@ -110,10 +110,11 @@ class UserEmail extends CActiveRecord
      */
     public function uniqueLogin($attribute)
     {
-        $condition = 'user_id=:user_id AND site_id=:site_id AND login_email=:login_email';
+//        $condition = 'user_id=:user_id AND site_id=:site_id AND login_email=:login_email';
+        $condition = 'site_id=:site_id AND login_email=:login_email';
         $params = array(
             ':login_email' => $this->$attribute,
-            ':user_id' => $this->user_id,
+//            ':user_id' => $this->user_id,
             ':site_id' => $this->site_id,
         );
         if (!$this->isNewRecord){
@@ -122,7 +123,7 @@ class UserEmail extends CActiveRecord
         }
         $model = $this->find($condition, $params);
         if ($model){
-            $this->addError($attribute, Yii::t('app', 'Для данного домена уже существует такой логин'));
+            $this->addError($attribute, Yii::t('app', 'Для данного домена уже существует такой Email аккаунт'));
         }
     }
 

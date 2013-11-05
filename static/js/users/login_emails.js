@@ -89,9 +89,9 @@ $('document').ready(function(){
                 modal.find('.modal-body').html(data.html);
 
             } else {
-                console.log($this.data('action'));
+                var action = $this.data('action');
                 var table = $('#grid-login-emails');
-                if ($this.data('action') == 'create'){
+                if (action == 'create'){
                     if (table.find('.empty')){
                         table.find('.empty').parents('tr').remove();
                     }
@@ -99,7 +99,7 @@ $('document').ready(function(){
                     var html = '<tr class="'+number+'">'+data.html+'</tr>';
 
                     table.find('tbody').append(html);
-                } else if ($this.data('action') == 'update'){
+                } else if (action == 'update'){
                     $this.data('tr').html(data.html);
                 }
                 $('.update-login-email').off('click').on('click', updateLoginEmail);

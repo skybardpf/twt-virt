@@ -10,16 +10,11 @@ class DeleteAction extends CAction
      */
     public function run($id)
     {
-        /**
-         * @var SitesController $controller
-         */
-        $controller = $this->controller;
-
         if (Yii::app()->request->isAjaxRequest){
             try {
                 $cmd = Yii::app()->db->createCommand('
                     SELECT
-                        s.id, cs.company_id
+                        s.id, cs.company_id, s.domain
                     FROM sites s
                     JOIN company2sites cs ON cs.site_id = s.id
                     JOIN user2company uc ON uc.company_id = cs.company_id
@@ -29,8 +24,16 @@ class DeleteAction extends CAction
                     ':user_id' => Yii::app()->user->id,
                     ':site_id' => $id,
                 ));
-                if (empty($site))
-                    throw new CHttpException(404, 'Не найден сайт');
+                if (empty($site)){
+                    throw new CException('Не найден сайт');
+                }
+
+                $emails = UserEmail::model()->findAll('site_id=:site_id', array(
+                    ':site_id' => $site['id'],
+                ));
+                if (!empty($emails)){
+                    throw new CException('Нельзя удалить домен. Для него существуют Email аккаунты. Удалите их перед удалением домена.');
+                }
 
                 /**
                  * Удаляем файлы, связанные с сайтом.
@@ -79,6 +82,19 @@ class DeleteAction extends CAction
                     ':site_id' => $site['id'],
                     ':company_id' => $site['company_id'],
                 ));
+
+                /**
+                 * Удаляем запись на Devecot сервере
+                 */
+                $domain = application\models\Mail\Domain::model()->find(
+                    'domain=:domain',
+                    array(
+                        ':domain' => $site['domain'].'.'.Yii::app()->params->httpHostName,
+                    )
+                );
+                if ($domain !== null){
+                    $domain->delete();
+                }
 
                 echo CJSON::encode(array(
                     'success' => true,

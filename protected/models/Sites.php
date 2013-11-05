@@ -152,10 +152,10 @@ class Sites extends CActiveRecord
 		Yii::app()->db->createCommand()->insert('page_contacts', array('site_id' => $site_id, 'show' => $create_pages['contacts']));
 
         /**
-         * Добавляем почтовый домен
+         * Добавляем почтовый домен на Devecot серевер.
          */
         $domain  = new \application\models\Mail\Domain();
-        $domain->domain = $post['domain'].'.'.$_SERVER['HTTP_HOST'];
+        $domain->domain = $post['domain'].'.'.Yii::app()->params->httpHostName;
         $domain->insert();
 
         return array('error' => false);
