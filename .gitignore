@@ -5,3 +5,4 @@
 protected/runtime
 public/assets
 public/upload
+public/userfiles/*

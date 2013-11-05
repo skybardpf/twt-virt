@@ -79,7 +79,12 @@ class FileBehavior extends CActiveRecordBehavior
 	public function beforeSave($event)
 	{
 		$owner = $this->getOwner();
-		if ($file = CUploadedFile::getInstance($this->getOwner(), $this->filePathAttributeName)) {
+        if ($owner->uploaded_file !== null){
+            $file = $owner->uploaded_file;
+        } else {
+            $file = CUploadedFile::getInstance($this->getOwner(), $this->filePathAttributeName);
+        }
+		if ($file) {
 			// старый файл удалим, потому что загружаем новый
 			$this->deleteFile();
 			//создадим директорию, если ее нет

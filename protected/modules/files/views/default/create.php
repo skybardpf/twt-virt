@@ -39,22 +39,34 @@
 		</div>
 		<div id="file_create" class="accordion-body collapse<?=($new_file->errors?' in':'')?>">
 			<div class="accordion-inner">
-				<?php
-				/** @var $form TbActiveForm*/
-				$form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
-					'id'   =>'file-upload-form',
-					'type' =>'horisontal',
-					'enableAjaxValidation'=>false,
-					'htmlOptions' => array('enctype' => 'multipart/form-data')
-				))?>
 				<?php echo $form->errorSummary($new_file); ?>
 				<fieldset>
-					<input type="hidden" name="MAX_FILE_SIZE" value="<?=$new_file->maxSize?>">
-					<?=$form->fileFieldRow($new_file, 'file')?>
-					<?=$form->hiddenField($new_file, 'is_dir')?>
-					<?php $this->widget('bootstrap.widgets.TbButton', array('buttonType'=>'submit', 'type'=>'primary', 'label'=> 'Загрузить'))?>
+                    <?php
+
+                    $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
+                        'id'   =>'file-upload-form',
+                        'type' =>'horisontal',
+                        'enableAjaxValidation'=>false,
+                        'htmlOptions' => array('enctype' => 'multipart/form-data')
+                    ));
+                    echo CHtml::hiddenField('MAX_FILE_SIZE', $new_file->maxSize);
+                    echo $form->hiddenField($new_file, 'is_dir');
+
+                    $this->widget('CMultiFileUpload', array(
+                        'name' => 'upload_files',
+//            'accept' => 'jpeg|jpg|gif|png', // useful for verifying files
+//                    'accept' => $accept_ext,
+                        'duplicate' => 'Файл с таким именем уже выбран!',
+                        'denied' => 'Неправильный тип файла',
+                        'htmlOptions' => array(
+                            'multiple' => 'multiple',
+                        ),
+                    ));
+                    $this->widget('bootstrap.widgets.TbButton', array('buttonType'=>'submit', 'type'=>'primary', 'label'=> 'Загрузить'));
+                    $this->endWidget();
+                    ?>
 				</fieldset>
-				<?php $this->endWidget(); ?>
+
 			</div>
 		</div>
 	</div>

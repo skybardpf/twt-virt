@@ -60,6 +60,7 @@ class Files extends CActiveRecord
 	const GB = 1073741824;
 	const TB = 1099511627776;
 
+	public $uploaded_file = null;
 	public $size = 0;
 	public $is_dir = 0;
 	public $deleted = 0;
