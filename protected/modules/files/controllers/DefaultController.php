@@ -16,19 +16,23 @@ class DefaultController extends Controller
         $dir = NULL;
         $this->get_cur_dir($dir, $dir_id);
 
+        /** @var $new_file Files */
+        $new_file = new Files();
+        /** @var $new_dir Files */
+        $new_dir = NULL;
+
+        $this->new_file($new_dir, $dir);
+
         if ($_POST && $_POST['Files']){
             $files = CUploadedFile::getInstancesByName('upload_files');
             if (!empty($files)){
-                $this->_downloadFiles($files, $dir);
-                $this->redirect($this->createUrl('index', array('company_id' => $this->company->id, 'dir_id' => $dir->id)));
+                $error = $this->_downloadFiles($files, $dir);
+                if (!$error->hasErrors()){
+                    $this->redirect($this->createUrl('index', array('company_id' => $this->company->id, 'dir_id' => $dir->id)));
+                }
+                $new_file = $error;
             }
         }
-
-        $new_file = NULL;
-        /** @var $new_file Files */
-        $new_dir = NULL;
-        /** @var $new_dir Files */
-        $this->new_file($new_file, $new_dir, $dir);
 
         // Получим список временных ссылок для списка
         $files_list = $dir->listDirectory();
@@ -69,17 +73,16 @@ class DefaultController extends Controller
     /**
      * @param CUploadedFile[] $files
      * @param Files $dir
+     * @return Files
      */
     private function _downloadFiles($files, $dir)
     {
+        $error = new Files;
         foreach ($files as $f){
             $new_file = new Files();
 
-//            $new_file->is_uploaded = true;
             $new_file->uploaded_file = $f;
-
             $new_file->description = 'new_file';
-
             $new_file->setScenario('new_file');
             $new_file->company_id = $this->company->id;
             $new_file->is_dir = 0;
@@ -88,10 +91,10 @@ class DefaultController extends Controller
             if ($new_file->validate()){
                 $new_file->appendTo($dir, false);
             } else {
-                var_dump($new_file->getErrors());
+                $error->addErrors($new_file->getErrors());
             }
-//            var_dump($new_file);die;
         }
+        return $error;
     }
 
     /**
@@ -870,12 +873,46 @@ class DefaultController extends Controller
 
     /**
      * Создание моделей для новой папки и файла и обработка POST для их сохранения
+     * @param $new_dir
+     * @param $dir
+     * @param bool $user_files
+     */
+    protected function new_file(&$new_dir, $dir, $user_files = false)
+    {
+        $new_dir = new Files('new_dir');
+        $new_dir->is_dir = 1;
+
+        $new_dir->description = 'new_dir';
+
+        $new_dir->setScenario('new_dir');
+        $new_dir->company_id = $this->company->id;
+        if ($user_files) $new_dir->user_id = Yii::app()->user->id;
+
+        if (isset($_POST['ajax']) && $_POST['ajax'] === 'dir-create-form') {
+            echo CActiveForm::validate($new_dir);
+            Yii::app()->end();
+        }
+//        if (isset($_POST['ajax']) && $_POST['ajax'] === 'file-upload-form') {
+//            echo CActiveForm::validate($new_file);
+//            Yii::app()->end();
+//        }
+        if (isset($_POST['Files'])) {
+            $new_dir->attributes = $_POST['Files'];
+            $new_dir->parent_elem = $dir;
+            if ($new_dir->appendTo($dir)) {
+                $this->redirect($this->createUrl($user_files ? 'user' : 'index', array('company_id' => $this->company->id, 'dir_id' => $dir->id)));
+            }
+        }
+    }
+
+    /**
+     * Создание моделей для новой папки и файла и обработка POST для их сохранения
      * @param $new_file
      * @param $new_dir
      * @param $dir
      * @param bool $user_files
      */
-    protected function new_file(&$new_file, &$new_dir, $dir, $user_files = false)
+    /*protected function new_file(&$new_file, &$new_dir, $dir, $user_files = false)
     {
         $new_file = new Files();
         $new_dir = new Files('new_dir');
@@ -905,7 +942,7 @@ class DefaultController extends Controller
                 $this->redirect($this->createUrl($user_files ? 'user' : 'index', array('company_id' => $this->company->id, 'dir_id' => $dir->id)));
             }
         }
-    }
+    }*/
 
     /**
      * Генерация представления папок в модальном окне для диалога перемещения файла/папки

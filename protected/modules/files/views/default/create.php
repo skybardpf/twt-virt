@@ -37,9 +37,13 @@
 				Загрузить файл
 			</a>
 		</div>
-		<div id="file_create" class="accordion-body collapse<?=($new_file->errors?' in':'')?>">
+		<div id="file_create" class="accordion-body collapse<?=($new_file->errors ?' in':'')?>">
 			<div class="accordion-inner">
-				<?php echo $form->errorSummary($new_file); ?>
+				<?php
+                if ($new_file->hasErrors()){
+                    echo $form->errorSummary($new_file);
+                }
+                ?>
 				<fieldset>
                     <?php
 

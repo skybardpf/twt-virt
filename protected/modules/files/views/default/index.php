@@ -1,5 +1,5 @@
 <?php
-/*
+/**
  * @var $this DefaultController
  * @var $files Files[]
  * @var $new_file Files
