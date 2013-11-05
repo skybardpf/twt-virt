@@ -12,14 +12,20 @@ class MailController extends Controller
      */
     public function actionChange_auth($company_id)
 	{
-        $cmd = Yii::app()->db->createCommand(
-            'SELECT ue.id, ue.login_email, s.domain
+        $sql = 'SELECT ue.id, ue.login_email, s.domain
             FROM company c, user2company uc, user_emails ue, sites s
-            WHERE c.id = :company_id AND uc.company_id=c.id AND ue.user_id=uc.user_id AND s.id=ue.site_id;'
-        );
-        $tmp = $cmd->queryAll(true, array(
+            WHERE c.id = :company_id AND uc.company_id=c.id AND ue.user_id=uc.user_id AND s.id=ue.site_id';
+        $params = array(
             ':company_id' => $company_id,
-        ));
+        );
+        $user_data = Yii::app()->user->getData();
+        if (!$user_data->isAdmin){
+            $sql .= ' AND ue.user_id=:user_id';
+            $params[':user_id'] = $user_data->primaryKey;
+        }
+
+        $cmd = Yii::app()->db->createCommand($sql);
+        $tmp = $cmd->queryAll(true, $params);
         $emails = array();
         foreach ($tmp as $val){
             $emails[$val['id']] = $val['login_email'].'@'.$val['domain'].'.'.Yii::app()->params->httpHostName;

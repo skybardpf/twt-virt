@@ -123,18 +123,18 @@
 					<h1><?= $page['title_page']; ?></h1>
 					<?= $page['content']; ?>
 					<br /><br />
-					<? if($kind == 'contacts'):?>
-						<? if(($page['address'] != "")):?>
-							<div id="map" style="width:400px; height:300px"></div>
-						<? endif; ?>
-						<br /><br />
-						<form method="post" action="/sites/mail">
-							<input id="fio" placeholder="ФИО" /><br />
-							<input id="email" placeholder="email" /><br />
-							<textarea id="text" placeholder="Введите текст сообщения здесь" style='height: 150px; width: 500px;'></textarea><br />
-							<input type='button' onclick='mail();' value=' Отправить сообщение ' />
-						</form>
-					<? endif; ?>
+<!--					--><?// if($kind == 'contacts'):?>
+<!--						--><?// if(($page['address'] != "")):?>
+<!--							<div id="map" style="width:400px; height:300px"></div>-->
+<!--						--><?// endif; ?>
+<!--						<br /><br />-->
+<!--						<form method="post" action="/sites/mail">-->
+<!--							<input id="fio" placeholder="ФИО" /><br />-->
+<!--							<input id="email" placeholder="email" /><br />-->
+<!--							<textarea id="text" placeholder="Введите текст сообщения здесь" style='height: 150px; width: 500px;'></textarea><br />-->
+<!--							<input type='button' onclick='mail();' value=' Отправить сообщение ' />-->
+<!--						</form>-->
+<!--					--><?// endif; ?>
 				</div>
 				<div class="clearfix"></div>
 			</div>
@@ -146,8 +146,6 @@
 		<?php foreach ($page['files'] as $_file) : ?>
 		<span><?= $_file['filename']; ?> </span><a href='<?= $_file['file']; ?>'>Скачать</a><br />
 		<?php endforeach ?>
-		Тут какая-то информация<br>
-		Возможно, контакты и/или копирайт
 	</div>
 </div>
 </body>

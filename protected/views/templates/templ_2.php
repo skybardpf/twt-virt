@@ -122,8 +122,6 @@
 </div>
 <div class="footer">
 	<div class="inner-cont">
-		Тут какая-то информация<br>
-		Возможно, контакты и/или копирайт
 	</div>
 </div>
 </body>

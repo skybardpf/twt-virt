@@ -80,15 +80,33 @@ class SiteController extends Controller
     /**
      * @return array
      */
-    public function countMails()
+    private function countMails()
 	{
+//        $user_data = Yii::app()->user->getData();
+//        if (!$user_data->isAdmin){
+//            $sql .= ' AND ue.user_id=:user_id';
+//            $params[':user_id'] = $user_data->primaryKey;
+//        }
+        $ret = array(
+            'unseen' => 0,
+            'all' => 0,
+        );
+        return $ret;
+	}
+
+    /**
+     * @var UserEmail $user_email
+     * @return array
+     */
+    private function countMailsByAccount(UserEmail $user_email)
+    {
         $ret = array(
             'unseen' => 0,
             'all' => 0,
         );
         Yii::import('ext.EImap.EIMap', true);
         $imap_inbox = '{'.Yii::app()->params->IMAPHost.':'.Yii::app()->params->IMAPPort.'/imap/novalidate-cert}INBOX';
-        $imap = new EIMap($imap_inbox, 'lirik@this.com.ua', 'qazwsxedcrfv');
+        $imap = new EIMap($imap_inbox, $user_email->getFullDomain(), $user_email->password);
 
         if($imap->connect()){
             $all = $imap->searchmails( EIMap::SEARCH_ALL);
@@ -99,5 +117,5 @@ class SiteController extends Controller
             $imap->close();
         }
         return $ret;
-	}
+    }
 }
