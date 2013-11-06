@@ -85,12 +85,12 @@ class SitesController extends Controller
         $this->actionPage($_POST['company_id'], $_POST['site_id'], $_POST['kind']);
     }
 
-    public function actionView($site, $kind = null)
+    public function actionView($site, $kind = 'main')
     {
-        if ($kind == null) {
-            $kind = 'main';
-        }
         $res = Sites::model()->getTemplate($site);
+        if ($res === false){
+            throw new CHttpException(404, 'Страница не найдена');
+        }
         $page = Sites::model()->pageGet($res['id'], $kind);
         $menu = Sites::model()->getMenu($res['id']);
         $this->renderPartial("//templates/" . $res['name'], array('var' => "тестовое значение переменной var", 'path' => $this->asset_static, 'page' => $page, 'menu' => $menu, 'kind' => $kind));
