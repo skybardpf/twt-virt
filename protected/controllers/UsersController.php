@@ -1,10 +1,12 @@
 <?php
 class UsersController extends Controller
 {
+    public $tab_menu = 'profile';
+
     public function actions()
     {
         return array(
-            'create_login_email' => 'application.controllers.Users.CreateLoginEmailAction',
+            'login_emails' => 'application.controllers.Users.LoginEmailsAction',
         );
     }
 
@@ -112,14 +114,45 @@ class UsersController extends Controller
 		$this->render('update', array('model' => $model, 'company_id' => $company_id));
 	}
 
+    /**
+     * Просмотр профиля
+     */
 	public function actionProfile()
 	{
-		$this->render('profile', array('user' => Yii::app()->user->data));
+        $this->tab_menu = 'profile';
+        $this->breadcrumbs = array(
+            'Профиль'
+        );
+        $this->pageTitle = 'Просмотр профиля';
+
+        $user =  Yii::app()->user->data;
+
+        $this->render('/users/menu', array(
+                'content' => $this->renderPartial('/users/profile',
+                    array(
+                        'user' => $user,
+                    ), true),
+                'user' => $user,
+            )
+        );
 	}
 
-	public function actionProfile_edit()
+    /**
+     * Редактирование профиля
+     */
+    public function actionProfile_edit()
 	{
-		$model = Yii::app()->user->data;
+        $this->tab_menu = 'profile';
+        $this->breadcrumbs=array(
+            'Профиль'=>array('users/profile'),
+            'Редактирование',
+        );
+        $this->pageTitle = 'Редактирование профиля';
+
+        /**
+         * @var User $model
+         */
+        $model = Yii::app()->user->data;
 		$model->setScenario('profile');
 
 		if(isset($_POST['ajax']) && $_POST['ajax']==='model-form-form') {
@@ -134,11 +167,31 @@ class UsersController extends Controller
 			}
 		}
 
-		$this->render('profile_edit', array('model' => $model));
+        $this->render('/users/menu', array(
+                'content' => $this->renderPartial('/users/profile_edit',
+                    array(
+                        'model' => $model,
+                    ), true),
+                'user' => $model,
+            )
+        );
 	}
 
+    /**
+     * Смена пароля для профиля
+     */
 	public function actionChange_pass()
 	{
+        $this->tab_menu = 'profile';
+        $this->breadcrumbs=array(
+            'Профиль'=>array('users/profile'),
+            'Смена пароля',
+        );
+        $this->pageTitle = 'Смена пароля';
+
+        /**
+         * @var User $model
+         */
 		$model = clone Yii::app()->user->data;
 		$model->password = NULL;
 		$model->setScenario('change_pass');
@@ -159,7 +212,13 @@ class UsersController extends Controller
 			}
 		}
 
-		$this->render('change_pass', array('model' => $model));
+        $this->render('/users/menu', array(
+                'content' => $this->renderPartial('/users/change_pass',
+                    array(
+                        'model' => $model,
+                    ), true),
+                'user' => $model,
+            )
+        );
 	}
-
 }

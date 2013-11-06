@@ -4,14 +4,8 @@
  * @var $model User
  * @var $form TbActiveForm
  */
-
-$this->breadcrumbs=array(
-	'Профиль'=>array('users/profile'),
-	'Редактирование',
-);
-$this->pageTitle = 'Редактирование ';
 ?>
-<h1><?=CHtml::encode($this->pageTitle)?></h1>
+<h3><?=CHtml::encode($this->pageTitle)?></h3>
 
 <div class="form">
 
