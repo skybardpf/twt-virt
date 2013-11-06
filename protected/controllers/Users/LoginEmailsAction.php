@@ -55,8 +55,14 @@ class LoginEmailsAction extends CAction
                     $formEmail->addError('user_email_id', 'Выбран неправильный аккаунт');
                 } else {
                     $email = $data_emails[$formEmail->user_email_id];
+                    $email->setScenario('update');
+                    $email->old_password = $email->password;
                     $email->password = $formEmail->password;
                     $email->save(false);
+
+                    $email->old_email = $email->getFullDomain();
+                    $email->changeLoginPassDevecot();
+
                     Yii::app()->user->setFlash('success', Yii::t('app', 'Пароль успешно изменен'));
                 }
                 $controller->redirect($controller->createUrl('login_emails'));

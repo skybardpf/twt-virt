@@ -20,6 +20,8 @@ class UserEmail extends CActiveRecord
     public $old_password = '';
     public $site_id = 0;
 
+    public $old_email;
+
     /**
      * Returns the static model of the specified AR class.
      * @param string $className active record class name.
@@ -137,5 +139,38 @@ class UserEmail extends CActiveRecord
             $ret = $this->login_email.'@'.$this->site->domain.'.'.Yii::app()->params->httpHostName;
         }
         return $ret;
+    }
+
+    /**
+     * Изменяем email и/или пароль на Devecot.
+     *
+     * $this->old_email - должен содержать старое значение Email аккаунта. @see getFullDomain().
+     * $this->old_password - должен содержать старый пароль
+     */
+    public function changeLoginPassDevecot()
+    {
+        if (!$this->isNewRecord){
+            $user = new application\models\Mail\User();
+            $new_email = $this->getFullDomain();
+            $condition = array();
+            $params = array();
+            if ($this->old_email != $new_email){
+                $condition[] = 'email=:email';
+                $params[':email'] = $new_email;
+            }
+            if ($this->password != $this->old_password){
+                $condition[] = 'password=ENCRYPT(:password)';
+                $params[':password'] = $this->password;
+            }
+            if (!empty($condition)){
+                $condition = implode(',', $condition);
+                $params[':old_email'] = $this->old_email;
+                $cmd = $user->getDbConnection()->createCommand('
+                    UPDATE '.$user->tableName().' SET '.$condition.'
+                    WHERE email=:old_email
+                ');
+                $cmd->execute($params);
+            }
+        }
     }
 }

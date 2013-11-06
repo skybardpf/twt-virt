@@ -26,13 +26,8 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
     ),
 ));
 
-$this->widget('bootstrap.widgets.TbButton', array(
-    'buttonType' => 'submit',
-    'type' => 'primary',
-    'label' => 'Сменить пароль к аккаунту'
-));
 if ($formEmail->hasErrors()) {
-    echo '<br/><br/>' . $form->errorSummary($formEmail);
+    echo $form->errorSummary($formEmail);
 }
 ?>
 
@@ -48,4 +43,11 @@ if ($formEmail->hasErrors()) {
 </fieldset>
 
 <?php
+
+$this->widget('bootstrap.widgets.TbButton', array(
+    'buttonType' => 'submit',
+    'type' => 'primary',
+    'label' => 'Изменить пароль'
+));
+
 $this->endWidget();

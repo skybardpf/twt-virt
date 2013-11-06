@@ -24,8 +24,7 @@ class UpdateAction extends CAction
             $model->setScenario('update');
             $model->old_password = $model->password;
             $model->password = '';
-
-            $old_email = $model->login_email.'@'.$model->site->domain.'.'.Yii::app()->params->httpHostName;
+            $model->old_email = $model->getFullDomain();
 
             /**
              * @var Sites $site
@@ -57,27 +56,7 @@ class UpdateAction extends CAction
                     /**
                      * Изменяем email и/или пароль на Devecot.
                      */
-                    $user = new M\User();
-                    $new_email = $model->login_email.'@'.$model->site->domain.'.'.Yii::app()->params->httpHostName;
-                    $condition = array();
-                    $params = array();
-                    if ($old_email != $new_email){
-                        $condition[] = 'email=:email';
-                        $params[':email'] = $new_email;
-                    }
-                    if ($model->password != $model->old_password){
-                        $condition[] = 'password=ENCRYPT(:password)';
-                        $params[':password'] = $model->password;
-                    }
-                    if (!empty($condition)){
-                        $condition = implode(',', $condition);
-                        $params[':old_email'] = $old_email;
-                        $cmd = $user->getDbConnection()->createCommand('
-                            UPDATE '.$user->tableName().' SET '.$condition.'
-                            WHERE email=:old_email
-                        ');
-                        $cmd->execute($params);
-                    }
+                    $model->changeLoginPassDevecot();
 
                     echo CJSON::encode(array(
                         'result' => 'added',
