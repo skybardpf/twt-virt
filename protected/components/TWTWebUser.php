@@ -10,8 +10,7 @@ class TWTWebUser extends CWebUser
 	private $_data = null;
 
     /**
-     * Возвращает роль пользователя в системе.
-     * @return string | null
+     * @return string Возвращает роль пользователя в системе.
      */
     public function getRole()
     {

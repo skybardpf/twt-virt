@@ -13,8 +13,21 @@ class SiteController extends Controller
     {
         return array(
             array('allow',
+                'actions'=>array('error'),
+                'users'=>array('*'),
+            ),
+            array('allow',
+                'actions'=>array('login'),
+                'users'=>array('?'),
+            ),
+            array('allow',
+                'actions'=>array(
+                    'logout',
+                    'index'
+                ),
                 'roles' => array(User::ROLE_COMPANY_ADMIN, User::ROLE_USER),
             ),
+
             array('deny',
                 'users'=>array('*'),
             ),

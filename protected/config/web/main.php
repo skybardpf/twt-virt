@@ -30,7 +30,11 @@ return array(
             // If removed, Gii defaults to localhost only. Edit carefully to taste.
             'ipFilters' => array('127.0.0.1', '::1', '192.168.0.*'),
         ),
-        'support', 'files'
+        'support', 'files',
+        'telephony' => array(
+            'class' => '\application\modules\telephony\TelephonyModule',
+            'controllerNamespace' => '\application\modules\telephony\controllers',
+        ),
     ),
 
     // application components
@@ -142,10 +146,10 @@ return array(
     'params' => array(
         // this is used in contact page
         'adminEmail' => 'webmaster@example.com',
-        'sites' => array(
-            '1' => 3,
-            '2' => 3
-        ),
+//        'sites' => array(
+//            '1' => 3,
+//            '2' => 3
+//        ),
 
         'urlWebMail' => 'http://this.com.ua',
         'maxEmailLoginPerAccounts' => 3,  // Макс. кол-во email аккаунтов для юзера

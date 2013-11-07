@@ -16,7 +16,16 @@
             ),
             'active' => ($this->getId() == 'mail'),
         ),
-        array('label' => 'Телефония', 'url' => '#', 'linkOptions' => array('class' => 'muted')),
+        array(
+            'label' => 'Телефония',
+            'url' => $this->createUrl(
+                '/telephony/default/index',
+                array(
+                    'cid' => $this->company->id
+                )
+            ),
+            'active' => ($this->module && $this->module->id == 'telephony'),
+        ),
         array(
             'label' => 'Сайт',
             'url' => $this->createUrl('/sites/list',
@@ -26,7 +35,13 @@
             ),
             'active' => ($this->getId() == 'sites')
         ),
-        array('label' => 'Файлы', 'url' => $this->createUrl('/files/default/index', array('company_id' => $this->company->id)), 'active' => ($this->module && $this->module->id == 'files')),
+        array(
+            'label' => 'Файлы',
+            'url' => $this->createUrl(
+                '/files/default/index',
+                array('company_id' => $this->company->id)
+            ),
+            'active' => ($this->module && $this->module->id == 'files')),
         (
         $this->company->isAdmin(Yii::app()->user->id) ? array(
             'label' => 'Администрирование', 'url' => $this->createUrl('/companies/view', array('company_id' => $this->company->id)), 'active' => $this->id == 'companies'
