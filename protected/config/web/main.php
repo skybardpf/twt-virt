@@ -116,10 +116,11 @@ return array(
                 '<company_id:\d+>/users/update' => '/users/update',
                 '<company_id:\d+>/users/create' => '/users/create',
 
-                'profile' => '/users/profile',
-                'profile/edit' => '/users/profile_edit',
-                'profile/change_pass' => '/users/change_pass',
-                'profile/login_emails' => '/users/login_emails',
+//                'profile' => '/users/profile',
+//                'profile/edit' => '/users/profile_edit',
+//                'profile/change_pass' => '/users/change_pass',
+//                'profile/login_emails' => '/users/login_emails',
+
                 '<company_id:\d+>' => 'companies/view',
                 '<company_id:\d+>/<action:\w+>_company' => 'companies/<action>',
                 '<company_id:\d+>/<module:\w+>/<controller:\w+>/<action:\w+>' => '<module>/<controller>/<action>',

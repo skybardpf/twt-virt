@@ -1,20 +1,20 @@
 <?php
 /**
- * @var UsersController $this
+ * @var ProfileController $this
  * @var User $user
  * @var string $content
  */
 ?>
-<div class="yur-tabs">
+<div>
 <?php
 $menu = array(
     array(
         'label' => 'Профиль',
-        'url' => $this->createUrl('profile/'),
+        'url' => $this->createUrl('index'),
         'active' => ($this->tab_menu == 'profile')
     ),
 );
-if (!$user->isAdmin){
+if(Yii::app()->user->checkAccess('changeLoginEmailsProfile')) {
     $menu[] = array(
         'label' => 'Email аккаунты',
         'url' => $this->createUrl('login_emails'),
@@ -22,11 +22,11 @@ if (!$user->isAdmin){
     );
 }
 $this->widget('bootstrap.widgets.TbMenu', array(
-    'type' => 'tabs', // '', 'tabs', 'pills' (or 'list')
+    'type' => 'tabs',
     'items' => $menu,
 ));
 ?>
 </div>
-<div class="yur-content">
+<div>
     <?= $content; ?>
 </div>

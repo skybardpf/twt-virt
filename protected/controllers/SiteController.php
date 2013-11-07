@@ -40,8 +40,6 @@ class SiteController extends Controller
 	 */
 	public function actionIndex()
 	{
-        echo Yii::app()->user->role;
-
 		Yii::app()->getModule('files');
 		$this->render(
             'index',

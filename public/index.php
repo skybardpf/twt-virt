@@ -18,7 +18,7 @@ elseif ($_SERVER['HTTP_HOST'] == 'twt-virt.artektiv.ru') {
     $config = dirname(__FILE__).'/../protected/config/web/demo_twt-virt.php';
 } elseif ($_SERVER['HTTP_HOST'] == 'twt-virt.skybardpf.devel') {
     defined('YII_DEBUG') or define('YII_DEBUG',true);
-    $yii = '/home/skybardpf/projects/twt-virt/yii/yii.php';
+//    $yii = '/home/skybardpf/projects/twt-virt/yii/yii.php';
     $config = dirname(__FILE__).'/../protected/config/web/devel.php';
 }
 

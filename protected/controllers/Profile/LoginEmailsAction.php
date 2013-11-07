@@ -9,33 +9,30 @@ class LoginEmailsAction extends CAction
     public function run()
     {
         /**
+         * @var ProfileController $controller
+         */
+        $controller = $this->controller;
+        if(!Yii::app()->user->checkAccess('changeLoginEmailsProfile')) {
+            $controller->redirect($controller->createUrl('index'));
+        }
+
+        $controller->pageTitle = Yii::app()->name .' | ' .Yii::t('app', 'Пароли к Email аккаунтам');
+        $controller->tab_menu = 'login_emails';
+
+        /**
          * @var User $user
          */
         $user = Yii::app()->user->data;
-        if ($user->isAdmin){
-            throw new CHttpException(403, 'Админ не имеет Email аккаунтов');
-        }
-
         /**
-         * @var UsersController $controller
+         * @var UserEmail[] $tmp
          */
-        $controller = $this->controller;
-        $controller->breadcrumbs = array(
-            'Email аккаунты'
-        );
-        $controller->pageTitle = 'Пароли к Email аккаунтам';
-        $controller->tab_menu = 'login_emails';
-
         $tmp = UserEmail::model()->with('site')->findAll('user_id=:user_id', array(
             ':user_id' => $user->primaryKey,
         ));
         $emails = array();
-        /**
-         * @var UserEmail[] $data_emails
-         */
         $data_emails = array();
         foreach ($tmp as $val){
-            $emails[$val->primaryKey] = $val->login_email.'@'.$val->site->domain.'.'.Yii::app()->params->httpHostName;
+            $emails[$val->primaryKey] = $val->getFullDomain();
             $data_emails[$val->primaryKey] = $val;
         }
 
@@ -52,8 +49,11 @@ class LoginEmailsAction extends CAction
             $formEmail->attributes = $data;
             if($formEmail->validate()){
                 if (!isset($data_emails[$formEmail->user_email_id])){
-                    $formEmail->addError('user_email_id', 'Выбран неправильный аккаунт');
+                    $formEmail->addError('user_email_id', Yii::t('app', 'Выбран неправильный аккаунт'));
                 } else {
+                    /**
+                     * @var UserEmail $email
+                     */
                     $email = $data_emails[$formEmail->user_email_id];
                     $email->setScenario('update');
                     $email->old_password = $email->password;
@@ -69,9 +69,11 @@ class LoginEmailsAction extends CAction
             }
         }
 
-        $controller->render('/users/menu', array(
+        $controller->render(
+            'tabs',
+            array(
                 'content' => $controller->renderPartial(
-                    '/users/profile_emails',
+                    'login_emails',
                     array(
                         'user' => $user,
                         'emails' => $emails,
