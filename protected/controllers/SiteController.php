@@ -2,12 +2,33 @@
 
 class SiteController extends Controller
 {
+    public function filters()
+    {
+        return array(
+            'accessControl',
+        );
+    }
+
+    public function accessRules()
+    {
+        return array(
+            array('allow',
+                'roles' => array(User::ROLE_COMPANY_ADMIN, User::ROLE_USER),
+            ),
+            array('deny',
+                'users'=>array('*'),
+            ),
+        );
+    }
+
 	/**
 	 * This is the default 'index' action that is invoked
 	 * when an action is not explicitly requested by users.
 	 */
 	public function actionIndex()
 	{
+        echo Yii::app()->user->role;
+
 		Yii::app()->getModule('files');
 		$this->render(
             'index',

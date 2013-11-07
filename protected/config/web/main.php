@@ -99,6 +99,11 @@ return array(
             'allowAutoLogin' => true
         ),
 
+        'authManager' => array(
+            'class' => 'TWTAuthManager',
+            'defaultRoles' => array('guest'),
+        ),
+
         'urlManager' => array(
             'urlFormat' => 'path',
             'showScriptName' => false,

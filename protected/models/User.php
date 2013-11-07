@@ -5,6 +5,7 @@
  *
  * The followings are the available columns in table 'user':
  * @property string $id
+ * @property string $role
  * @property string $email
  * @property string $salt
  * @property string $password
@@ -23,6 +24,11 @@
  */
 class User extends CActiveRecord
 {
+    const ROLE_ADMIN = 'administrator';
+    const ROLE_COMPANY_ADMIN = 'company_admin';
+    const ROLE_USER = 'user';
+    const ROLE_BANNED = 'banned';
+
 	public $active = 1;
 	public $repassword;
 	public $old_password;
@@ -41,7 +47,8 @@ class User extends CActiveRecord
 	{
 		return $this->name . ' ' . $this->surname;
 	}
-	/**
+
+    /**
 	 * Returns the static model of the specified AR class.
 	 * @param string $className active record class name.
 	 * @return User the static model class
@@ -143,7 +150,6 @@ class User extends CActiveRecord
 		parent::afterFind();
 	}
 
-
 	public function beforeSave()
 	{
 		if (in_array($this->scenario, array('insert', 'update')) && $this->admin_action) {
@@ -188,7 +194,6 @@ class User extends CActiveRecord
 		}
 		parent::afterSave();
 	}
-
 
 	public static function createHash($password, $salt)
 	{
@@ -299,7 +304,6 @@ class User extends CActiveRecord
 		}
 		return parent::beforeDelete();
 	}
-
 
 	// Чтобы в массив companies_ids записать значиния из мултиселект2 инпута companies_ids_string
 	public function parse_companies_string() {
