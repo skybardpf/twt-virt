@@ -36,6 +36,37 @@ return array(
     /**
      * Операции с телефонией
      */
+    'readTelephony' => array(
+        'type' => CAuthItem::TYPE_OPERATION,
+        'description' => 'Просмотр информации',
+        'bizRule' => null,
+        'data' => null
+    ),
+    'readCallLogsTelephony' => array(
+        'type' => CAuthItem::TYPE_OPERATION,
+        'description' => 'Просмотр логов звонков',
+        'bizRule' => null,
+        'data' => null
+    ),
+    'readSipTelephony' => array(
+        'type' => CAuthItem::TYPE_OPERATION,
+        'description' => 'Просмотр SIP',
+        'bizRule' => null,
+        'data' => null
+    ),
+    'readFaxTelephony' => array(
+        'type' => CAuthItem::TYPE_OPERATION,
+        'description' => 'Просмотр факса',
+        'bizRule' => null,
+        'data' => null
+    ),
+    'readInternalNumbersTelephony' => array(
+        'type' => CAuthItem::TYPE_OPERATION,
+        'description' => 'Просмотр настройек внутреннего номера',
+        'bizRule' => null,
+        'data' => null
+    ),
+
 
     /**
      * Роли
@@ -66,6 +97,12 @@ return array(
 
             'role_profile',
             'changeLoginEmailsProfile',
+
+            'readTelephony',
+            'readCallLogsTelephony',
+            'readSipTelephony',
+            'readFaxTelephony',
+            'readInternalNumbersTelephony',
         ),
         'bizRule' => null,
         'data' => null

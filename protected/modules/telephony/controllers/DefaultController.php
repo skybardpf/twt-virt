@@ -8,35 +8,19 @@ namespace application\modules\telephony\controllers;
  */
 class DefaultController extends \CompanyController
 {
+    public $tab_menu = 'info';
+
     /**
      * @return array
      */
     public function actions()
     {
         return array(
-            'index' => 'telephony.controllers.Default.IndexAction'
-        );
-    }
-
-    /**
-     * @return array
-     */
-    public function accessRules()
-    {
-        return array(
-            array('allow',
-                'actions' => array(
-                    'index',
-                ),
-                'roles' => array(
-                    \User::ROLE_COMPANY_ADMIN,
-                    \User::ROLE_USER
-                ),
-            ),
-
-            array('deny',
-                'users' => array('*'),
-            ),
+            'index' => 'telephony.controllers.Default.IndexAction',
+            'call_logs' => 'telephony.controllers.Default.CallLogsAction',
+            'sip' => 'telephony.controllers.Default.SipAction',
+            'fax' => 'telephony.controllers.Default.FaxAction',
+            'internal_numbers' => 'telephony.controllers.Default.InternalNumbersAction',
         );
     }
 }
