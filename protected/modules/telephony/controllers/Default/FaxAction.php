@@ -1,4 +1,6 @@
 <?php
+use application\modules\telephony\models as M;
+
 /**
  * @author Skibardin Andrey <webprofi1983@gmail.com>
  */
@@ -16,12 +18,34 @@ class FaxAction extends CAction
         $controller->pageTitle = Yii::app()->name .' | Телефония | Факс';
         $controller->tab_menu = 'fax';
 
+        $model = new M\FormSendFax();
+
+        if(isset($_POST['ajax']) && $_POST['ajax']==='form-send-fax') {
+            echo CActiveForm::validate($model);
+            Yii::app()->end();
+        }
+
+        $data = Yii::app()->request->getPost($model->getClassNameWithNamespace());
+        if ($data){
+            $model->attributes = $data;
+            if ($model->validate()){
+                // Send fax
+
+                Yii::app()->user->setFlash('success', Yii::t('app', 'Факс поставлен в очередь на отправку'));
+                $controller->redirect($controller->createUrl('fax', array(
+                    'cid' => $controller->company->primaryKey,
+                )));
+            }
+        }
+
         $controller->render(
             'tabs',
             array(
                 'content' => $controller->renderPartial(
                     'fax',
-                    array(),
+                    array(
+                        'model' => $model,
+                    ),
                     true
                 )
             )

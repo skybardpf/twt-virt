@@ -2,7 +2,5 @@
 /**
  * @var application\modules\telephony\controllers\DefaultController $this
  */
-?>
-<div>
-<?php
-echo 'internal_numbers';
+
+echo CHtml::tag('h3', array(), CHtml::encode(Yii::t('app', 'Настройки внутреннего номера')));

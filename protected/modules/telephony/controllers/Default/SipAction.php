@@ -1,4 +1,6 @@
 <?php
+use application\modules\telephony\models as M;
+
 /**
  * @author Skibardin Andrey <webprofi1983@gmail.com>
  */
@@ -16,12 +18,34 @@ class SipAction extends CAction
         $controller->pageTitle = Yii::app()->name .' | Телефония | SIP';
         $controller->tab_menu = 'sip';
 
+        $model = new M\FormSIP();
+
+        if(isset($_POST['ajax']) && $_POST['ajax']==='form-sip') {
+            echo CActiveForm::validate($model);
+            Yii::app()->end();
+        }
+
+        $data = Yii::app()->request->getPost(get_class($model));
+        if ($data){
+            $model->attributes = $data;
+            if ($model->validate()){
+                // Save & redirect
+
+                Yii::app()->user->setFlash('success', Yii::t('app', 'Данные успешно сохранены'));
+                $controller->redirect($controller->createUrl('sip', array(
+                    'cid' => $controller->company->primaryKey,
+                )));
+            }
+        }
+
         $controller->render(
             'tabs',
             array(
                 'content' => $controller->renderPartial(
                     'sip',
-                    array(),
+                    array(
+                        'model' => $model
+                    ),
                     true
                 )
             )
