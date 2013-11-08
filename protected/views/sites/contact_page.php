@@ -1,4 +1,3 @@
-<script type="text/javascript" src="/ckeditor/ckeditor.js"></script>
 <h1><?= $title; ?></h1>
 <br />
 <a href="/sites/settings/company_id/<?= $company_id; ?>/site_id/<?= $site_id; ?>">Настройки сайта</a> | 
@@ -11,6 +10,8 @@
 <br />
 
 <?php /** @var BootActiveForm $form */
+Yii::app()->clientScript->registerScriptFile($this->asset_static . '/js/extensions/ckeditor/ckeditor.js');
+
 $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
 	'type'=>'horizontal',
 	'action'=>'/sites/page_save',

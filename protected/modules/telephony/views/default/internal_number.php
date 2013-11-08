@@ -105,10 +105,6 @@ if ($model->hasErrors()) {
             </div>
         </div>
         <?php
-
-//        echo $form->textFieldRow($model, 'do_not_disturb_start', array('class' => 'input-xxlarge'));
-//        echo $form->textFieldRow($model, 'do_not_disturb_end', array('class' => 'input-xxlarge'));
-
         echo $form->dropDownListRow($model, 'incoming_call_action_id', $model->getIncomingCallActions(), array('class' => 'input-xxlarge'));
         ?>
     </fieldset>

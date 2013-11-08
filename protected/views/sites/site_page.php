@@ -1,5 +1,7 @@
+<?php
+Yii::app()->clientScript->registerScriptFile($this->asset_static . '/js/extensions/ckeditor/ckeditor.js');
+?>
 <h1><?= $title; ?></h1>
-<script type="text/javascript" src="/ckeditor/ckeditor.js"></script>
 <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
 <script type="text/javascript">
 $(document).ready(function(){
