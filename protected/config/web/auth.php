@@ -66,6 +66,19 @@ return array(
         'bizRule' => null,
         'data' => null
     ),
+    'readIvrTelephony' => array(
+        'type' => CAuthItem::TYPE_OPERATION,
+        'description' => 'Просмотр голосового меню',
+        'bizRule' => null,
+        'data' => null
+    ),
+    'readBindPhonesTelephony' => array(
+        'type' => CAuthItem::TYPE_OPERATION,
+        'description' => 'Просмотр привязки внутренних номеров',
+        'bizRule' => null,
+        'data' => null
+    ),
+
 
 
     /**
@@ -80,6 +93,18 @@ return array(
             'readProfile',
             'updateProfile',
             'changePassProfile',
+        ),
+    ),
+    'role_telephony_company' => array(
+        'type' => CAuthItem::TYPE_ROLE,
+        'description' => 'Общие права по телефонии компании',
+        'bizRule' => null,
+        'data' => null,
+        'children' => array(
+            'readTelephony',
+            'readCallLogsTelephony',
+            'readFaxTelephony',
+            'readInternalNumbersTelephony',
         ),
     ),
 
@@ -98,11 +123,8 @@ return array(
             'role_profile',
             'changeLoginEmailsProfile',
 
-            'readTelephony',
-            'readCallLogsTelephony',
+            'role_telephony_company',
             'readSipTelephony',
-            'readFaxTelephony',
-            'readInternalNumbersTelephony',
         ),
         'bizRule' => null,
         'data' => null
@@ -114,6 +136,10 @@ return array(
             'role_guest',
 
             'role_profile',
+
+            'role_telephony_company',
+            'readIvrTelephony',
+            'readBindPhonesTelephony',
         ),
         'bizRule' => null,
         'data' => null

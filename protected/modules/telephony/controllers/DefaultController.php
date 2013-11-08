@@ -21,6 +21,9 @@ class DefaultController extends \CompanyController
             'sip' => 'telephony.controllers.Default.SipAction',
             'fax' => 'telephony.controllers.Default.FaxAction',
             'internal_numbers' => 'telephony.controllers.Default.InternalNumbersAction',
+
+            'ivr' => 'telephony.controllers.Default.IvrAction',
+            'bind_phones' => 'telephony.controllers.Default.BindPhonesAction',
         );
     }
 }
