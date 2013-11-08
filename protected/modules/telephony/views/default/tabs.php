@@ -44,8 +44,8 @@ if (User::ROLE_USER === $role){
     $menu = array_merge($menu, array(
         array(
             'label' => 'Голосовое меню',
-            'url' => $this->createUrl('ivr', array('cid' => $cid)),
-            'active' => ($this->tab_menu == 'ivr'),
+            'url' => $this->createUrl('ivr_menu/index', array('cid' => $cid)),
+            'active' => ($this->tab_menu == 'ivr_menu'),
         ),
         array(
             'label' => 'Логи звонков',

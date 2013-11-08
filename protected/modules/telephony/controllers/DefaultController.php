@@ -22,7 +22,6 @@ class DefaultController extends \CompanyController
             'fax' => 'telephony.controllers.Default.FaxAction',
             'internal_number' => 'telephony.controllers.Default.InternalNumberAction',
 
-            'ivr' => 'telephony.controllers.Default.IvrAction',
             'bind_phones' => 'telephony.controllers.Default.BindPhonesAction',
         );
     }

@@ -1,27 +1,34 @@
 <?php
 /**
+ * Голосовое меню.
+ *
  * @author Skibardin Andrey <webprofi1983@gmail.com>
  */
-class IvrAction extends CAction
+class IndexAction extends CAction
 {
     public function run()
     {
-        if(!Yii::app()->user->checkAccess('readIvrTelephony')) {
+        if(!Yii::app()->user->checkAccess('readIvrMenuTelephony')) {
             throw new CHttpException('403', Yii::t('app', 'Доступ запрещен'));
         }
         /**
-         * @var application\modules\telephony\controllers\DefaultController $controller
+         * @var application\modules\telephony\controllers\Ivr_menuController $controller
          */
         $controller = $this->controller;
         $controller->pageTitle = Yii::app()->name .' | Телефония | Голосовое меню';
-        $controller->tab_menu = 'ivr';
 
         $controller->render(
-            'tabs',
+            '/default/tabs',
             array(
                 'content' => $controller->renderPartial(
-                    'ivr',
-                    array(),
+                    '/default/ivr_tabs',
+                    array(
+                        'content' => $controller->renderPartial(
+                            'index',
+                            array(),
+                            true
+                        ),
+                    ),
                     true
                 )
             )

@@ -25,7 +25,7 @@ if (User::ROLE_USER === $role){
             'label' => 'URL сервиса'
         ),
     );
-} elseif (User::ROLE_USER === $role){
+} elseif (User::ROLE_COMPANY_ADMIN === $role){
     $attributes = array(
         array(
             'label' => 'Внешний номер'
@@ -40,7 +40,7 @@ if (User::ROLE_USER === $role){
             'label' => 'Остаток минут'
         ),
     );
-} elseif (User::ROLE_USER === $role){
+} elseif (User::ROLE_ADMIN === $role){
 
 }
 

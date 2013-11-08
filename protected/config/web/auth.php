@@ -66,8 +66,7 @@ return CMap::mergeArray(
                 'changeLoginEmailsProfile',
 
                 'role_telephony_company',
-                'readSipTelephony',
-                'updateSipTelephony',
+                'role_telephony_sip',
             ),
             'bizRule' => null,
             'data' => null
@@ -81,7 +80,9 @@ return CMap::mergeArray(
                 'role_profile',
 
                 'role_telephony_company',
-                'readIvrTelephony',
+                'role_telephony_ivr_menu',
+                'role_telephony_ivr_command',
+
                 'readBindPhonesTelephony',
             ),
             'bizRule' => null,

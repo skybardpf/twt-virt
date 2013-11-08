@@ -5,9 +5,7 @@
  * @author Skibardin Andrey <webprofi1983@gmail.com>
  */
 return array(
-    /**
-     * Операции с телефонией
-     */
+
     'readTelephony' => array(
         'type' => CAuthItem::TYPE_OPERATION,
         'description' => 'Просмотр информации',
@@ -20,6 +18,10 @@ return array(
         'bizRule' => null,
         'data' => null
     ),
+
+    /**
+     * Управление SIP
+     */
     'readSipTelephony' => array(
         'type' => CAuthItem::TYPE_OPERATION,
         'description' => 'Просмотр SIP',
@@ -32,6 +34,8 @@ return array(
         'bizRule' => null,
         'data' => null
     ),
+
+
     'readFaxTelephony' => array(
         'type' => CAuthItem::TYPE_OPERATION,
         'description' => 'Просмотр факса',
@@ -56,15 +60,29 @@ return array(
         'bizRule' => null,
         'data' => null
     ),
-    'readIvrTelephony' => array(
+
+    'readBindPhonesTelephony' => array(
+        'type' => CAuthItem::TYPE_OPERATION,
+        'description' => 'Просмотр привязки внутренних номеров',
+        'bizRule' => null,
+        'data' => null
+    ),
+
+    /**
+     * Управление голосовым меню
+     */
+    'readIvrMenuTelephony' => array(
         'type' => CAuthItem::TYPE_OPERATION,
         'description' => 'Просмотр голосового меню',
         'bizRule' => null,
         'data' => null
     ),
-    'readBindPhonesTelephony' => array(
+    /**
+     * Управление голосовыми командами
+     */
+    'readIvrCommandTelephony' => array(
         'type' => CAuthItem::TYPE_OPERATION,
-        'description' => 'Просмотр привязки внутренних номеров',
+        'description' => 'Просмотр голосовых команд',
         'bizRule' => null,
         'data' => null
     ),
@@ -74,6 +92,34 @@ return array(
     /**
      * Роли в телефонии
      */
+    'role_telephony_sip' => array(
+        'type' => CAuthItem::TYPE_ROLE,
+        'description' => 'Управление SIP',
+        'bizRule' => null,
+        'data' => null,
+        'children' => array(
+            'readSipTelephony',
+            'updateSipTelephony',
+        ),
+    ),
+    'role_telephony_ivr_menu' => array(
+        'type' => CAuthItem::TYPE_ROLE,
+        'description' => 'Управление голосовым меню',
+        'bizRule' => null,
+        'data' => null,
+        'children' => array(
+            'readIvrMenuTelephony',
+        ),
+    ),
+    'role_telephony_ivr_command' => array(
+        'type' => CAuthItem::TYPE_ROLE,
+        'description' => 'Управление голосовыми командами',
+        'bizRule' => null,
+        'data' => null,
+        'children' => array(
+            'readIvrCommandTelephony',
+        ),
+    ),
     'role_telephony_company' => array(
         'type' => CAuthItem::TYPE_ROLE,
         'description' => 'Общие права по телефонии компании',
