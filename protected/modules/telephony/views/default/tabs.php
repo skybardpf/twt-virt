@@ -36,8 +36,8 @@ if (User::ROLE_USER === $role){
         ),
         array(
             'label' => 'Настройки внутреннего номера',
-            'url' => $this->createUrl('internal_numbers', array('cid' => $cid)),
-            'active' => ($this->tab_menu == 'internal_numbers'),
+            'url' => $this->createUrl('internal_number', array('cid' => $cid)),
+            'active' => ($this->tab_menu == 'internal_number'),
         ),
     ));
 }elseif (User::ROLE_COMPANY_ADMIN === $role){
@@ -64,8 +64,8 @@ if (User::ROLE_USER === $role){
         ),
         array(
             'label' => 'Настройки номеров',
-            'url' => $this->createUrl('internal_numbers', array('cid' => $cid)),
-            'active' => ($this->tab_menu == 'internal_numbers'),
+            'url' => $this->createUrl('internal_number', array('cid' => $cid)),
+            'active' => ($this->tab_menu == 'internal_number'),
         ),
     ));
 }elseif (User::ROLE_ADMIN === $role){

@@ -19,6 +19,11 @@ if (Yii::app()->user->hasFlash('success')) {
     );
 }
 
+//<div class="alert alert-success">
+//                <button type="button" class="close" data-dismiss="alert">×</button>
+//Настройки сохранены
+//</div>
+
 /**
  * @var TbActiveForm $form
  */

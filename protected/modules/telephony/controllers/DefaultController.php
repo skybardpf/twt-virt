@@ -20,7 +20,7 @@ class DefaultController extends \CompanyController
             'call_logs' => 'telephony.controllers.Default.CallLogsAction',
             'sip' => 'telephony.controllers.Default.SipAction',
             'fax' => 'telephony.controllers.Default.FaxAction',
-            'internal_numbers' => 'telephony.controllers.Default.InternalNumbersAction',
+            'internal_number' => 'telephony.controllers.Default.InternalNumberAction',
 
             'ivr' => 'telephony.controllers.Default.IvrAction',
             'bind_phones' => 'telephony.controllers.Default.BindPhonesAction',

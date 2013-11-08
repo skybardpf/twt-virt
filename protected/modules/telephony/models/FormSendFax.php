@@ -29,12 +29,4 @@ class FormSendFax extends \CFormModel
             array('text', 'length', 'max' => 1000),
         );
     }
-
-    /**
-     * @return mixed
-     */
-    public function getClassNameWithNamespace()
-    {
-        return str_replace('\\', '_', get_class($this));
-    }
 }

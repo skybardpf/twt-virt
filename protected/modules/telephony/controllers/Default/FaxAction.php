@@ -25,8 +25,11 @@ class FaxAction extends CAction
             Yii::app()->end();
         }
 
-        $data = Yii::app()->request->getPost($model->getClassNameWithNamespace());
+        $data = Yii::app()->request->getPost($controller->getClassNameWithNamespace($model));
         if ($data){
+            if(!Yii::app()->user->checkAccess('sendFaxTelephony')) {
+                throw new CHttpException('403', Yii::t('app', 'Доступ запрещен'));
+            }
             $model->attributes = $data;
             if ($model->validate()){
                 // Send fax
