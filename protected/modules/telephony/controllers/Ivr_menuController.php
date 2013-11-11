@@ -17,6 +17,9 @@ class Ivr_menuController extends \CompanyController
     {
         return array(
             'index' => 'telephony.controllers.IvrMenu.IndexAction',
+            'create' => 'telephony.controllers.IvrMenu.CreateAction',
+            'update' => 'telephony.controllers.IvrMenu.UpdateAction',
+            'delete' => 'telephony.controllers.IvrMenu.DeleteAction',
         );
     }
 }

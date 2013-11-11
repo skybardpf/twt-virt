@@ -77,6 +77,25 @@ return array(
         'bizRule' => null,
         'data' => null
     ),
+    'createIvrMenuTelephony' => array(
+        'type' => CAuthItem::TYPE_OPERATION,
+        'description' => 'Добавление пункта голосового меню',
+        'bizRule' => null,
+        'data' => null
+    ),
+    'updateIvrMenuTelephony' => array(
+        'type' => CAuthItem::TYPE_OPERATION,
+        'description' => 'Редактирование пункта голосового меню',
+        'bizRule' => null,
+        'data' => null
+    ),
+    'deleteIvrMenuTelephony' => array(
+        'type' => CAuthItem::TYPE_OPERATION,
+        'description' => 'Удаление пункта голосового меню',
+        'bizRule' => null,
+        'data' => null
+    ),
+
     /**
      * Управление голосовыми командами
      */
@@ -109,6 +128,9 @@ return array(
         'data' => null,
         'children' => array(
             'readIvrMenuTelephony',
+            'createIvrMenuTelephony',
+            'updateIvrMenuTelephony',
+            'deleteIvrMenuTelephony',
         ),
     ),
     'role_telephony_ivr_command' => array(

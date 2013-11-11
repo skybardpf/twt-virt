@@ -34,13 +34,13 @@ class Controller extends CController
 		);
 	}
 
-//	public function accessRules()
-//	{
-//		return array(
-//			array('allow', 'actions' => array('login', 'error'), 'users' => array('*')),
-//			array('deny',  'actions' => array(),        'users' => array('?')),
-//		);
-//	}
+	public function accessRules()
+	{
+		return array(
+			array('allow', 'actions' => array('login', 'error'), 'users' => array('*')),
+			array('deny',  'actions' => array(),        'users' => array('?')),
+		);
+	}
 
 	protected function beforeAction($action)
 	{
