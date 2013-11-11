@@ -11,15 +11,6 @@ use \application\modules\telephony\models as M;
 $t = (($model->isNewRecord) ? 'Добавление' : 'Редактирование') . ' пункта голосового меню';
 echo CHtml::tag('h3', array(), CHtml::encode(Yii::t('app', $t)));
 
-if (Yii::app()->user->hasFlash('success')) {
-    echo CHtml::tag('div',
-        array(
-            'style' => 'color: green;',
-        ),
-        Yii::app()->user->getFlash('success')
-    );
-}
-
 /**
  * @var TbActiveForm $form
  */
@@ -58,6 +49,5 @@ $this->widget('bootstrap.widgets.TbButton', array(
     'label' => 'Отмена',
     'url' => $this->createUrl('index', array('cid' => $this->company->primaryKey)),
 ));
-
 
 $this->endWidget();

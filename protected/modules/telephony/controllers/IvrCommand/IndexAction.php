@@ -1,4 +1,6 @@
 <?php
+use \application\modules\telephony\models as M;
+
 /**
  * Голосовые команды.
  *
@@ -17,6 +19,8 @@ class IndexAction extends CAction
         $controller = $this->controller;
         $controller->pageTitle = Yii::app()->name .' | Телефония | Голосовые команды';
 
+        $data = M\FormIvrCommand::getStandardCommands();
+
         $controller->render(
             '/default/tabs',
             array(
@@ -25,7 +29,9 @@ class IndexAction extends CAction
                     array(
                         'content' => $controller->renderPartial(
                             'index',
-                            array(),
+                            array(
+                                'data' => $data,
+                            ),
                             true
                         ),
                     ),

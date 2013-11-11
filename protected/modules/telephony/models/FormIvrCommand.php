@@ -9,6 +9,15 @@ namespace application\modules\telephony\models;
 class FormIvrCommand extends \CFormModel
 {
     public $title;
+    public $isStandard = false;
+
+    public $upload_sound_ru;
+    public $upload_sound_en;
+
+    public $filename_sound_ru;
+    public $filename_sound_en;
+
+    public $isNewRecord = true;
 
     /**
      * @return array
@@ -17,6 +26,8 @@ class FormIvrCommand extends \CFormModel
     {
         return array(
             'title' => \Yii::t('app', 'Название'),
+            'upload_sound_ru' => \Yii::t('app', 'Звук на русском'),
+            'upload_sound_en' => \Yii::t('app', 'Звук на английском'),
         );
     }
 
@@ -26,8 +37,12 @@ class FormIvrCommand extends \CFormModel
     public function rules()
     {
         return array(
-            array('title', 'required'),
+            array('title', 'required','on'=>'insert,update'),
             array('title', 'length', 'max' => 50),
+
+            array('upload_sound_ru, upload_sound_en', 'required','on'=>'insert'),
+            array('upload_sound_ru, upload_sound_en', 'file', 'types'=>'wav, mp3',
+                'allowEmpty'=>true,'on'=>'insert,update'),
         );
     }
 

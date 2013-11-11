@@ -105,6 +105,24 @@ return array(
         'bizRule' => null,
         'data' => null
     ),
+    'createIvrCommandTelephony' => array(
+        'type' => CAuthItem::TYPE_OPERATION,
+        'description' => 'Добавление голосовой команды',
+        'bizRule' => null,
+        'data' => null
+    ),
+    'updateIvrCommandTelephony' => array(
+        'type' => CAuthItem::TYPE_OPERATION,
+        'description' => 'Редактирование голосовой команды',
+        'bizRule' => null,
+        'data' => null
+    ),
+    'deleteIvrCommandTelephony' => array(
+        'type' => CAuthItem::TYPE_OPERATION,
+        'description' => 'Удаление голосовой команды',
+        'bizRule' => null,
+        'data' => null
+    ),
 
 
 
@@ -140,6 +158,9 @@ return array(
         'data' => null,
         'children' => array(
             'readIvrCommandTelephony',
+            'createIvrCommandTelephony',
+            'updateIvrCommandTelephony',
+            'deleteIvrCommandTelephony',
         ),
     ),
     'role_telephony_company' => array(

@@ -17,6 +17,9 @@ class Ivr_commandController extends \CompanyController
     {
         return array(
             'index' => 'telephony.controllers.IvrCommand.IndexAction',
+            'create' => 'telephony.controllers.IvrCommand.CreateAction',
+            'update' => 'telephony.controllers.IvrCommand.UpdateAction',
+            'delete' => 'telephony.controllers.IvrCommand.DeleteAction',
         );
     }
 }

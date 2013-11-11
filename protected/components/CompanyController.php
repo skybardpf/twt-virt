@@ -33,13 +33,4 @@ class CompanyController extends Controller
 
 		return parent::beforeAction($action);
 	}
-
-    /**
-     * @param $model
-     * @return mixed
-     */
-    public function getClassNameWithNamespace($model)
-    {
-        return str_replace('\\', '_', get_class($model));
-    }
 }

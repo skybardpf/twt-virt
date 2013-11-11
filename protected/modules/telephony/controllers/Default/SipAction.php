@@ -25,7 +25,7 @@ class SipAction extends CAction
             Yii::app()->end();
         }
 
-        $data = Yii::app()->request->getPost($controller->getClassNameWithNamespace($model));
+        $data = Yii::app()->request->getPost(get_class($model));
         if ($data){
             if(!Yii::app()->user->checkAccess('updateSipTelephony')) {
                 throw new CHttpException('403', Yii::t('app', 'Доступ запрещен'));
