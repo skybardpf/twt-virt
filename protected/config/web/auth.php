@@ -65,6 +65,8 @@ return CMap::mergeArray(
                 'role_profile',
                 'changeLoginEmailsProfile',
 
+                'readOwnCallLogsTelephony',
+
                 'role_telephony_company',
                 'role_telephony_sip',
             ),
@@ -78,6 +80,8 @@ return CMap::mergeArray(
                 'role_guest',
 
                 'role_profile',
+
+                'readCallLogsTelephony',
 
                 'role_telephony_company',
                 'role_telephony_ivr_menu',

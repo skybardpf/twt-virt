@@ -17,7 +17,6 @@ class DefaultController extends \CompanyController
     {
         return array(
             'index' => 'telephony.controllers.Default.IndexAction',
-            'call_logs' => 'telephony.controllers.Default.CallLogsAction',
             'sip' => 'telephony.controllers.Default.SipAction',
             'fax' => 'telephony.controllers.Default.FaxAction',
             'internal_number' => 'telephony.controllers.Default.InternalNumberAction',

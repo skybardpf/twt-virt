@@ -12,7 +12,7 @@ $role = Yii::app()->user->role;
 $menu = array(
     array(
         'label' => Yii::t('app', 'Информация'),
-        'url' => $this->createUrl('index', array('cid' => $cid)),
+        'url' => $this->createUrl('default/index', array('cid' => $cid)),
         'active' => ($this->tab_menu == 'info')
     ),
 );
@@ -21,22 +21,28 @@ if (User::ROLE_USER === $role){
     $menu = array_merge($menu, array(
         array(
             'label' => 'Логи звонков',
-            'url' => $this->createUrl('call_logs', array('cid' => $cid)),
-            'active' => ($this->tab_menu == 'call_logs'),
+            'url' => $this->createUrl(
+                'call_log/index',
+                array(
+                    'cid' => $cid,
+                    'uid' => Yii::app()->user->id
+                )
+            ),
+            'active' => ($this->tab_menu == 'call_log'),
         ),
         array(
             'label' => 'SIP',
-            'url' => $this->createUrl('sip', array('cid' => $cid)),
+            'url' => $this->createUrl('sip/index', array('cid' => $cid)),
             'active' => ($this->tab_menu == 'sip'),
         ),
         array(
             'label' => 'Факс',
-            'url' => $this->createUrl('fax', array('cid' => $cid)),
+            'url' => $this->createUrl('fax/index', array('cid' => $cid)),
             'active' => ($this->tab_menu == 'fax'),
         ),
         array(
             'label' => 'Настройки внутреннего номера',
-            'url' => $this->createUrl('internal_number', array('cid' => $cid)),
+            'url' => $this->createUrl('internal_number/index', array('cid' => $cid)),
             'active' => ($this->tab_menu == 'internal_number'),
         ),
     ));
@@ -49,22 +55,22 @@ if (User::ROLE_USER === $role){
         ),
         array(
             'label' => 'Логи звонков',
-            'url' => $this->createUrl('call_logs', array('cid' => $cid)),
-            'active' => ($this->tab_menu == 'call_logs'),
+            'url' => $this->createUrl('call_log/index', array('cid' => $cid)),
+            'active' => ($this->tab_menu == 'call_log'),
         ),
         array(
             'label' => 'Факс',
-            'url' => $this->createUrl('fax', array('cid' => $cid)),
+            'url' => $this->createUrl('fax/index', array('cid' => $cid)),
             'active' => ($this->tab_menu == 'fax'),
         ),
         array(
             'label' => 'Привязка номеров',
-            'url' => $this->createUrl('bind_phones', array('cid' => $cid)),
+            'url' => $this->createUrl('bind_phones/index', array('cid' => $cid)),
             'active' => ($this->tab_menu == 'bind_phones'),
         ),
         array(
             'label' => 'Настройки номеров',
-            'url' => $this->createUrl('internal_number', array('cid' => $cid)),
+            'url' => $this->createUrl('internal_number/index', array('cid' => $cid)),
             'active' => ($this->tab_menu == 'internal_number'),
         ),
     ));

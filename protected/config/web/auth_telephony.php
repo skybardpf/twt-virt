@@ -12,11 +12,24 @@ return array(
         'bizRule' => null,
         'data' => null
     ),
+
+    /**
+     * Логи звонков
+     */
     'readCallLogsTelephony' => array(
         'type' => CAuthItem::TYPE_OPERATION,
         'description' => 'Просмотр логов звонков',
         'bizRule' => null,
         'data' => null
+    ),
+    'readOwnCallLogsTelephony' => array(
+        'type' => CAuthItem::TYPE_OPERATION,
+        'description' => 'Просмотр только своих логов звонков',
+        'bizRule' => 'return Yii::app()->user->id == $params["user_id"];',
+        'data' => null,
+        'children' => array(
+            'readCallLogsTelephony',
+        ),
     ),
 
     /**
@@ -170,7 +183,6 @@ return array(
         'data' => null,
         'children' => array(
             'readTelephony',
-            'readCallLogsTelephony',
 
             'readFaxTelephony',
             'sendFaxTelephony',
