@@ -4,7 +4,7 @@ use application\modules\telephony\models as M;
 /**
  * @author Skibardin Andrey <webprofi1983@gmail.com>
  */
-class FaxAction extends CAction
+class IndexAction extends CAction
 {
     public function run()
     {
@@ -42,10 +42,10 @@ class FaxAction extends CAction
         }
 
         $controller->render(
-            'tabs',
+            '/default/tabs',
             array(
                 'content' => $controller->renderPartial(
-                    'fax',
+                    'index',
                     array(
                         'model' => $model,
                     ),
