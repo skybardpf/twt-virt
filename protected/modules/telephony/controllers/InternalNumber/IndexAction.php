@@ -4,7 +4,7 @@ use application\modules\telephony\models as M;
 /**
  * @author Skibardin Andrey <webprofi1983@gmail.com>
  */
-class InternalNumberAction extends CAction
+class IndexAction extends CAction
 {
     public function run()
     {
@@ -16,7 +16,6 @@ class InternalNumberAction extends CAction
          */
         $controller = $this->controller;
         $controller->pageTitle = Yii::app()->name .' | Телефония | Настройки внутреннего номера';
-        $controller->tab_menu = 'internal_number';
 
         $model = new M\FormInternalNumber();
 
@@ -43,10 +42,10 @@ class InternalNumberAction extends CAction
         }
 
         $controller->render(
-            'tabs',
+            '/default/tabs',
             array(
                 'content' => $controller->renderPartial(
-                    'internal_number',
+                    'index',
                     array(
                         'model' => $model,
                     ),

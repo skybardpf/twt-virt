@@ -2,7 +2,7 @@
 /**
  * @author Skibardin Andrey <webprofi1983@gmail.com>
  */
-class BindPhonesAction extends CAction
+class IndexAction extends CAction
 {
     public function run()
     {
@@ -10,17 +10,16 @@ class BindPhonesAction extends CAction
             throw new CHttpException('403', Yii::t('app', 'Доступ запрещен'));
         }
         /**
-         * @var application\modules\telephony\controllers\DefaultController $controller
+         * @var application\modules\telephony\controllers\Bind_phonesController $controller
          */
         $controller = $this->controller;
         $controller->pageTitle = Yii::app()->name .' | Телефония | Привязка внутренних номеров';
-        $controller->tab_menu = 'bind_phones';
 
         $controller->render(
-            'tabs',
+            '/default/tabs',
             array(
                 'content' => $controller->renderPartial(
-                    'bind_phones',
+                    'index',
                     array(),
                     true
                 )

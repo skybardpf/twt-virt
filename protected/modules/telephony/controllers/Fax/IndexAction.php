@@ -12,11 +12,10 @@ class IndexAction extends CAction
             throw new CHttpException('403', Yii::t('app', 'Доступ запрещен'));
         }
         /**
-         * @var application\modules\telephony\controllers\DefaultController $controller
+         * @var application\modules\telephony\controllers\FaxController $controller
          */
         $controller = $this->controller;
         $controller->pageTitle = Yii::app()->name .' | Телефония | Факс';
-        $controller->tab_menu = 'fax';
 
         $model = new M\FormSendFax();
 
