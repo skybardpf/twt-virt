@@ -8,7 +8,7 @@ class SiteController extends Controller
 	 */
 	public function actionIndex()
 	{
-		Yii::app()->getModule('files');
+        Yii::app()->getModule('files');
 		$this->render(
             'index',
             array(

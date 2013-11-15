@@ -1,7 +1,7 @@
 $(document).ready(function(){
     $('a.del-site').click(function(){
         var button = $(this);
-        if (confirm('Внимание! Все данные сайта '+button.data('site-name')+' будут безвозвратно удалены. \nВы действительно хотите удалить сайт '+button.data('site-name')+' ?')) {
+        if (confirm('Внимание! Все данные сайта "'+button.data('site-name')+'" будут безвозвратно удалены. \nВы действительно хотите удалить сайт "'+button.data('site-name')+'" ?')) {
             $.ajax({
                 type: 'GET',
                 dataType: "json",

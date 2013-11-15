@@ -68,7 +68,7 @@ class Sites extends CActiveRecord
     public function getSites($company_id)
     {
         $sites = Yii::app()->db->createCommand()
-            ->select('site_id, sites.name, sites.domain, sites.template, templates.external_name')
+            ->select('site_id as id, site_id, sites.name, sites.domain, sites.template, templates.external_name')
             ->from('company2sites')
             ->join('sites', 'sites.id=company2sites.site_id')
             ->join('templates', 'templates.id=template')
@@ -173,6 +173,9 @@ class Sites extends CActiveRecord
                 ':email' => $model->login_email.'@'.$domain->domain,
                 ':password' => $model->password,
             ));
+
+            Yii::app()->user->setFlash('email_account', $model->login_email.'@'.$domain->domain);
+            Yii::app()->user->setFlash('email_account_pass', $model->password);
         }
 
         return array('error' => false);

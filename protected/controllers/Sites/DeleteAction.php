@@ -35,9 +35,9 @@ class DeleteAction extends CAction
                 $emails = UserEmail::model()->findAll('site_id=:site_id', array(
                     ':site_id' => $site['id'],
                 ));
-                if (!empty($emails)){
-                    throw new CException('Нельзя удалить домен. Для него существуют Email аккаунты. Удалите их перед удалением домена.');
-                }
+//                if (!empty($emails)){
+//                    throw new CException('Нельзя удалить домен. Для него существуют Email аккаунты. Удалите их перед удалением домена.');
+//                }
 
                 /**
                  * Удаляем файлы, связанные с сайтом.
