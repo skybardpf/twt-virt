@@ -2,9 +2,7 @@
 
 class SitesController extends \CompanyController
 {
-//    public $company_id;
     public $layout = '/layouts/owner';
-    public $controller_name = "sites";
 
     /**
      * @return array
@@ -31,8 +29,8 @@ class SitesController extends \CompanyController
         $this->renderPartial("//templates/" . $res['name'], array('var' => "тестовое значение переменной var", 'path' => $this->asset_static, 'page' => $page, 'menu' => $menu, 'kind' => $kind));
     }
 
-    public function actionMail()
+    /*public function actionMail()
     {
         Sites::model()->mail($_POST['self_email'], $_POST['fio'], $_POST['email'], $_POST['text']);
-    }
+    }*/
 }
