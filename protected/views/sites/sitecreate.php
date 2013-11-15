@@ -12,7 +12,7 @@ $this->pageTitle=Yii::app()->name;
 <?php /** @var BootActiveForm $form */
 $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
 	'type'=>'horizontal',
-	'action'=>'/sites/create'
+//	'action'=>'/sites/create'
 )); ?>
 
 	<input type='hidden' name='company_id' value='<?= $company_id; ?>'>
@@ -73,6 +73,15 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
 			<input type='checkbox' name='contacts' id='contacts' <?php if(isset($page['contacts'])) echo "checked"; ?>>
 		</div>
 	</div>
-	<?php $this->widget('bootstrap.widgets.TbButton', array('buttonType'=>'submit', 'type'=>'primary', 'label'=> 'Сохранить'))?>
+	<?php
+$this->widget(
+    'bootstrap.widgets.TbButton',
+    array(
+        'buttonType'=>'submit',
+        'type'=>'primary',
+        'label'=> 'Сохранить'
+    )
+);
+?>
 
 <?php $this->endWidget(); ?>

@@ -12,6 +12,10 @@ class DeleteAction extends CAction
     {
         if (Yii::app()->request->isAjaxRequest){
             try {
+                if(!Yii::app()->user->checkAccess('deleteSite')) {
+                    throw new CException(Yii::t('app', 'Доступ запрещен'));
+                }
+
                 $cmd = Yii::app()->db->createCommand('
                     SELECT
                         s.id, cs.company_id, s.domain

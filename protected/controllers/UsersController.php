@@ -5,9 +5,7 @@ class UsersController extends Controller
 
     public function actions()
     {
-        return array(
-            'login_emails' => 'application.controllers.Users.LoginEmailsAction',
-        );
+        return array();
     }
 
 	/**

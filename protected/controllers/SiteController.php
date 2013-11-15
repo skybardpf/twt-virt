@@ -2,38 +2,6 @@
 
 class SiteController extends Controller
 {
-    public function filters()
-    {
-        return array(
-            'accessControl',
-        );
-    }
-
-//    public function accessRules()
-//    {
-//        return array(
-////            array('allow',
-////                'actions'=>array('error'),
-////                'users'=>array('*'),
-////            ),
-////            array('allow',
-////                'actions'=>array('login'),
-////                'users'=>array('?'),
-////            ),
-////            array('allow',
-////                'actions'=>array(
-////                    'logout',
-////                    'index'
-////                ),
-////                'roles' => array(User::ROLE_COMPANY_ADMIN, User::ROLE_USER),
-////            ),
-//
-//            array('deny',
-//                'users'=>array('*'),
-//            ),
-//        );
-//    }
-
 	/**
 	 * This is the default 'index' action that is invoked
 	 * when an action is not explicitly requested by users.

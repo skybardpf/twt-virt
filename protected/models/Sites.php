@@ -156,6 +156,25 @@ class Sites extends CActiveRecord
         $domain->domain = $post['domain'] . '.' . Yii::app()->params->httpHostName;
         $domain->insert();
 
+        /**
+         * Создаем почтовый аккаунт и привязваем его к админу.
+         */
+        $model = new UserEmail();
+        $model->user_id = Yii::app()->user->id;
+        $model->site_id = $site_id;
+        $model->login_email = UserEmail::DEFAULT_LOGIN_EMAIL_ADMIN;
+        $model->password = UserEmail::generatePassword();
+        if($model->save()){
+            $user = new \application\models\Mail\User();
+            $cmd = $user->getDbConnection()->createCommand('
+                INSERT INTO '.$user->tableName().' (email, password) VALUES (:email, ENCRYPT(:password))
+            ');
+            $cmd->execute(array(
+                ':email' => $model->login_email.'@'.$domain->domain,
+                ':password' => $model->password,
+            ));
+        }
+
         return array('error' => false);
     }
 

@@ -135,21 +135,11 @@ return array(
         ),
     ),
 
-    // application-level parameters that can be accessed
-    // using Yii::app()->params['paramName']
-    // application-level parameters that can be accessed
-    // using Yii::app()->params['paramName']
     'params' => array(
-        // this is used in contact page
         'adminEmail' => 'webmaster@example.com',
-//        'sites' => array(
-//            '1' => 3,
-//            '2' => 3
-//        ),
 
         'urlWebMail' => 'http://this.com.ua',
-        'maxEmailLoginPerAccounts' => 3,  // Макс. кол-во email аккаунтов для юзера
-        'httpHostName' => 'twtconsult.ru',
+        'httpHostName' => (substr($_SERVER['HTTP_HOST'], 0, 4) == 'www.') ? substr($_SERVER['HTTP_HOST'], 4) : $_SERVER['HTTP_HOST'],
         'IMAPHost' => 'this.com.ua',
         'IMAPPort' => '143',
     ),

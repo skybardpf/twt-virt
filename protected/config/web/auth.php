@@ -6,6 +6,7 @@
  */
 return CMap::mergeArray(
     require(dirname(__FILE__).'/auth_telephony.php'),
+    require(dirname(__FILE__).'/auth_sites.php'),
     array(
         /**
          * Операции с профайлом
@@ -88,6 +89,8 @@ return CMap::mergeArray(
                 'role_telephony_ivr_command',
 
                 'readBindPhonesTelephony',
+
+                'roleAdminSites',
             ),
             'bizRule' => null,
             'data' => null
