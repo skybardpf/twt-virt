@@ -78,7 +78,7 @@ $this->widget('bootstrap.widgets.TbGridView', array(
                                 "cid" => Yii::app()->controller->company->primaryKey
                             )
                         ),
-                        "data-site-name" => $data["name"],
+                        "data-site-name" => CHtml::encode($data["name"]),
                     ),
                 ),
                 true

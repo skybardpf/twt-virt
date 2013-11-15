@@ -192,22 +192,22 @@ class Sites extends CActiveRecord
     {
         //проверить пост
         $errors = false;
-        $company_id = $_POST['company_id'];
+//        $company_id = $_POST['company_id'];
         if (strlen($post['sitename']) == 0) {
             $errors['sitename'] = "Название не может быть пустым.";
         }
-        if (strlen($post['domain']) < 3) {
-            $errors['domain'] = "Слишком короткое доменное имя.";
-        } elseif (strpos($post['domain'], ".")) {
-            $errors['domain'] = "Функционал по подключению внешних доменов не реализован.";
-        } elseif (!preg_match("/^[a-z]{1}[a-z0-9\-_]{1,15}$/", $post['domain']) || (strlen($post['domain']) < 3)) {
-            $errors['domain'] = "Доменное имя некорректно.";
-        } else {
-            $res = Yii::app()->db->createCommand("select count(*), domain from sites where domain = '{$post['domain']}'")->queryRow();
-            if (($res['domain'] != $post['domain']) && ($res['count(*)'] > 0)) {
-                $errors['domain'] = "Такой домен уже существует.";
-            }
-        }
+//        if (strlen($post['domain']) < 3) {
+//            $errors['domain'] = "Слишком короткое доменное имя.";
+//        } elseif (strpos($post['domain'], ".")) {
+//            $errors['domain'] = "Функционал по подключению внешних доменов не реализован.";
+//        } elseif (!preg_match("/^[a-z]{1}[a-z0-9\-_]{1,15}$/", $post['domain']) || (strlen($post['domain']) < 3)) {
+//            $errors['domain'] = "Доменное имя некорректно.";
+//        } else {
+//            $res = Yii::app()->db->createCommand("select count(*), domain from sites where domain = '{$post['domain']}'")->queryRow();
+//            if (($res['domain'] != $post['domain']) && ($res['count(*)'] > 0)) {
+//                $errors['domain'] = "Такой домен уже существует.";
+//            }
+//        }
         if ($errors) {
             $errors['error'] = true;
             return $errors;

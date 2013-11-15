@@ -13,49 +13,11 @@ class SitesController extends \CompanyController
     {
         return array(
             'list' => 'application.controllers.Sites.ListAction',
+            'page' => 'application.controllers.Sites.PageAction',
             'settings' => 'application.controllers.Sites.SettingsAction',
             'createform' => 'application.controllers.Sites.CreateFormAction',
             'delete' => 'application.controllers.Sites.DeleteAction',
         );
-    }
-
-    public function actionCreate()
-    {
-
-    }
-
-    public function actionSettings_save()
-    {
-        $errors = Sites::model()->updateSite($_POST, $_FILES);
-        $this->actionSettings($_POST['company_id'], $_POST['site_id'], $errors);
-    }
-
-    public function actionPage($company_id, $site_id, $kind)
-    {
-        $view = "site_page";
-        switch ($kind) {
-            case 'main':
-                $title = "Страница 'Главная'";
-                break;
-            case 'about':
-                $title = "Страница 'О компании'";
-                break;
-            case 'partners':
-                $title = "Страница 'Партнёры'";
-                break;
-            case 'services':
-                $title = "Страница 'Услуги'";
-                break;
-            case 'contacts':
-                $title = "Страница 'Контакты'";
-                $view = "contact_page";
-                break;
-        }
-
-        $page = array('title_window' => "", 'title_page' => "");
-        $page = Sites::model()->pageGet($site_id, $kind);
-
-        $this->render($view, array('site_id' => $site_id, 'title' => $title, 'kind' => $kind, 'page' => $page, 'company_id' => $company_id));
     }
 
     public function actionPage_save()

@@ -32,12 +32,12 @@ class DeleteAction extends CAction
                     throw new CException('Не найден сайт');
                 }
 
-                $emails = UserEmail::model()->findAll('site_id=:site_id', array(
-                    ':site_id' => $site['id'],
-                ));
-//                if (!empty($emails)){
-//                    throw new CException('Нельзя удалить домен. Для него существуют Email аккаунты. Удалите их перед удалением домена.');
-//                }
+                /**
+                 * Удаляем саму площадку
+                 */
+                if (!Sites::model()->deleteByPk($site['id'])){
+                    throw new CException('Не удалось удалить сайт.');
+                }
 
                 /**
                  * Удаляем файлы, связанные с сайтом.
@@ -86,6 +86,22 @@ class DeleteAction extends CAction
                     ':site_id' => $site['id'],
                     ':company_id' => $site['company_id'],
                 ));
+
+                /**
+                 * Удаляем Email аккаунты
+                 * @var UserEmail[] $emails
+                 */
+                $emails = UserEmail::model()->findAll('site_id=:site_id', array(
+                    ':site_id' => $site['id'],
+                ));
+                UserEmail::model()->deleteAll('site_id=:site_id', array(
+                    ':site_id' => $site['id'],
+                ));
+                foreach ($emails as $email){
+                    \application\models\Mail\User::model()->deleteByPk(
+                        $email->login_email.'@'.$site['domain'].'.'.Yii::app()->params->httpHostName
+                    );
+                }
 
                 /**
                  * Удаляем запись на Devecot сервере

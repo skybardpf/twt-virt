@@ -48,6 +48,7 @@ return CMap::mergeArray(
                 'readProfile',
                 'updateProfile',
                 'changePassProfile',
+                'changeLoginEmailsProfile',
             ),
         ),
 
@@ -64,7 +65,6 @@ return CMap::mergeArray(
                 'role_guest',
 
                 'role_profile',
-                'changeLoginEmailsProfile',
 
                 'readOwnCallLogsTelephony',
 

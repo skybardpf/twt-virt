@@ -30,6 +30,12 @@ return array(
         'bizRule' => null,
         'data' => null
     ),
+    'pagesSite' => array(
+        'type' => CAuthItem::TYPE_OPERATION,
+        'description' => 'Просмотр|редактирование страниц сайта',
+        'bizRule' => null,
+        'data' => null
+    ),
 
     /**
      * Роли в сайтах
@@ -44,6 +50,7 @@ return array(
             'settingsSite',
             'deleteSite',
             'createSite',
+            'pagesSite',
         ),
     ),
 );

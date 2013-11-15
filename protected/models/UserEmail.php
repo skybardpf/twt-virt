@@ -100,7 +100,6 @@ class UserEmail extends CActiveRecord
         return parent::beforeSave();
     }
 
-
     public function afterDelete()
     {
         parent::afterDelete();
@@ -109,6 +108,7 @@ class UserEmail extends CActiveRecord
             $this->login_email.'@'.$this->site->domain.'.'.Yii::app()->params->httpHostName
         );
     }
+
     /**
      * @param $attribute
      */
