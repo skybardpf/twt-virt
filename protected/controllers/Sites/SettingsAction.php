@@ -6,10 +6,9 @@ class SettingsAction extends CAction
 {
     /**
      * @param integer $site_id
-     * @param bool $errors
      * @throws CHttpException
      */
-    public function run($site_id, $errors = false)
+    public function run($site_id)
     {
         if(!Yii::app()->user->checkAccess('settingsSite')) {
             throw new CHttpException(403, Yii::t('app', 'Доступ запрещен'));
@@ -20,8 +19,9 @@ class SettingsAction extends CAction
          */
         $controller = $this->controller;
 
+        $errors = array();
         if (isset($_POST) && !empty($_POST)){
-            $errors = Sites::model()->updateSite($_POST, $_FILES);
+            $errors = Sites::model()->updateSite($site_id, $_POST, $_FILES);
             if (empty($errors['error'])) {
                 $controller->redirect($controller->createUrl(
                     'list',
@@ -30,7 +30,6 @@ class SettingsAction extends CAction
                     )
                 ));
             }
-            $site_id = $_POST['site_id'];
         }
 
         $templates = Sites::model()->getTemplatesList();

@@ -188,7 +188,7 @@ class Sites extends CActiveRecord
         Yii::app()->db->createCommand()->insert($page_kind, array('site_id' => $site_id, 'show' => $show, 'banner' => $banner_id));
     }
 
-    public function updateSite($post, $files)
+    public function updateSite($site_id, $post, $files)
     {
         //проверить пост
         $errors = false;
@@ -215,7 +215,7 @@ class Sites extends CActiveRecord
 
         $create_pages = array();
         $pages = array('about', 'services', 'partners', 'contacts');
-        $site_id = $post['site_id'];
+//        $site_id = $post['site_id'];
         foreach ($pages as $_page) {
             if (isset($post[$_page])) {
                 if ($post[$_page] == "on") {
@@ -234,7 +234,10 @@ class Sites extends CActiveRecord
             $res = move_uploaded_file($files['logo']['tmp_name'], $dir_path . $file_name);
         }
 
-        $columns = array('name' => $post['sitename'], 'domain' => $post['domain'], 'template' => $post['template']);
+        $columns = array(
+            'name' => $post['sitename'],
+            'template' => $post['template']
+        );
         Yii::app()->db->createCommand()
             ->update('sites', $columns, 'id=:id', array(':id' => $site_id));
 
@@ -243,7 +246,7 @@ class Sites extends CActiveRecord
         Yii::app()->db->createCommand()->update('page_partners', array('show' => $create_pages['partners']), 'site_id=:id', array(':id' => $site_id));
         Yii::app()->db->createCommand()->update('page_contacts', array('show' => $create_pages['contacts']), 'site_id=:id', array(':id' => $site_id));
 
-        return;
+        return array();
     }
 
     public function pageGet($site_id, $kind)
