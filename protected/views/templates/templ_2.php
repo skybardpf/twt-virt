@@ -1,10 +1,17 @@
+<?php
+/**
+ * @var array $page
+ * @var array $menu
+ * @var string $kind
+ */
+?>
 <!DOCTYPE HTML>
 <html>
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 	<title><?= $page['title_window']; ?></title>
-	<link rel="stylesheet" type="text/css" href="<?= $this->asset_static; ?>/css/template2.css">
+	<link rel="stylesheet" type="text/css" href="<?= $this->asset_static . '/css/template2.css'; ?>">
 	<? if($kind == 'contacts'):?>
 		<? if($page['map'] == 'yandex'):?>
 			<script src="http://api-maps.yandex.ru/2.0-stable/?load=package.full&lang=RU" type="text/javascript"></script>

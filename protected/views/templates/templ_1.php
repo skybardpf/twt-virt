@@ -1,10 +1,17 @@
+<?php
+/**
+ * @var array $page
+ * @var array $menu
+ * @var string $kind
+ */
+?>
 <!DOCTYPE HTML>
 <html>
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 	<title><?= $page['title_window']; ?></title>
-	<link rel="stylesheet" type="text/css" href="<?= $this->asset_static; ?>/css/template1.css">
+	<link rel="stylesheet" type="text/css" href="<?= $this->asset_static . '/css/template1.css'; ?>">
 	<? if($kind == 'contacts'):?>
 		<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
 		<script>

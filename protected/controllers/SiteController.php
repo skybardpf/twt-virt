@@ -118,4 +118,29 @@ class SiteController extends Controller
         }
         return $ret;
     }
+
+    public function actionView($site, $kind = 'main')
+    {
+        $res = Sites::model()->getTemplate($site);
+        if ($res === false){
+            throw new CHttpException(404, 'Страница не найдена');
+        }
+        if (!isset($res['id'])){
+            throw new CHttpException(404, 'Не найден сайт');
+        }
+        if (!isset($res['name'])){
+            throw new CHttpException(404, 'Не найден шаблон сайта');
+        }
+        $page = Sites::model()->pageGet($res['id'], $kind);
+        $menu = Sites::model()->getMenu($res['id']);
+        $this->renderPartial(
+            "//templates/" . $res['name'],
+            array(
+                'var' => "тестовое значение переменной var",
+                'page' => $page,
+                'menu' => $menu,
+                'kind' => $kind
+            )
+        );
+    }
 }
