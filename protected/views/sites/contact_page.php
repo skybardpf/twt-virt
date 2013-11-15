@@ -1,25 +1,95 @@
-<h1><?= $title; ?></h1>
-<br />
-<a href="/sites/settings/company_id/<?= $company_id; ?>/site_id/<?= $site_id; ?>">Настройки сайта</a> | 
-<a href="/sites/page/company_id/<?= $company_id; ?>/site_id/<?= $site_id; ?>/kind/main">Главная</a> | 
-<a href="/sites/page/company_id/<?= $company_id; ?>/site_id/<?= $site_id; ?>/kind/about">О компании</a> | 
-<a href="/sites/page/company_id/<?= $company_id; ?>/site_id/<?= $site_id; ?>/kind/partners">Партнёры</a> |
-<a href="/sites/page/company_id/<?= $company_id; ?>/site_id/<?= $site_id; ?>/kind/services">Услуги</a> | 
-<a href="/sites/page/company_id/<?= $company_id; ?>/site_id/<?= $site_id; ?>/kind/contacts" style='color: black;'>Контакты</a>
-<br />
-<br />
-
-<?php /** @var BootActiveForm $form */
+<?php
+/**
+ * @var string $title
+ * @var string $kind
+ * @var integer $site_id
+ * @var array $page
+ */
 Yii::app()->clientScript->registerScriptFile($this->asset_static . '/js/extensions/ckeditor/ckeditor.js');
 
+echo CHtml::tag('h3', array(), $title);
+
+echo CHtml::link(
+    Yii::t('app', 'Настройки сайта'),
+    $this->createUrl('settings',
+        array(
+            'cid' => $this->company->primaryKey,
+            'site_id' => $site_id
+        )
+    )
+);
+echo '&nbsp;|&nbsp;';
+echo CHtml::link(
+    Yii::t('app', 'Главная'),
+    $this->createUrl('page',
+        array(
+            'cid' => $this->company->primaryKey,
+            'site_id' => $site_id,
+            'kind' => 'main',
+        )
+    ),
+    ($kind == "main") ? array('style' => 'color: black;') : array()
+);
+echo '&nbsp;|&nbsp;';
+echo CHtml::link(
+    Yii::t('app', 'О компании'),
+    $this->createUrl('page',
+        array(
+            'cid' => $this->company->primaryKey,
+            'site_id' => $site_id,
+            'kind' => 'about',
+        )
+    ),
+    ($kind == "about") ? array('style' => 'color: black;') : array()
+);
+echo '&nbsp;|&nbsp;';
+echo CHtml::link(
+    Yii::t('app', 'Партнёры'),
+    $this->createUrl('page',
+        array(
+            'cid' => $this->company->primaryKey,
+            'site_id' => $site_id,
+            'kind' => 'partners',
+        )
+    ),
+    ($kind == "partners") ? array('style' => 'color: black;') : array()
+);
+echo '&nbsp;|&nbsp;';
+echo CHtml::link(
+    Yii::t('app', 'Услуги'),
+    $this->createUrl('page',
+        array(
+            'cid' => $this->company->primaryKey,
+            'site_id' => $site_id,
+            'kind' => 'services',
+        )
+    ),
+    ($kind == "services") ? array('style' => 'color: black;') : array()
+);
+echo '&nbsp;|&nbsp;';
+echo CHtml::link(
+    Yii::t('app', 'Контакты'),
+    $this->createUrl('page',
+        array(
+            'cid' => $this->company->primaryKey,
+            'site_id' => $site_id,
+            'kind' => 'contacts',
+        )
+    ),
+    ($kind == "contacts") ? array('style' => 'color: black;') : array()
+);
+echo '<br/><br/>';
+
+/**
+ * @var TbActiveForm $form
+ */
 $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
 	'type'=>'horizontal',
-	'action'=>'/sites/page_save',
 	'htmlOptions'=>array('enctype'=>'multipart/form-data')
 )); ?>
 
-	<input type='hidden' name='company_id' value='<?= $company_id; ?>' />
-	<input type='hidden' name='site_id' value='<?= $site_id; ?>' />
+<!--	<input type='hidden' name='company_id' value='--><?//= $company_id; ?><!--' />-->
+<!--	<input type='hidden' name='site_id' value='--><?//= $site_id; ?><!--' />-->
 	<input type='hidden' name='kind' value='<?= $kind; ?>' />
 
 	<div class="control-group ">

@@ -2,7 +2,7 @@
 
 class SitesController extends \CompanyController
 {
-    public $company_id;
+//    public $company_id;
     public $layout = '/layouts/owner';
     public $controller_name = "sites";
 
@@ -18,12 +18,6 @@ class SitesController extends \CompanyController
             'createform' => 'application.controllers.Sites.CreateFormAction',
             'delete' => 'application.controllers.Sites.DeleteAction',
         );
-    }
-
-    public function actionPage_save()
-    {
-        $res = Sites::model()->pageSave($_POST, $_FILES);
-        $this->actionPage($_POST['company_id'], $_POST['site_id'], $_POST['kind']);
     }
 
     public function actionView($site, $kind = 'main')

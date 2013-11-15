@@ -4,11 +4,13 @@
  * @var integer $site_id
  * @var integer $company_id
  * @var array $site
+ * @var array $templates
  */
 ?>
-    <h1>Настройка сайта</h1>
-    <br/>
+
 <?php
+echo CHtml::tag('h3', array(), 'Настройка сайта');
+
 echo CHtml::link(
     Yii::t('app', 'Настройки сайта'),
     $this->createUrl('settings',
@@ -22,7 +24,6 @@ echo CHtml::link(
     )
 );
 echo '&nbsp;|&nbsp;';
-
 echo CHtml::link(
     Yii::t('app', 'Главная'),
     $this->createUrl('page',
@@ -34,7 +35,6 @@ echo CHtml::link(
     )
 );
 echo '&nbsp;|&nbsp;';
-
 echo CHtml::link(
     Yii::t('app', 'О компании'),
     $this->createUrl('page',
@@ -46,7 +46,6 @@ echo CHtml::link(
     )
 );
 echo '&nbsp;|&nbsp;';
-
 echo CHtml::link(
     Yii::t('app', 'Партнёры'),
     $this->createUrl('page',
@@ -58,7 +57,6 @@ echo CHtml::link(
     )
 );
 echo '&nbsp;|&nbsp;';
-
 echo CHtml::link(
     Yii::t('app', 'Услуги'),
     $this->createUrl('page',
@@ -70,7 +68,6 @@ echo CHtml::link(
     )
 );
 echo '&nbsp;|&nbsp;';
-
 echo CHtml::link(
     Yii::t('app', 'Контакты'),
     $this->createUrl('page',
@@ -91,10 +88,6 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
     'htmlOptions' => array('enctype' => 'multipart/form-data')
 ));
 ?>
-
-<!--    <input type='hidden' name='company_id' value='--><?//= $company_id; ?><!--'>-->
-<!--    <input type='hidden' name='site_id' value='--><?//= $site_id; ?><!--'>-->
-
 
     <div class="control-group ">
         <label for="domain" class="control-label">Домен</label>
@@ -138,7 +131,7 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
                         value='<?= $_templ['id']; ?>'><?= $_templ['external_name']; ?></option>
                 <?php endforeach ?>
             </select>
-            <img src='asdad' id='t_img' width='70'/>
+            <img src='#' id='t_img' width='70'/>
             <script>
                 t_ch();
             </script>

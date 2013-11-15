@@ -1,8 +1,15 @@
 <?php
+/**
+ * @var string $title
+ * @var string $kind
+ * @var integer $site_id
+ * @var array $page
+ */
 Yii::app()->clientScript->registerScriptFile($this->asset_static . '/js/extensions/ckeditor/ckeditor.js');
+
+echo CHtml::tag('h3', array(), $title);
 ?>
-<h1><?= $title; ?></h1>
-<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+
 <script type="text/javascript">
 $(document).ready(function(){
 	CKEDITOR.replace('content');
@@ -14,25 +21,88 @@ function addFile() {
 }
 
 </script>
-<br />
-<a href="/sites/settings/company_id/<?= $company_id; ?>/site_id/<?= $site_id; ?>">Настройки сайта</a> | 
-<a href="/sites/page/company_id/<?= $company_id; ?>/site_id/<?= $site_id; ?>/kind/main" <?php if($kind == "main") echo " style='color: black;'" ?>>Главная</a> | 
-<a href="/sites/page/company_id/<?= $company_id; ?>/site_id/<?= $site_id; ?>/kind/about" <?php if($kind == "about") echo " style='color: black;'" ?>>О компании</a> | 
-<a href="/sites/page/company_id/<?= $company_id; ?>/site_id/<?= $site_id; ?>/kind/partners" <?php if($kind == "partners") echo " style='color: black;'" ?>>Партнёры</a> |
-<a href="/sites/page/company_id/<?= $company_id; ?>/site_id/<?= $site_id; ?>/kind/services" <?php if($kind == "services") echo " style='color: black;'" ?>>Услуги</a> | 
-<a href="/sites/page/company_id/<?= $company_id; ?>/site_id/<?= $site_id; ?>/kind/contacts" <?php if($kind == "contacts") echo " style='color: black;'" ?>>Контакты</a>
-<br />
-<br />
 
-<?php /** @var BootActiveForm $form */
+<?php
+echo CHtml::link(
+    Yii::t('app', 'Настройки сайта'),
+    $this->createUrl('settings',
+        array(
+            'cid' => $this->company->primaryKey,
+            'site_id' => $site_id
+        )
+    )
+);
+echo '&nbsp;|&nbsp;';
+echo CHtml::link(
+    Yii::t('app', 'Главная'),
+    $this->createUrl('page',
+        array(
+            'cid' => $this->company->primaryKey,
+            'site_id' => $site_id,
+            'kind' => 'main',
+        )
+    ),
+    ($kind == "main") ? array('style' => 'color: black;') : array()
+);
+echo '&nbsp;|&nbsp;';
+echo CHtml::link(
+    Yii::t('app', 'О компании'),
+    $this->createUrl('page',
+        array(
+            'cid' => $this->company->primaryKey,
+            'site_id' => $site_id,
+            'kind' => 'about',
+        )
+    ),
+    ($kind == "about") ? array('style' => 'color: black;') : array()
+);
+echo '&nbsp;|&nbsp;';
+echo CHtml::link(
+    Yii::t('app', 'Партнёры'),
+    $this->createUrl('page',
+        array(
+            'cid' => $this->company->primaryKey,
+            'site_id' => $site_id,
+            'kind' => 'partners',
+        )
+    ),
+    ($kind == "partners") ? array('style' => 'color: black;') : array()
+);
+echo '&nbsp;|&nbsp;';
+echo CHtml::link(
+    Yii::t('app', 'Услуги'),
+    $this->createUrl('page',
+        array(
+            'cid' => $this->company->primaryKey,
+            'site_id' => $site_id,
+            'kind' => 'services',
+        )
+    ),
+    ($kind == "services") ? array('style' => 'color: black;') : array()
+);
+echo '&nbsp;|&nbsp;';
+echo CHtml::link(
+    Yii::t('app', 'Контакты'),
+    $this->createUrl('page',
+        array(
+            'cid' => $this->company->primaryKey,
+            'site_id' => $site_id,
+            'kind' => 'contacts',
+        )
+    ),
+    ($kind == "contacts") ? array('style' => 'color: black;') : array()
+);
+echo '<br/><br/>';
+
+/**
+ * @var TbActiveForm $form
+ */
 $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
 	'type'=>'horizontal',
-	'action'=>'/sites/page_save',
 	'htmlOptions'=>array('enctype'=>'multipart/form-data')
-)); ?>
+));
+?>
 
-	<input type='hidden' name='company_id' value='<?= $company_id; ?>' />
-	<input type='hidden' name='site_id' value='<?= $site_id; ?>' />
 	<input type='hidden' name='kind' value='<?= $kind; ?>' />
 
 	<div class="control-group ">

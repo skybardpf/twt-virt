@@ -230,7 +230,7 @@ class Sites extends CActiveRecord
 
         if (!empty($files['logo']['name'])) {
             $dir_path = "upload/";
-            $file_name = $post['site_id'] . "_logo";
+            $file_name = $site_id . "_logo";
             $res = move_uploaded_file($files['logo']['tmp_name'], $dir_path . $file_name);
         }
 
@@ -304,7 +304,7 @@ class Sites extends CActiveRecord
         return $page;
     }
 
-    public function pageSave($post, $files)
+    public function pageSave($site_id, $post, $files)
     {
         $bunner = true;
         $logo = true;
@@ -343,10 +343,10 @@ class Sites extends CActiveRecord
         */
         if ($bunner) {
             if (!empty($files['userfile']['name'])) {
-                $res = Yii::app()->db->createCommand("select `banner` from $table where site_id = {$post['site_id']}")->queryRow();
+                $res = Yii::app()->db->createCommand("select `banner` from $table where site_id = {$site_id}")->queryRow();
 //				$dir_path = "upload/banners/";
                 $dir_path = "upload/";
-                $file_name = $post['site_id'] . "_" . $table;
+                $file_name = $site_id . "_" . $table;
                 move_uploaded_file($files['userfile']['tmp_name'], $dir_path . $file_name);
                 Yii::app()->db->createCommand()
                     ->update("images", array('file' => "/upload/" . $file_name), 'id=:id', array(':id' => $res['banner']));
@@ -364,12 +364,12 @@ class Sites extends CActiveRecord
             $file_name = $_name;
             move_uploaded_file($files['files']['tmp_name'][$_key], $dir_path . $file_name);
             Yii::app()->db->createCommand()
-                ->insert("files", array('file' => "/upload/" . $file_name, 'site_id' => $post['site_id'], 'page_kind' => $table));
+                ->insert("files", array('file' => "/upload/" . $file_name, 'site_id' => $site_id, 'page_kind' => $table));
         }
 //-------------------------------- загрузка файлов end
 
         $res = Yii::app()->db->createCommand()
-            ->update($table, $columns, 'site_id=:id', array(':id' => $post['site_id']));
+            ->update($table, $columns, 'site_id=:id', array(':id' => $site_id));
         return true;
     }
 

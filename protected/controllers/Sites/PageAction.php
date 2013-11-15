@@ -20,6 +20,20 @@ class PageAction extends CAction
          */
         $controller = $this->controller;
 
+        if (isset($_POST) && !empty($_POST)){
+            if (Sites::model()->pageSave($site_id, $_POST, $_FILES)) {
+                $controller->redirect($controller->createUrl(
+                    'page',
+                    array(
+                        'cid' => $controller->company->primaryKey,
+                        'site_id' => $site_id,
+                        'kind' => $_POST['kind'],
+                    )
+                ));
+            }
+            $kind = $_POST['kind'];
+        }
+
         $view = "site_page";
         switch ($kind) {
             case 'main':
@@ -38,9 +52,13 @@ class PageAction extends CAction
                 $title = "Страница 'Контакты'";
                 $view = "contact_page";
                 break;
+            default: {
+                $title = "Страница 'Главная'";
+                $kind = 'main';
+                break;
+            }
         }
 
-//        $page = array('title_window' => "", 'title_page' => "");
         $page = Sites::model()->pageGet($site_id, $kind);
 
         $controller->render(
