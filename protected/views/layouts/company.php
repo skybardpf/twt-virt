@@ -44,12 +44,12 @@ if (User::ROLE_USER === $role) {
     $menu = array_merge($menu, array(
         array(
             'label' => 'Сайт',
-            'url' => $this->createUrl('/sites/list',
+            'url' => $this->createUrl('/domain/default/index',
                 array(
                     'cid' => $this->company->id
                 )
             ),
-            'active' => ($this->getId() == 'sites')
+            'active' => ($this->module && $this->module->id == 'domain')
         ),
         array(
             'label' => 'Администрирование',

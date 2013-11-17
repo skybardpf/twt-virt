@@ -35,6 +35,10 @@ return array(
             'class' => '\application\modules\telephony\TelephonyModule',
             'controllerNamespace' => '\application\modules\telephony\controllers',
         ),
+        'domain' => array(
+            'class' => '\application\modules\domain\DomainModule',
+            'controllerNamespace' => '\application\modules\domain\controllers',
+        ),
     ),
 
     // application components
@@ -90,6 +94,11 @@ return array(
                     'levels' => 'error, warning',
                 ),
                 array(
+                    'class' => 'CWebLogRoute',
+                    'categories' => 'application',
+                    'levels'=>'error, warning, trace, profile, info',
+                ),
+                array(
                     'class' => 'ext.yii-debug-toolbar.YiiDebugToolbarRoute',
                     'ipFilters' => array('127.0.0.1', '192.168.0.*'),
                 ),
@@ -106,6 +115,8 @@ return array(
         'authManager' => array(
             'class' => 'TWTAuthManager',
             'defaultRoles' => array('guest'),
+            // показываем ошибки только в режиме отладки
+            'showErrors' => YII_DEBUG,
         ),
 
         'urlManager' => array(
@@ -138,6 +149,7 @@ return array(
     'params' => array(
         'adminEmail' => 'webmaster@example.com',
 
+        'maxNumberSitesForCompany' => 3, /* Максимальное кол-во сайтов на компанию */
         'urlWebMail' => 'http://this.com.ua',
         'httpHostName' => (substr($_SERVER['HTTP_HOST'], 0, 4) == 'www.') ? substr($_SERVER['HTTP_HOST'], 4) : $_SERVER['HTTP_HOST'],
         'IMAPHost' => 'this.com.ua',

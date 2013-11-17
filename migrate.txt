@@ -1,0 +1,74 @@
+CREATE TABLE `domain` (
+  `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `company_id` int(11) unsigned NOT NULL COMMENT 'ID компании',
+  `template_id` int(11) unsigned NOT NULL COMMENT 'ID шаблона',
+  `domain` varchar(50) CHARACTER SET utf8 NOT NULL COMMENT 'Поддомен',
+  `name` varchar(50) CHARACTER SET utf8 NOT NULL COMMENT 'Внутренее название сайта',
+  
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
+
+ALTER TABLE `twt-virt-office`.`domain` 
+ADD UNIQUE INDEX `domain` (`domain` ASC) ;
+
+
+ALTER TABLE `twt-virt-office`.`domain` 
+  ADD CONSTRAINT `fk_company_id`
+  FOREIGN KEY (`company_id` )
+  REFERENCES `twt-virt-office`.`company` (`id` )
+  ON DELETE NO ACTION
+  ON UPDATE NO ACTION
+, ADD INDEX `fk_company_id_idx` (`company_id` ASC) ;
+
+ALTER TABLE `twt-virt-office`.`templates` CHANGE COLUMN `id` `id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT  ;
+
+ALTER TABLE `twt-virt-office`.`domain` 
+  ADD CONSTRAINT `fk_template_id`
+  FOREIGN KEY (`template_id` )
+  REFERENCES `twt-virt-office`.`templates` (`id` )
+  ON DELETE NO ACTION
+  ON UPDATE NO ACTION
+, ADD INDEX `fk_template_id_idx` (`template_id` ASC) ;
+
+
+
+drop table `twt-virt-office`.`company2sites`;
+
+---------------------------------------------------
+ШАБЛОНЫ
+ALTER TABLE `twt-virt-office`.`templates` RENAME TO  `twt-virt-office`.`template` ;
+ALTER TABLE `twt-virt-office`.`templates` CHANGE COLUMN `name` `name` VARCHAR(100) NOT NULL  , CHANGE COLUMN `external_name` `external_name` VARCHAR(100) NOT NULL  ;
+
+СТРАНИЦЫ
+-------------------------------------------------
+CREATE  TABLE `twt-virt-office`.`domain_page` (
+  `id` INT UNSIGNED NOT NULL AUTO_INCREMENT ,
+  `domain_id` INT UNSIGNED NOT NULL COMMENT 'Поддомен' ,
+  `kind` CHAR(10) NOT NULL COMMENT 'Тип страницы' ,
+  `is_show` TINYINT(1) UNSIGNED NOT NULL COMMENT 'Показывать страницу' ,
+  `page_title` VARCHAR(100) NOT NULL COMMENT 'Заголовок страницы' ,
+  `window_title` VARCHAR(100) NOT NULL COMMENT 'Заголовок окна' ,
+  `content` TEXT NOT NULL DEFAULT '' COMMENT 'Содержимое страницы' ,
+  `banner_id` INT UNSIGNED NULL DEFAULT NULL COMMENT 'Баннер' ,
+  `logo_id` INT UNSIGNED NULL DEFAULT NULL COMMENT 'Логотип' ,
+  `email` VARCHAR(100) NULL DEFAULT NULL ,
+  `adress` VARCHAR(200) NULL DEFAULT NULL ,
+  `map` ENUM('yandex','google') NULL DEFAULT NULL ,
+  PRIMARY KEY (`id`) ,
+  INDEX `kind` (`kind` ASC) ,
+  INDEX `site` (`domain_id` ASC) )
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8
+COLLATE = utf8_general_ci
+COMMENT = 'Страница для отображения информации в поддомене компании';
+
+
+ALTER TABLE `twt-virt-office`.`domain_page` 
+  ADD CONSTRAINT `fk_domain_page`
+  FOREIGN KEY (`domain_id` )
+  REFERENCES `twt-virt-office`.`domain` (`id` )
+  ON DELETE NO ACTION
+  ON UPDATE NO ACTION;
+
+
+
