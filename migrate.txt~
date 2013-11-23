@@ -8,6 +8,9 @@ CREATE TABLE `domain` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
 
+ALTER TABLE `twt-virt-office`.`domain` 
+ADD UNIQUE INDEX `domain` (`domain` ASC) ;
+
 
 ALTER TABLE `twt-virt-office`.`domain` 
   ADD CONSTRAINT `fk_company_id`
@@ -18,6 +21,7 @@ ALTER TABLE `twt-virt-office`.`domain`
 , ADD INDEX `fk_company_id_idx` (`company_id` ASC) ;
 
 ALTER TABLE `twt-virt-office`.`templates` CHANGE COLUMN `id` `id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT  ;
+ALTER TABLE `twt-virt-office`.`domain` ADD COLUMN `logo` VARCHAR(100) NOT NULL COMMENT 'Название логотипа файла'  AFTER `name` ;
 
 ALTER TABLE `twt-virt-office`.`domain` 
   ADD CONSTRAINT `fk_template_id`

@@ -2,15 +2,19 @@
 use application\modules\domain\models as M;
 
 /**
- * Создание нового поддомена для компании
+ * Редактирование поддомена для компании
  *
  * @author Skibardin Andrey <webprofi1983@gmail.com>
  */
-class CreateAction extends CAction
+class UpdateAction extends CAction
 {
-    public function run()
+    /**
+     * @param integer $sid
+     * @throws CHttpException
+     */
+    public function run($sid)
     {
-        if(!Yii::app()->user->checkAccess('createSite')) {
+        if(!Yii::app()->user->checkAccess('updateSite')) {
             throw new CHttpException(403, Yii::t('app', 'Доступ запрещен'));
         }
 
@@ -18,10 +22,12 @@ class CreateAction extends CAction
          * @var application\modules\domain\controllers\DefaultController $controller
          */
         $controller = $this->controller;
-        $controller->pageTitle = Yii::app()->name . ' | Создание сайта';
+        $controller->pageTitle = Yii::app()->name . ' | Редактирование сайта';
 
-        $model = new M\Domain();
-        $model->company_id = $controller->company->primaryKey;
+        $model = M\Domain::model()->findByPk($sid);
+        if ($model === null){
+            throw new CHttpException(404, Yii::t('app', 'Не найден поддомен компании'));
+        }
 
         $class = str_replace('\\', '_', get_class($model));
         $data = Yii::app()->request->getPost($class);
@@ -41,9 +47,17 @@ class CreateAction extends CAction
         }
 
         $controller->render(
-            'form',
+            'tabs',
             array(
+                'content' => $controller->renderPartial(
+                    'form',
+                    array(
+                        'model' => $model,
+                    ),
+                    true
+                ),
                 'model' => $model,
+                'active_tab' => 'site',
             )
         );
     }

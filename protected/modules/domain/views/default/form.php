@@ -1,10 +1,10 @@
 <?php
 use \application\modules\domain\models as M;
+
 /**
  * @var application\modules\domain\controllers\DefaultController $this
  * @var M\Domain $model
  */
-
 $t = (($model->isNewRecord) ? 'Добавление' : 'Редактирование') . ' сайта';
 echo CHtml::tag('h3', array(), Yii::t('app', $t));
 
@@ -14,9 +14,12 @@ echo CHtml::tag('h3', array(), Yii::t('app', $t));
 $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
     'id' => 'form-domain',
     'type' => 'horizontal',
+    'htmlOptions' => array(
+        'enctype' => 'multipart/form-data'
+    ),
 ));
 
-if ($model->hasErrors()){
+if ($model->hasErrors()) {
     echo $form->errorSummary($model);
 }
 
@@ -32,6 +35,10 @@ echo $form->dropDownListRow(
     ),
     array('empty' => '--- Выберите шаблон ---')
 );
+if($model->logo){
+    echo '<p>'.CHtml::encode($model->logo).'</p>';
+}
+echo $form->fileFieldRow($model, 'logo');
 
 echo '</fieldset>';
 

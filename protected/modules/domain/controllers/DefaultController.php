@@ -16,6 +16,8 @@ class DefaultController extends \CompanyController
         return array(
             'index' => 'domain.controllers.Default.IndexAction',
             'create' => 'domain.controllers.Default.CreateAction',
+            'update' => 'domain.controllers.Default.UpdateAction',
+            'page' => 'domain.controllers.Default.PageAction',
         );
     }
 }

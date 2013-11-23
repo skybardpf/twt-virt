@@ -5,16 +5,9 @@
  * @author Skibardin Andrey <webprofi1983@gmail.com>
  */
 return array(
-
     'listSites' => array(
         'type' => CAuthItem::TYPE_OPERATION,
         'description' => 'Просмотр списка площадок',
-        'bizRule' => null,
-        'data' => null
-    ),
-    'settingsSite' => array(
-        'type' => CAuthItem::TYPE_OPERATION,
-        'description' => 'Настройки сайта',
         'bizRule' => null,
         'data' => null
     ),
@@ -30,12 +23,29 @@ return array(
         'bizRule' => null,
         'data' => null
     ),
-    'pagesSite' => array(
+    'updateSite' => array(
         'type' => CAuthItem::TYPE_OPERATION,
-        'description' => 'Просмотр|редактирование страниц сайта',
+        'description' => ' Редактирование сайта',
         'bizRule' => null,
         'data' => null
     ),
+
+    /**
+     * Страницы сайта
+     */
+    'viewSitePage' => array(
+        'type' => CAuthItem::TYPE_OPERATION,
+        'description' => 'Просмотр страницы сайта',
+        'bizRule' => null,
+        'data' => null
+    ),
+    'updateSitePage' => array(
+        'type' => CAuthItem::TYPE_OPERATION,
+        'description' => 'Редактирование страниц сайта',
+        'bizRule' => null,
+        'data' => null
+    ),
+
 
     /**
      * Роли в сайтах
@@ -47,10 +57,12 @@ return array(
         'data' => null,
         'children' => array(
             'listSites',
-            'settingsSite',
             'deleteSite',
             'createSite',
-            'pagesSite',
+            'updateSite',
+
+            'viewSitePage',
+            'updateSitePage',
         ),
     ),
 );

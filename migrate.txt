@@ -21,6 +21,7 @@ ALTER TABLE `twt-virt-office`.`domain`
 , ADD INDEX `fk_company_id_idx` (`company_id` ASC) ;
 
 ALTER TABLE `twt-virt-office`.`templates` CHANGE COLUMN `id` `id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT  ;
+ALTER TABLE `twt-virt-office`.`domain` ADD COLUMN `logo` VARCHAR(100) NOT NULL COMMENT 'Название логотипа файла'  AFTER `name` ;
 
 ALTER TABLE `twt-virt-office`.`domain` 
   ADD CONSTRAINT `fk_template_id`
@@ -69,6 +70,9 @@ ALTER TABLE `twt-virt-office`.`domain_page`
   REFERENCES `twt-virt-office`.`domain` (`id` )
   ON DELETE NO ACTION
   ON UPDATE NO ACTION;
+
+ALTER TABLE `twt-virt-office`.`domain_page` CHANGE COLUMN `banner_id` `banner` VARCHAR(250) NOT NULL DEFAULT '' COMMENT 'Баннер'  , CHANGE COLUMN `logo_id` `logo` VARCHAR(250) NOT NULL DEFAULT '' COMMENT 'Логотип'  ;
+
 
 
 
