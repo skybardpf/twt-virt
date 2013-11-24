@@ -43,6 +43,7 @@ class Domain extends \CActiveRecord
 
             array('domain', 'uniqueDomain'),
 
+            array('logo', 'length', 'max' => 250),
             array('logo', 'file', 'types' => 'jpg, gif, png', 'allowEmpty' => true),
         );
     }
@@ -89,8 +90,10 @@ class Domain extends \CActiveRecord
      */
     protected function beforeSave()
     {
-        if (!parent::beforeSave())
+        if (!parent::beforeSave()){
             return false;
+        }
+
         if ($logo = \CUploadedFile::getInstance($this, 'logo')) {
             $this->deleteLogo();
 
@@ -100,9 +103,7 @@ class Domain extends \CActiveRecord
             }
 
             $filename = md5(md5($logo->name).time().'site_logos');
-            $logo->saveAs(
-                \Yii::getPathOfAlias('webroot.upload.site.logos') . DIRECTORY_SEPARATOR . $filename
-            );
+            $logo->saveAs($dir . DIRECTORY_SEPARATOR . $filename);
             $this->logo = $filename;
         }
         return true;
