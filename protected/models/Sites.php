@@ -59,10 +59,13 @@ class Sites extends CActiveRecord
             $sites_max = 3;
         }
 
-        $res = Yii::app()->db->createCommand("select count(*) from company2sites where  company_id = $company_id")
-            ->queryRow();
+        $res = Yii::app()->db->createCommand(
+            "SELECT COUNT(*) as c FROM domain WHERE company_id = :company_id;"
+        )->queryRow(true, array(
+            ':company_id' => $company_id,
+        ));
 
-        return array('max' => $sites_max, 'have' => $res['count(*)']);
+        return array('max' => $sites_max, 'have' => $res['c']);
     }
 
     public function getSites($company_id)
