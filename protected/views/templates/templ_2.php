@@ -35,7 +35,7 @@ use application\modules\domain\models as M;
                             balloonContentHeader: "",
                             balloonContentBody: "",
                             balloonContentFooter: "",
-                            hintContent: "<?= $page->adress; ?>"
+                            hintContent: "<?= CHtml::encode($page->adress); ?>"
                         });
                         myMap.geoObjects.add(myPlacemark);
                     },
@@ -48,7 +48,7 @@ use application\modules\domain\models as M;
     <? if ($page->map === 'google'): ?>
         <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false&libraries=places"></script>
         <script>
-            var url = 'http://maps.googleapis.com/maps/api/geocode/json?address=<?= $page->adress; ?>&sensor=true';
+            var url = 'http://maps.googleapis.com/maps/api/geocode/json?address=<?= CHtml::encode($page->adress); ?>&sensor=true';
             var id = this.id;
             $.ajax({
                 type: "GET",
