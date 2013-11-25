@@ -35,7 +35,7 @@ use application\modules\domain\models as M;
                             balloonContentHeader: "",
                             balloonContentBody: "",
                             balloonContentFooter: "",
-                            hintContent: "<?= $page->adress; ?>"
+                            hintContent: "<?= CHtml::encode($page->adress); ?>"
                         });
                         myMap.geoObjects.add(myPlacemark);
                     },
@@ -49,7 +49,7 @@ use application\modules\domain\models as M;
         <div id="map"></div>
         <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false&libraries=places"></script>
         <script>
-            var url = 'http://maps.googleapis.com/maps/api/geocode/json?address=<?= $page->adress; ?>&sensor=true';
+            var url = 'http://maps.googleapis.com/maps/api/geocode/json?address=<?= CHtml::encode($page->adress); ?>&sensor=true';
             var id = this.id;
             $.ajax({
                 type: "GET",
@@ -57,15 +57,7 @@ use application\modules\domain\models as M;
                 data: {
                 },
                 success: function (data) {
-//                    console.log(data);
                     var r = data['results'];
-//                    var map;
-//                    var service;
-//                    var infowindow;
-
-
-//                    console.log(r[0]['geometry']['location']['lng']);
-
                     var myLatlng = new google.maps.LatLng(r[0]['geometry']['location']['lat'], r[0]['geometry']['location']['lng']);
                     var myOptions = {
                         zoom: 15,
@@ -73,13 +65,11 @@ use application\modules\domain\models as M;
                         mapTypeId: google.maps.MapTypeId.ROADMAP
                     };
                     var map = new google.maps.Map(document.getElementById("map"), myOptions);
-//                    console.log(map);
                     var marker = new google.maps.Marker({
                         position: myLatlng,
                         map: map,
-                        title: "<?= $page->adress; ?>"
+                        title: "<?= CHtml::encode($page->adress); ?>"
                     });
-//                    console.log(marker);
                 }
             });
         </script>
