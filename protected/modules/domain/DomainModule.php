@@ -10,7 +10,7 @@ namespace application\modules\domain;
  */
 class DomainModule extends \CWebModule
 {
-    public $baseAssets = null;
+//    public $baseAssets = null;
 
     protected function init()
 	{
@@ -23,13 +23,13 @@ class DomainModule extends \CWebModule
         $this->layoutPath = \Yii::getPathOfAlias('domain.views.layouts');
         $this->layout = 'owner';
 
-        if ($this->baseAssets === null) {
-            $this->baseAssets = \Yii::app()->assetManager->publish(
-                \Yii::getPathOfAlias('domain.assets'),
-                false,
-                -1,
-                YII_DEBUG
-            );
-        }
+//        if ($this->baseAssets === null) {
+//            $this->baseAssets = \Yii::app()->assetManager->publish(
+//                \Yii::getPathOfAlias('domain.assets'),
+//                false,
+//                -1,
+//                YII_DEBUG
+//            );
+//        }
 	}
 }
