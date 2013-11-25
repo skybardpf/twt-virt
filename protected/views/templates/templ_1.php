@@ -46,7 +46,6 @@ use application\modules\domain\models as M;
         </script>
     <? endif; ?>
     <? if ($page->map === 'google'): ?>
-        <div id="map"></div>
         <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false&libraries=places"></script>
         <script>
             var url = 'http://maps.googleapis.com/maps/api/geocode/json?address=<?= $page->adress; ?>&sensor=true';
@@ -138,6 +137,9 @@ use application\modules\domain\models as M;
                 </div>
                 <div class="content">
                     <h1><?= $page->page_title; ?></h1>
+                    <?php if(($page->kind == M\DomainPage::KIND_CONTACTS) && (!empty($page->adress))): ?>
+                		<div id="map" style="width:400px; height:300px"></div>
+                	<?php endif; ?>
                     <?= $page->content; ?>
                     <br/><br/>
                 </div>
