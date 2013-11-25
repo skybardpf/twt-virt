@@ -49,8 +49,8 @@ class PageAction extends CAction
             $page->setScenario('contacts');
         }
 
-        $class = str_replace('\\', '_', get_class($page));
-        $data = Yii::app()->request->getPost($class);
+//        $class = str_replace('\\', '_', get_class($page));
+        $data = Yii::app()->request->getPost(get_class($page));
         if ($data){
             if(!Yii::app()->user->checkAccess('updateSitePage')) {
                 throw new CHttpException(403, Yii::t('app', 'Доступ запрещен'));

@@ -23,8 +23,8 @@ class CreateAction extends CAction
         $model = new M\Domain();
         $model->company_id = $controller->company->primaryKey;
 
-        $class = str_replace('\\', '_', get_class($model));
-        $data = Yii::app()->request->getPost($class);
+//        $data = Yii::app()->request->getPost($class);
+        $data = Yii::app()->request->getPost(get_class($model));
         if ($data){
             $model->attributes = $data;
             if ($model->validate()){

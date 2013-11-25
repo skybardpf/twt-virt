@@ -11,7 +11,7 @@ Yii::app()->clientScript->registerScriptFile($this->asset_static . '/js/extensio
 
 <script>
     $(document).ready(function () {
-        CKEDITOR.replace(<?= str_replace('\\', '_', get_class($page)).'_content'; ?>);
+        CKEDITOR.replace("application\\modules\\domain\\models\\DomainPage_content");
     });
 </script>
 
@@ -41,6 +41,7 @@ if ($page->hasErrors()) {
 
 echo '<fieldset>';
 
+echo $form->checkBoxRow($page, 'is_show');
 echo $form->textFieldRow($page, 'window_title');
 echo $form->textFieldRow($page, 'page_title');
 

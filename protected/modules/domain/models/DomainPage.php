@@ -32,6 +32,8 @@ class DomainPage extends \CActiveRecord
     const MAP_GOOGLE = 'google';
     const MAP_YANDEX = 'yandex';
 
+    public $is_show = 1;
+
 	/**
 	 * @return string the associated database table name
 	 */
@@ -48,6 +50,9 @@ class DomainPage extends \CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
+            array('is_show', 'required'),
+            array('is_show', 'boolean'),
+
             array('page_title, window_title', 'required'),
             array('page_title, window_title', 'length', 'max'=>100),
 

@@ -383,17 +383,17 @@ class Sites extends CActiveRecord
         return $res;
     }
 
-    public function getTemplate($site)
-    {
-        $res = $sites = Yii::app()->db->createCommand()
-            ->select('templates.name, sites.id')
-            ->from('sites')
-            ->join('templates', 'sites.template=templates.id')
-            ->where('sites.domain=:domain', array(':domain' => $site))
-            ->queryRow();
-
-        return $res;
-    }
+//    public function getTemplate($site)
+//    {
+//        $res = $sites = Yii::app()->db->createCommand()
+//            ->select('templates.name, sites.id')
+//            ->from('sites')
+//            ->join('templates', 'sites.template=templates.id')
+//            ->where('sites.domain=:domain', array(':domain' => $site))
+//            ->queryRow();
+//
+//        return $res;
+//    }
 
     public function getTemplatesList()
     {

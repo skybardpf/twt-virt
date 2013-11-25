@@ -29,8 +29,9 @@ class UpdateAction extends CAction
             throw new CHttpException(404, Yii::t('app', 'Не найден поддомен компании'));
         }
 
-        $class = str_replace('\\', '_', get_class($model));
-        $data = Yii::app()->request->getPost($class);
+//        $class = str_replace('\\', '_', get_class($model));
+//        $data = Yii::app()->request->getPost($class);
+        $data = Yii::app()->request->getPost(get_class($model));
         if ($data){
             $model->attributes = $data;
             if ($model->validate()){
