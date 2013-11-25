@@ -136,7 +136,6 @@ $('document').ready(function(){
                         url: local.data('url'),
                         cache: false
                     }).done(function(data) {
-                        console.log(data.success);
                         if (!data.success){
                             alert(data.message);
                         } else {

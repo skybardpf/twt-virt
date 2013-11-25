@@ -35,6 +35,7 @@ $this->pageTitle = ($model->isNewRecord ? 'Добавление пользова
 	</div>
 	<fieldset>
 
+        <?= $form->checkBoxRow($model, 'name'); ?>
 		<?=$form->textFieldRow($model, 'email', array('class' => 'input-xxlarge', 'disabled' => !in_array($model->scenario, array('owner_update', 'owner_create')))); ?>
 		<?=$form->textFieldRow($model, 'name', array('class' => 'input-xxlarge', 'disabled' => !in_array($model->scenario, array('owner_update', 'owner_create')))); ?>
 		<?=$form->textFieldRow($model, 'surname', array('class' => 'input-xxlarge', 'disabled' => !in_array($model->scenario, array('owner_update', 'owner_create')))); ?>
