@@ -76,7 +76,7 @@ use application\modules\domain\models as M;
                     var marker = new google.maps.Marker({
                         position: myLatlng,
                         map: map,
-                        title: "<?= $page->adress; ?>"
+                        title: "<?= CHtml::encode($page->adress); ?>"
                     });
 //                    console.log(marker);
                 }
