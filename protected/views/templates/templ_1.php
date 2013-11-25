@@ -24,7 +24,7 @@ use application\modules\domain\models as M;
             ymaps.ready(init);
 
             function init() {
-                var myGeocoder = ymaps.geocode('<?= $page->adress; ?>');
+                var myGeocoder = ymaps.geocode('<?= CHtml::encode($page->adress); ?>');
                 myGeocoder.then(
                     function (res) {
                         myMap = new ymaps.Map('map', {
@@ -57,7 +57,7 @@ use application\modules\domain\models as M;
                 data: {
                 },
                 success: function (data) {
-                    console.log(data);
+//                    console.log(data);
                     var r = data['results'];
 //                    var map;
 //                    var service;
@@ -73,13 +73,13 @@ use application\modules\domain\models as M;
                         mapTypeId: google.maps.MapTypeId.ROADMAP
                     };
                     var map = new google.maps.Map(document.getElementById("map"), myOptions);
-                    console.log(map);
+//                    console.log(map);
                     var marker = new google.maps.Marker({
                         position: myLatlng,
                         map: map,
                         title: "<?= $page->adress; ?>"
                     });
-                    console.log(marker);
+//                    console.log(marker);
                 }
             });
         </script>
@@ -111,9 +111,11 @@ use application\modules\domain\models as M;
                 <div class="menu">
                     <ul>
                         <?php
+                        $menus = array();
                         foreach ($menu as $item) {
-                            echo ' | ' . CHtml::link(Yii::t('app', M\DomainPage::kindToString($item->kind)), $url . $item->kind);
+                            $menus[] = CHtml::link(Yii::t('app', M\DomainPage::kindToString($item->kind)), $url . $item->kind);
                         }
+                        echo implode(' | ', $menus);
                         ?>
                     </ul>
                 </div>

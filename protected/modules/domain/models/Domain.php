@@ -195,7 +195,7 @@ class Domain extends \CActiveRecord
         $domain = $this->find('domain=:domain', array(
             ':domain' => $this->$attribute
         ));
-        if ($domain && $domain->primaryKey != $this->primaryKey) {
+        if ($domain && ($domain->primaryKey != $this->primaryKey)) {
             $this->addError($attribute, \Yii::t('app', 'Такой домен уже существует'));
         }
     }

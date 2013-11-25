@@ -3,28 +3,28 @@ use application\modules\domain\models as M;
 
 class DisplayController extends Controller
 {
-    public $company_id;
-    public $layout = '/layouts/main';
-    public $controller_name = "sites";
+//    public $company_id;
+//    public $layout = '/layouts/main';
+//    public $controller_name = "sites";
 
     /**
      * This is the default 'index' action that is invoked
      * when an action is not explicitly requested by users.
      */
 
-    public function accessRules()
-    {
-        return array();
-    }
-
-    public function actionIndex($site, $kind = null)
-    {
-    }
-
-    public function actionTest()
-    {
-        $this->render('error', array());
-    }
+//    public function accessRules()
+//    {
+//        return array();
+//    }
+//
+//    public function actionIndex($site, $kind = null)
+//    {
+//    }
+//
+//    public function actionTest()
+//    {
+//        $this->render('error', array());
+//    }
 
     /**
      * @param string $site
@@ -33,6 +33,9 @@ class DisplayController extends Controller
      */
     public function actionView($site, $kind = 'main')
     {
+        if (!M\DomainPage::existsKind($kind)) {
+            $kind = 'main';
+        }
         /**
          * @var M\Domain $domain
          */
@@ -41,9 +44,6 @@ class DisplayController extends Controller
         ));
         if ($domain === null) {
             throw new CHttpException(404, 'Поддомен не найден');
-        }
-        if (!M\DomainPage::existsKind($kind)) {
-            throw new CHttpException(404, 'Неизвестный вид страницы');
         }
         $page = M\DomainPage::model()->find('kind=:kind AND domain_id=:domain_id', array(
             ':kind' => $kind,
@@ -67,16 +67,16 @@ class DisplayController extends Controller
         );
     }
 
-    /**
-     * This is the action to handle external exceptions.
-     */
-    public function actionError()
-    {
-        if ($error = Yii::app()->errorHandler->error) {
-            if (Yii::app()->request->isAjaxRequest)
-                echo $error['message'];
-            else
-                $this->render('error', $error);
-        }
-    }
+//    /**
+//     * This is the action to handle external exceptions.
+//     */
+//    public function actionError()
+//    {
+//        if ($error = Yii::app()->errorHandler->error) {
+//            if (Yii::app()->request->isAjaxRequest)
+//                echo $error['message'];
+//            else
+//                $this->render('error', $error);
+//        }
+//    }
 }
