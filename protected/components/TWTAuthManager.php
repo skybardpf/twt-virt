@@ -10,7 +10,7 @@ class TWTAuthManager extends CPhpAuthManager
     {
         // Иерархию ролей расположим в файле auth.php в директории config приложения
         if ($this->authFile === null) {
-            $this->authFile = Yii::getPathOfAlias('application.config.web.auth') . '.php';
+            $this->authFile = Yii::getPathOfAlias('application.config.web.rbac.auth') . '.php';
         }
 
         parent::init();

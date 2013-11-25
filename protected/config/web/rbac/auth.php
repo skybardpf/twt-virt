@@ -5,8 +5,8 @@
  * @author Skibardin Andrey <webprofi1983@gmail.com>
  */
 return CMap::mergeArray(
-    require(dirname(__FILE__).'/auth_telephony.php'),
-    require(dirname(__FILE__).'/auth_sites.php'),
+    require(dirname(__FILE__) . '/auth_telephony.php'),
+    require(dirname(__FILE__) . '/auth_sites.php'),
     array(
         /**
          * Операции с профайлом
