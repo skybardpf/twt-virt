@@ -152,7 +152,8 @@ return array(
         'adminEmail' => 'webmaster@example.com',
 
         'maxNumberSitesForCompany' => 3, /* Максимальное кол-во сайтов на компанию */
-        'urlWebMail' => 'http://this.com.ua',
+//        'urlWebMail' => 'http://this.com.ua',
+        'urlWebMail' => 'https://144.76.221.53/mail',
         'httpHostName' => (substr($_SERVER['HTTP_HOST'], 0, 4) == 'www.') ? substr($_SERVER['HTTP_HOST'], 4) : $_SERVER['HTTP_HOST'],
         'IMAPHost' => 'this.com.ua',
         'IMAPPort' => '143',
